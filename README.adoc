@@ -76,9 +76,7 @@ system/microprofile-config.properties
 include::finish/system/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-The `SystemService` class contains a `Publisher` method that is called [hotspot=sendSystemLoad file=0]`sendSystemLoad()`, which calculates and returns the average system load. The [hotspot=publishSystemLoad file=0]`@Outgoing` annotation on the [hotspot=sendSystemLoad file=0]`sendSystemLoad()` method indicates that the method publishes its calculation as a message on a topic in the Kafka messaging system. The [hotspot=flowableInterval file=0]`Flowable.interval()` method from `rxJava` is used to set the frequency of how often the system service publishes the calculation to the event stream.
-
-The `system` microservice also contains a method named [hotspot=sendPropertyDetails file=0]`sendProperty`. It receives a system property name from the `inventory` microservice over the [hotspot=getProperty file=0]`@Incoming("getProperty")` channel, calculates the requested property on the fly and publishes it back to the Kafka over the [hotspot=setProperty file=0]`@Outgoing("setProperty")` channel. The [hotspot=sendPropertyDetails file=0]`sendProperty` method acts as a processor in this scenario.
+The `system` microservice contains a method named [hotspot=sendPropertyDetails file=0]`sendProperty`. It receives a system property name from the `inventory` microservice over the [hotspot=getProperty file=0]`@Incoming("getProperty")` channel, calculates the requested property on the fly and publishes it back to the Kafka over the [hotspot=setProperty file=0]`@Outgoing("setProperty")` channel. The [hotspot=sendPropertyDetails file=0]`sendProperty` method acts as a processor in this scenario.
 
 The messages are transported between the service and the Kafka messaging system through the channels called [hotspot=systemLoad file=1]`systemLoad` and [hotspot=setProperty file=1]`setProperty`.
 
@@ -106,8 +104,6 @@ include::finish/inventory/src/main/resources/META-INF/microprofile-config.proper
 ----
 
 The `inventory` microservice receives the message from the `system` microservice over the [hotspot=systemLoad file=0]`@Incoming("systemLoad")` and [hotspot=propertyMessage file=0]`@Incoming("propertyMessage")` channel. The properties of this channel are defined in the [hotspot=systemLoad hotspot=propertyMessage file=1]`microprofile-config.properties` file. The `inventory` microservice is also a RESTful service that is served at the [hotspot=inventoryEndPoint file=0]`/inventory` endpoint.
-
-The `InventoryResource` class contains a method called [hotspot=updateStatus file=0]`updateStatus()`, which receives the messages that contains the average system load and updates its existing inventory of systems and their average system load. The [hotspot=systemLoad file=0]`@Incoming("systemLoad")` annotations on the [hotspot=updateStatus file=0]`updateStatus()` method indicates that the method retrieves the average system load information by connecting to the channel called [hotspot=systemLoad file=0]`systemLoad`.
 
 When accessed, there is a RESTful endpoint to the `inventory` microservice that triggers message creation. The `inventory` microservice creates a system property request when a property name is sent in a POST request to the [hotspot=postPath file=0]`/systems/property/{propertyName}` endpoint. The [hotspot=getSystemProperty file=0]`getSystemProperty()` method receives a system property name like `os.name` from the POST request and adds it to the [hotspot=flowableEmitter file=0]`FlowableEmitter`. The [hotspot=flowableCreate file=0]`Flowable.create()` method from rxJava is used to create a Publisher and an associated emitter. The property name sent to the emitter will be sent to the Publisher. The Publisher is returned from the [hotspot=OutgoingPropertyName file=0]`@Outgoing("propertyName")` channel, which is configured in the [hotspot file=1]`microprofile-config.properties` [hotspot=setProperty file=1]`propertyName` stream and MicroProfile Reactive Messaging takes care of assigning the publisher to the channel.
 
@@ -146,48 +142,9 @@ The `inventory` microservice uses a similar `microprofile-config.properties` con
 
 The `inventory` microservice uses an incoming connector to receive messages through the [hotspot=systemLoad file=1]`systemLoad` and [hotspot=propertyMessage file=1]`propertyMessage` channel. The messages were published by the `system` microservice to the [hotspot=topic1 file=1]`systemLoadTopic` and [hotspot=topic3 file=1]`propertyMessageTopic` in the Kafka message broker. The `SystemLoadDeserializer` and `PropertyMessageDeserializer` class implements the logic for turning JSON into a `SystemLoad` and `PropertyMessage` object and is configured as the [hotspot=deserializerVal1 hotspot=deserializerVal3 file=1]`value.deserializer`.
 
-== Configuring the server
-
-To run the services, the Open Liberty server on which each service runs needs to be correctly configured. Relevant features, including the https://openliberty.io/docs/ref/feature/#mpReactiveMessaging-1.0.html[MicroProfile Reactive Messaging feature^], must be enabled for the `system` and `inventory` services.
-
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Create the system/server.xml configuration file.#
-`system/src/main/liberty/config/server.xml`
-----
-server.xml
-[source,xml,linenums,role="code_column"]
-----
-include::finish/system/src/main/liberty/config/server.xml[]
-----
-
-server.xml
-[source,xml,linenums,role="code_column"]
-----
-include::finish/inventory/src/main/liberty/config/server.xml[]
-----
-
-The [hotspot file=1]`server.xml` file is already configured for the `inventory` microservice. 
-
 == Building and running the application
 
 Build the `system` and `inventory` microservices using Maven and then run them in Docker containers.
-
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Create the Maven configuration file.#
-`system/pom.xml`
----- 
-
-pom.xml
-[source, XML ,linenums,role="code_column"]
-----
-include::finish/system/pom.xml[]
-----
-
-The [hotspot file=0]`pom.xml` file lists the [hotspot=reactiveMessaging file=0]`microprofile-reactive-messaging-api`, [hotspot=kafka file=0]`kafka-clients`, and [hotspot=rxjava file=0]`rxjava` dependencies.
-
-The [hotspot=reactiveMessaging file=0]`microprofile-reactive-messaging-api` dependency is needed to enable the use of MicroProfile Reactive Messaging API. The [hotspot=kafka file=0]`kafka-clients` dependency is added because the application needs a Kafka client to connect to the Kafka broker. The [hotspot=rxjava file=0]`rxjava` dependency is used for creating events at regular intervals.
 
 Start your Docker environment. Dockerfiles are provided for you to use.
 
