@@ -167,7 +167,7 @@ server.xml
 include::finish/inventory/src/main/liberty/config/server.xml[]
 ----
 
-The [hotspot file=1]`server.xml` file is already configured for the `inventory` microservice.
+The [hotspot file=1]`server.xml` file is already configured for the `inventory` microservice. 
 
 == Building and running the application
 
