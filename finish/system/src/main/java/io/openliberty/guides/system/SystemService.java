@@ -63,8 +63,12 @@ public class SystemService {
     // end::sendSystemLoad[]
     
     // tag::sendPropertyDetails[]
+    // tag::getProperty[]
     @Incoming("getProperty")
+    // end::getProperty[]
+    // tag::setProperty[]
     @Outgoing("setProperty")
+    // end::setProperty[]
     public PropertyMessage sendProperty(String propertyName) {
         logger.info("sendProperty: " + propertyName);
         String propertyValue = System.getProperty(propertyName);
