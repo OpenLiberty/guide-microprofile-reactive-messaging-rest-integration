@@ -249,18 +249,6 @@ Go to the http://localhost:9085/inventory/systems[^] URL to access the inventory
 
 You can revisit the http://localhost:9085/inventory/systems[^] URL after a while, and you will notice the CPU `systemLoad` property for the systems changed.
 
-You can use the `\http://localhost:9085/inventory/systems/{hostname}` URL to see the CPU `systemLoad` property for one particular system.
-
-In the following example, the `30bec2b63a96` value is the `hostname`. If you go to the `\http://localhost:9085/inventory/systems/30bec2b63a96` URL, you can see the property only for the `30bec2b63a96` `hostname`:
-
-[source, role='no_copy']
-----
-{
-   "hostname":"30bec2b63a96",
-   "systemLoad":1.44
-}
-----
-
 You can use the `\http://localhost:9085/inventory/systems/property/{propertyName}` URL to see the value of a particular system property.
 
 For example, : The `\http://localhost:9085/inventory/systems/property/os.name` URL will give you the `os.name` value for your system.
