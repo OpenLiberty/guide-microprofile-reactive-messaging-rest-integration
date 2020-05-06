@@ -48,7 +48,9 @@ import io.reactivex.rxjava3.core.FlowableEmitter;
 public class InventoryResource {
 
     private static Logger logger = Logger.getLogger(InventoryResource.class.getName());
+    // tag::flowableEmitter[]
     private FlowableEmitter<String> property;
+    // end::flowableEmitter[]
 
     @Inject
     private InventoryManager manager;
