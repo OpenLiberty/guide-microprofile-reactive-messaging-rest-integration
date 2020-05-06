@@ -54,7 +54,7 @@ include::{common-includes}/gitclone.adoc[]
 
 == Creating the system microservice
 
-Navigate to the `start` directory to begin. 
+Navigate to the `start` directory to begin.
 
 The `system` microservice is the producer of the messages that are published to the Kafka messaging system as a stream of events. Every 15 seconds, the `system` microservice publishes events that contains its calculation of the average system load (its CPU usage) for the last minute. It also processes the specific system property request from the `inventory` microservice and publishes it to the Kafka messaging system.
 
@@ -77,6 +77,8 @@ include::finish/system/src/main/resources/META-INF/microprofile-config.propertie
 ----
 
 The `system` microservice contains a method named [hotspot=sendPropertyDetails file=0]`sendProperty`. It receives a system property name from the `inventory` microservice over the [hotspot=getProperty file=0]`@Incoming("getProperty")` channel, calculates the requested property on the fly and publishes it back to the Kafka over the [hotspot=setProperty file=0]`@Outgoing("setProperty")` channel. The [hotspot=sendPropertyDetails file=0]`sendProperty` method acts as a processor in this scenario.
+
+The `SystemService` class contains a `Publisher` method that is called [hotspot=sendSystemLoad file=0]`sendSystemLoad()`, which calculates and returns the average system load. The [hotspot=publishSystemLoad file=0]`@Outgoing` annotation on the [hotspot=sendSystemLoad file=0]`sendSystemLoad()` method indicates that the method publishes its calculation as a message on a topic in the Kafka messaging system.
 
 The messages are transported between the service and the Kafka messaging system through the channels called [hotspot=systemLoad file=1]`systemLoad` and [hotspot=setProperty file=1]`setProperty`.
 
@@ -156,10 +158,10 @@ mvn -pl models install
 mvn package
 ```
 
-Run the following command to download or update to the latest `open-liberty` Docker image:
+Run the following command to download or update to the latest `open-liberty:kernel-java8-openj9-ubi` Docker image:
 [role='command']
 ```
-docker pull open-liberty
+docker pull openliberty/open-liberty:kernel-java8-openj9-ubi
 ```
 
 Run the following commands to containerize the microservices:
