@@ -21,7 +21,7 @@ docker run -d \
   --name=kafka \
   --rm \
   bitnami/kafka:2 &
-
+  
 sleep 15
 
 docker run -d \

@@ -1,20 +1,21 @@
-<server description="Inventory Service">
+<server description="System Service">
 
   <featureManager>
-    <feature>jaxrs-2.1</feature>
     <feature>cdi-2.0</feature>
     <feature>concurrent-1.0</feature>
     <feature>jsonb-1.0</feature>
     <feature>mpHealth-2.2</feature>
     <feature>mpConfig-1.4</feature>
+    <!-- tag::featureMP[] -->
     <feature>mpReactiveMessaging-1.0</feature>
+    <!-- end::featureMP[] -->
   </featureManager>
 
-  <variable name="default.http.port" defaultValue="9085"/>
-  <variable name="default.https.port" defaultValue="9448"/>
-  
+  <variable name="default.http.port" defaultValue="9083"/>
+  <variable name="default.https.port" defaultValue="9446"/>
+
   <httpEndpoint host="*" httpPort="${default.http.port}"
       httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
 
-  <webApplication location="inventory.war" contextRoot="/"/>
+  <webApplication location="system.war" contextRoot="/"/>
 </server>

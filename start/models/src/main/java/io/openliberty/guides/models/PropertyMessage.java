@@ -20,57 +20,56 @@ import javax.json.bind.JsonbBuilder;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
 
-public class SystemLoad {
+public class PropertyMessage {
 
     private static final Jsonb jsonb = JsonbBuilder.create();
 
     public String hostname;
-    public Double loadAverage;
-        
-    public SystemLoad(String hostname, Double cpuLoadAvg) {
+    public String key;
+    public String value;
+    
+    public PropertyMessage(String hostname, String key, String value) {
         this.hostname = hostname;
-        this.loadAverage = cpuLoadAvg;
+        this.key = key;
+        this.value = value;
     }
 
-    public SystemLoad() {
+    public PropertyMessage() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SystemLoad)) return false;
-        SystemLoad sl = (SystemLoad) o;
-        return Objects.equals(hostname, sl.hostname)
-                && Objects.equals(loadAverage, sl.loadAverage);
+        if (!(o instanceof PropertyMessage)) return false;
+        PropertyMessage m = (PropertyMessage) o;
+        return Objects.equals(hostname, m.hostname)
+                && Objects.equals(key, m.key)
+                && Objects.equals(value, m.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(hostname, loadAverage);
+        return Objects.hash(hostname, key, value);
     }
     
     @Override
     public String toString() {
-        return "CpuLoadAverage: " + jsonb.toJson(this);
+        return "PropertyMessage: " + jsonb.toJson(this);
     }
     
-    //tag::jsonbSerializer[]
-    public static class SystemLoadSerializer implements Serializer<Object> {
+    public static class PropertyMessageSerializer implements Serializer<Object> {
         @Override
         public byte[] serialize(String topic, Object data) {
           return jsonb.toJson(data).getBytes();
         }
     }
-    //end::jsonbSerializer[]
       
-    //tag::jsonbDeSerializer[]
-    public static class SystemLoadDeserializer implements Deserializer<SystemLoad> {
+    public static class PropertyMessageDeserializer implements Deserializer<PropertyMessage> {
         @Override
-        public SystemLoad deserialize(String topic, byte[] data) {
+        public PropertyMessage deserialize(String topic, byte[] data) {
             if (data == null)
                 return null;
-            return jsonb.fromJson(new String(data), SystemLoad.class);
+            return jsonb.fromJson(new String(data), PropertyMessage.class);
         }
     }
-    //end::jsonbDeSerializer[]
 }
