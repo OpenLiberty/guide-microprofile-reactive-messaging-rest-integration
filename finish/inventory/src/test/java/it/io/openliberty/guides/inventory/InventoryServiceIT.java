@@ -49,15 +49,13 @@ import io.openliberty.guides.models.SystemLoad.SystemLoadSerializer;
 @SharedContainerConfig(AppContainerConfig.class)
 @TestMethodOrder(OrderAnnotation.class)
 public class InventoryServiceIT {
-    
-    private static final long POLL_TIMEOUT = 30 * 1000;
 
     @RESTClient
     public static InventoryResource inventoryResource;
 
     @KafkaProducerConfig(valueSerializer = SystemLoadSerializer.class)
     public static KafkaProducer<String, SystemLoad> producer;
-    
+
     @KafkaConsumerConfig(valueDeserializer = StringDeserializer.class, 
             groupId = "property-name", topics = "propertyNameTopic", 
             properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + "=earliest")
@@ -87,29 +85,22 @@ public class InventoryServiceIT {
                     "CPU load doesn't match!");
         }
     }
-    
+
     @Test
     public void testGetProperty() {
-         Response response = inventoryResource.getSystemProperty("os.name");
-         Assertions.assertEquals(200, response.getStatus(),
-                 "Response should be 200");
-         int recordsProcessed = 0;
-         long startTime = System.currentTimeMillis();
-         long elapsedTime = 0;
-         while (recordsProcessed == 0 && elapsedTime < POLL_TIMEOUT) {
-             ConsumerRecords<String, String> records = propertyConsumer.poll(Duration.ofMillis(3000));
-             System.out.println("Polled " + records.count() + " records from Kafka:");
-             for (ConsumerRecord<String, String> record : records) {
-                 String p = record.value();
-                 System.out.println(p);
-                 assertEquals("os.name", p);
-                 recordsProcessed++;
-             }
-             propertyConsumer.commitAsync();
-             if (recordsProcessed > 0)
-                 break;
-             elapsedTime = System.currentTimeMillis() - startTime;
-         }
-         assertTrue(recordsProcessed > 0, "No records processed");
+        Response response = inventoryResource.getSystemProperty("os.name");
+        Assertions.assertEquals(200, response.getStatus(),
+                "Response should be 200");
+        int recordsProcessed = 0;
+        ConsumerRecords<String, String> records = propertyConsumer.poll(Duration.ofMillis(3000));
+        System.out.println("Polled " + records.count() + " records from Kafka:");
+        for (ConsumerRecord<String, String> record : records) {
+            String p = record.value();
+            System.out.println(p);
+            assertEquals("os.name", p);
+            recordsProcessed++;
+        }
+        propertyConsumer.commitAsync();
+        assertTrue(recordsProcessed > 0, "No records processed");
     }
 }

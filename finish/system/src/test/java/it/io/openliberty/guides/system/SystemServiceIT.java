@@ -40,20 +40,18 @@ import io.openliberty.guides.models.SystemLoad.SystemLoadDeserializer;
 @MicroShedTest
 @SharedContainerConfig(AppContainerConfig.class)
 public class SystemServiceIT {
-    
-    private static final long POLL_TIMEOUT = 30 * 1000;
 
     @KafkaConsumerConfig(valueDeserializer = SystemLoadDeserializer.class,
             groupId = "system-load-status",
             topics = "systemLoadTopic",
             properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + "=earliest")
     public static KafkaConsumer<String, SystemLoad> consumer;
-    
+
     @KafkaConsumerConfig(valueDeserializer = PropertyMessageDeserializer.class, 
             groupId = "property-name", topics = "propertyMessageTopic", 
             properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + "=earliest")
-        public static KafkaConsumer<String, PropertyMessage> propertyConsumer;
-    
+    public static KafkaConsumer<String, PropertyMessage> propertyConsumer;
+
     @KafkaProducerConfig(valueSerializer = StringSerializer.class)
     public static KafkaProducer<String, String> propertyProducer;
 
@@ -71,30 +69,23 @@ public class SystemServiceIT {
         }
         consumer.commitAsync();
     }
-    
+
     @Test
     public void testPropertyMessage() throws IOException, InterruptedException {
         propertyProducer.send(new ProducerRecord<String, String>("propertyNameTopic", "os.name"));
-        
+
         int recordsProcessed = 0;
-        long startTime = System.currentTimeMillis();
-        long elapsedTime = 0;
-        while (recordsProcessed == 0 && elapsedTime < POLL_TIMEOUT) {
-            ConsumerRecords<String, PropertyMessage> records = propertyConsumer.poll(Duration.ofMillis(3000));
-            System.out.println("Polled " + records.count() + " records from Kafka:");
-            for (ConsumerRecord<String, PropertyMessage> record : records) {
-                PropertyMessage pm = record.value();
-                System.out.println(pm);
-                assertNotNull(pm.hostname);
-                assertEquals("os.name", pm.key);
-                assertNotNull(pm.value);
-                recordsProcessed++;
-            }
-            consumer.commitAsync();
-            if (recordsProcessed > 0)
-                break;
-            elapsedTime = System.currentTimeMillis() - startTime;
+        ConsumerRecords<String, PropertyMessage> records = propertyConsumer.poll(Duration.ofMillis(3000));
+        System.out.println("Polled " + records.count() + " records from Kafka:");
+        for (ConsumerRecord<String, PropertyMessage> record : records) {
+            PropertyMessage pm = record.value();
+            System.out.println(pm);
+            assertNotNull(pm.hostname);
+            assertEquals("os.name", pm.key);
+            assertNotNull(pm.value);
+            recordsProcessed++;
         }
+        consumer.commitAsync();
         assertTrue(recordsProcessed > 0, "No records processed");
     }
 }
