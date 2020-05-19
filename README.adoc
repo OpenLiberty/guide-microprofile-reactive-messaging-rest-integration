@@ -208,11 +208,11 @@ Go to the http://localhost:9085/inventory/systems[^] URL to access the inventory
 
 You can revisit the http://localhost:9085/inventory/systems[^] URL after a while, and you will notice the CPU `systemLoad` property for the systems changed.
 
-You can use a `POST` request on the `\http://localhost:9085/inventory/systems/property/{propertyName}` URL to add the value of a particular system property to the set of existing properties.
+You can use a `POST` request on the `\http://localhost:9085/inventory/systems/property` URL to add the value of a particular system property to the set of existing properties.
 
 For example :
 
-The `POST` request on the `\http://localhost:9085/inventory/systems/property/os.name` URL will add the `os.name` system property for your system.
+The `POST` request with `os.name` in the request body on `\http://localhost:9085/inventory/systems/property` URL will add the `os.name` system property for your system.
 
 Make a `POST` request to the service by using `curl`:
 
@@ -222,13 +222,13 @@ include::{common-includes}/os-tabs.adoc[]
 --
 [role=command]
 ```
-curl -X POST http://localhost:9085/inventory/systems/property/os.name
+curl -X POST -d "os.name" http://localhost:9085/inventory/systems/property --header "Content-Type:text/plain"
 ```
 --
 
 If the `curl` command is unavailable, then use https://www.getpostman.com/[Postman^]. Postman enables you
-to make requests using a graphical interface. To make a request with Postman, enter `\http://localhost:9085/inventory/systems/property/os.name`
-into the URL bar and change the request from `GET` to `POST`. Click the blue `Send` button to make the request.
+to make requests using a graphical interface. To make a request with Postman, enter `\http://localhost:9085/inventory/systems/property`
+into the URL bar and change the request from `GET` to `POST`. Go to the `Body` tab and enter the `os.name` value under raw category. Click the blue `Send` button to make the request.
 
 You will see the following output:
 
