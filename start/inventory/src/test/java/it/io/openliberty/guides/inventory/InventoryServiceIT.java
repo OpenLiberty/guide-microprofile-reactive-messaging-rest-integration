@@ -57,7 +57,7 @@ public class InventoryServiceIT {
     public static KafkaProducer<String, SystemLoad> producer;
 
     @KafkaConsumerConfig(valueDeserializer = StringDeserializer.class, 
-            groupId = "property-name", topics = "propertyNameTopic", 
+            groupId = "property-name", topics = "requestSystemPropertyTopic", 
             properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + "=earliest")
     public static KafkaConsumer<String, String> propertyConsumer;
 

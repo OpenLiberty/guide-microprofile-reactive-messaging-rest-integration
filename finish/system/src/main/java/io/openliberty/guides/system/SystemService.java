@@ -63,10 +63,10 @@ public class SystemService {
     // end::sendSystemLoad[]
     
     // tag::getProperty[]
-    @Incoming("getProperty")
+    @Incoming("propertyRequest")
     // end::getProperty[]
     // tag::setProperty[]
-    @Outgoing("setProperty")
+    @Outgoing("propertyResponse")
     // end::setProperty[]
     // tag::sendPropertyDetails[]
     public PropertyMessage sendProperty(String propertyName) {

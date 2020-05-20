@@ -49,7 +49,7 @@ public class InventoryResource {
 
     private static Logger logger = Logger.getLogger(InventoryResource.class.getName());
     // tag::flowableEmitterDecl[]
-    private FlowableEmitter<String> property;
+    private FlowableEmitter<String> propertyNameEmitter;
     // end::flowableEmitterDecl[]
 
     @Inject
@@ -96,7 +96,7 @@ public class InventoryResource {
     public Response getSystemProperty(String propertyName) {
         logger.info("getSystemProperty: " + propertyName);
         // tag::flowableEmitter[]
-        property.onNext(propertyName);
+        propertyNameEmitter.onNext(propertyName);
         // end::flowableEmitter[]
         return Response
                    .status(Response.Status.OK)
@@ -131,7 +131,7 @@ public class InventoryResource {
     // end::updateStatus[]
     
     // tag::propertyMessage[]
-    @Incoming("propertyMessage")
+    @Incoming("addSystemProperty")
     // end::propertyMessage[]
     public void getPropertyMessage(PropertyMessage pm)  {
         logger.info("getPropertyMessage: " + pm);
@@ -146,12 +146,12 @@ public class InventoryResource {
     }
     
     // tag::OutgoingPropertyName[]
-    @Outgoing("propertyName")
+    @Outgoing("requestSystemProperty")
     // end::OutgoingPropertyName[]
     public Publisher<String> sendPropertyName() {
         // tag::flowableCreate[]
         Flowable<String> flowable = Flowable.<String>create(emitter -> 
-            this.property = emitter, BackpressureStrategy.BUFFER);
+            this.propertyNameEmitter = emitter, BackpressureStrategy.BUFFER);
         // end::flowableCreate[]
         return flowable;
     }
