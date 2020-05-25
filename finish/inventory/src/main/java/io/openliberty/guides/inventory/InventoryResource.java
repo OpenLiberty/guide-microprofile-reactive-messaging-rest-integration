@@ -12,7 +12,9 @@
 // end::copyright[]
 package io.openliberty.guides.inventory;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -34,7 +36,7 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.reactivestreams.Publisher;
 
-import io.openliberty.guides.models.PropertyMessage;
+import io.openliberty.guides.models.Reservation;
 import io.openliberty.guides.models.SystemLoad;
 import io.reactivex.rxjava3.core.BackpressureStrategy;
 import io.reactivex.rxjava3.core.Flowable;
@@ -49,7 +51,7 @@ public class InventoryResource {
 
     private static Logger logger = Logger.getLogger(InventoryResource.class.getName());
     // tag::flowableEmitterDecl[]
-    private FlowableEmitter<String> propertyNameEmitter;
+    private FlowableEmitter<Reservation> propertyNameEmitter;
     // end::flowableEmitterDecl[]
 
     @Inject
@@ -96,7 +98,7 @@ public class InventoryResource {
     public Response getSystemProperty(String propertyName) {
         logger.info("getSystemProperty: " + propertyName);
         // tag::flowableEmitter[]
-        propertyNameEmitter.onNext(propertyName);
+       // propertyNameEmitter.onNext(propertyName);
         // end::flowableEmitter[]
         return Response
                    .status(Response.Status.OK)
@@ -104,7 +106,37 @@ public class InventoryResource {
                    .build();
     }
     // end::getSystemProperty[]
-
+    
+    @GET
+    @Path("/systems/reservation")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getReservations() {
+        Map<String, ArrayList<Properties>> reservations = manager.getReservations();
+        return Response
+                .status(Response.Status.OK)
+                .entity(reservations)
+                .build();
+    }
+    
+    @POST
+    // tag::postPath[]
+    @Path("/systems/reservation")
+    // end::postPath[]
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    // tag::getSystemProperty[]
+    public Response addReservation(Reservation r) {
+        logger.info("getSystemProperty: " + r.username);
+        // tag::flowableEmitter[]
+        propertyNameEmitter.onNext(r);
+        // end::flowableEmitter[]
+        return Response
+                   .status(Response.Status.OK)
+                   .entity("Request successful for the " + r.username + " property\n")
+                   .build();
+    }
+    // end::getSystemProperty[]
+    
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response resetSystems() {
@@ -133,24 +165,24 @@ public class InventoryResource {
     // tag::propertyMessage[]
     @Incoming("addSystemProperty")
     // end::propertyMessage[]
-    public void getPropertyMessage(PropertyMessage pm)  {
-        logger.info("getPropertyMessage: " + pm);
-        String hostId = pm.hostname;
-        if (manager.getSystem(hostId).isPresent()) {
-            manager.updatePropertyMessage(hostId, pm.key, pm.value);
-            logger.info("Host " + hostId + " was updated: " + pm);
+    public void getReservationMessage(Reservation res)  {
+        logger.info("getPropertyMessage: " + res);
+        String hostName = res.hostname;
+        if (manager.getReservation(hostName).isPresent()) {
+            manager.updateReservation(hostName, res);
+            logger.info("Host " + hostName + " was updated: " + res);
         } else {
-            manager.addSystem(hostId, pm.key, pm.value);
-            logger.info("Host " + hostId + " was added: " + pm);
+            manager.addReservation(hostName, res);
+            logger.info("Host " + hostName + " was added: " + res);
         }
     }
     
     // tag::OutgoingPropertyName[]
     @Outgoing("requestSystemProperty")
     // end::OutgoingPropertyName[]
-    public Publisher<String> sendPropertyName() {
+    public Publisher<Reservation> sendPropertyName() {
         // tag::flowableCreate[]
-        Flowable<String> flowable = Flowable.<String>create(emitter -> 
+        Flowable<Reservation> flowable = Flowable.<Reservation>create(emitter -> 
             this.propertyNameEmitter = emitter, BackpressureStrategy.BUFFER);
         // end::flowableCreate[]
         return flowable;

@@ -12,7 +12,11 @@
 // end::copyright[]
 package io.openliberty.guides.inventory;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
@@ -20,10 +24,16 @@ import java.util.TreeMap;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import io.openliberty.guides.models.Reservation;
+
 @ApplicationScoped
 public class InventoryManager {
 
     private Map<String, Properties> systems = Collections.synchronizedMap(new TreeMap<String, Properties>());
+    private Map<String, ArrayList<Properties>> reservations = Collections.synchronizedMap
+            (new TreeMap<String, ArrayList<Properties>>());
+    DateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
+
 
     public void addSystem(String hostname, Double systemLoad) {
         if (!systems.containsKey(hostname)) {
@@ -42,6 +52,8 @@ public class InventoryManager {
             systems.put(hostname, p);
         }
     }
+    
+    
 
     public void updateCpuStatus(String hostname, Double systemLoad) {
         Optional<Properties> p = getSystem(hostname);
@@ -59,6 +71,34 @@ public class InventoryManager {
             }
         }
     }
+    
+    public void updateReservation(String hostname, Reservation res) {
+        Optional<ArrayList<Properties>> p = getReservation(hostname);
+        Properties newProperty = new Properties();
+        newProperty.put("username", res.username);
+        newProperty.put("reservedStartTime", dateFormat.format(new Date(res.reservedTime)).toString());
+        newProperty.put("duration", res.duration);
+        if (p.isPresent()) {
+            p.get().add(newProperty);
+        }
+    }
+    
+    public void addReservation(String hostname, Reservation res) {
+        if (!reservations.containsKey(hostname)) {
+            ArrayList<Properties> newReservation = new ArrayList<Properties>();
+            Properties newProperty = new Properties();
+            newProperty.put("username", res.username);
+            newProperty.put("reservedStartTime", dateFormat.format(new Date(res.reservedTime)).toString());
+            newProperty.put("duration", res.duration);
+            newReservation.add(newProperty);
+            reservations.put(hostname, newReservation);
+        }
+    }
+    
+    public Optional<ArrayList<Properties>> getReservation(String hostname) {
+        ArrayList<Properties> p = reservations.get(hostname);
+        return Optional.ofNullable(p);
+    }
 
     public Optional<Properties> getSystem(String hostname) {
         Properties p = systems.get(hostname);
@@ -67,6 +107,10 @@ public class InventoryManager {
 
     public Map<String, Properties> getSystems() {
         return new TreeMap<>(systems);
+    }
+    
+    public Map<String, ArrayList<Properties>> getReservations() {
+        return new TreeMap<>(reservations);
     }
 
     public void resetSystems() {

@@ -16,6 +16,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -25,18 +26,23 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.reactivestreams.Publisher;
 
-import io.openliberty.guides.models.PropertyMessage;
+import io.openliberty.guides.models.Reservation;
 import io.openliberty.guides.models.SystemLoad;
 import io.reactivex.rxjava3.core.Flowable;
 
 @ApplicationScoped
 public class SystemService {
-    
+
     private static Logger logger = Logger.getLogger(SystemService.class.getName());
+    private long scheduledTime;
 
     private static final OperatingSystemMXBean osMean = 
             ManagementFactory.getOperatingSystemMXBean();
     private static String hostname = null;
+
+    public SystemService() {
+        this.scheduledTime = System.currentTimeMillis();
+    }
 
     private static String getHostname() {
         if (hostname == null) {
@@ -61,7 +67,7 @@ public class SystemService {
         // end::flowableInterval[]
     }
     // end::sendSystemLoad[]
-    
+
     // tag::getProperty[]
     @Incoming("propertyRequest")
     // end::getProperty[]
@@ -69,16 +75,18 @@ public class SystemService {
     @Outgoing("propertyResponse")
     // end::setProperty[]
     // tag::sendPropertyDetails[]
-    public PropertyMessage sendProperty(String propertyName) {
-        logger.info("sendProperty: " + propertyName);
-        String propertyValue = System.getProperty(propertyName);
-        if (propertyValue == null) {
-            logger.warning(propertyName + " is not System property.");
-            return null;
-        }
-        return new PropertyMessage(getHostname(), 
-                    propertyName, 
-                    System.getProperty(propertyName, "unknown"));
+    public Reservation systemReserve( Reservation newReservation ) {
+        long currentTime = System.currentTimeMillis();
+        System.out.println(new Date(currentTime));
+        newReservation.hostname = getHostname();
+        if (scheduledTime >= currentTime) {
+            newReservation.reservedTime = scheduledTime;
+            scheduledTime = scheduledTime + (newReservation.duration * 60 * 1000);
+        }else {
+            newReservation.reservedTime = currentTime;
+            scheduledTime = currentTime + (newReservation.duration * 60 * 1000  );
+        }        
+        return newReservation; 
     }
     // end::sendPropertyDetails[]
 
