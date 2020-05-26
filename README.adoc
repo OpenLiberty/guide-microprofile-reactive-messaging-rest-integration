@@ -22,7 +22,7 @@
 :page-seo-description: A reactive programming tutorial with examples on how to trigger message creation via RESTful endpoint and send and receive messages between asynchronous Java microservices using Eclipse MicroProfile Reactive Messaging and Apache Kafka.
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/dev
 :source-highlighter: prettify
-= Trigger messages in reactive Java microservices via RESTful endpoints
+= Using Reactive Messaging with RESTful services
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].   
@@ -107,7 +107,7 @@ include::finish/inventory/src/main/resources/META-INF/microprofile-config.proper
 
 The `inventory` microservice receives the message from the `system` microservice over the [hotspot=systemLoad file=0]`@Incoming("systemLoad")` and [hotspot=propertyMessage file=0]`@Incoming("propertyMessage")` channel. The configuration for this channel is defined in the [hotspot=systemLoad hotspot=propertyMessage file=1]`microprofile-config.properties` file. The `inventory` microservice is also a RESTful service that is served at the [hotspot=inventoryEndPoint file=0]`/inventory` endpoint.
 
-When accessed, there is a RESTful endpoint to the `inventory` microservice that triggers message creation. The `inventory` microservice creates a system property request when a property name is sent in a POST request to the [hotspot=postPath file=0]`/systems/property` endpoint. The [hotspot=getSystemProperty file=0]`getSystemProperty()` method receives a system property name like `os.name` from the POST request and adds it to the [hotspot=flowableEmitter file=0]`propertyNameEmitter`  [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`. The [hotspot=flowableCreate file=0]`Flowable.create()` method from rxJava is used to create a Publisher and an associated emitter. The property name sent to the emitter will be sent to the Publisher. The Publisher is returned from the [hotspot=OutgoingPropertyName file=0]`@Outgoing("propertyName")` channel, which is configured in the [hotspot file=1]`microprofile-config.properties` [hotspot=setProperty file=1]`propertyName` stream and MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
+When accessed, there is a RESTful endpoint to the `inventory` microservice that triggers message creation. The `inventory` microservice creates a system property request when a property name is sent in a POST request to the [hotspot=postPath file=0]`/systems` endpoint. The [hotspot=getSystemProperty file=0]`addSystemProperty()` method receives a system property name like `os.name` from the POST request and adds it to the [hotspot=flowableEmitter file=0]`propertyNameEmitter`  [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`. The [hotspot=flowableCreate file=0]`Flowable.create()` method from rxJava is used to create a Publisher and an associated emitter. The property name sent to the emitter will be sent to the Publisher. The Publisher is returned from the [hotspot=OutgoingPropertyName file=0]`@Outgoing("propertyName")` channel, which is configured in the [hotspot file=1]`microprofile-config.properties` [hotspot=setProperty file=1]`propertyName` stream and MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
 
 == Configuring the MicroProfile Reactive Messaging connectors for Kafka
 
@@ -133,6 +133,8 @@ include::finish/inventory/src/main/resources/META-INF/microprofile-config.proper
 ----
 
 The `system` microservice uses an outgoing connector to send messages through the [hotspot=systemLoad file=0]`systemLoad` and [hotspot=setProperty file=0]`setProperty` channel, to the [hotspot=topic1 file=0]`systemLoadTopic` and [hotspot=topic3 file=0]`propertyMessageTopic` topic, respectively, in the Kafka message broker so that the `inventory` microservice can consume the messages. The `SystemLoadSerializer` and `PropertyMessageSerializer` class implements the logic for turning a `SystemLoad` and `PropertyMessage` object into JSON and is configured as the [hotspot=serializerVal1 hotspot=serializerVal3 file=0]`value.serializer`.
+
+NOTE : If you want the message to be sent to all the `System` microservices then configure the unique `group.id` for all of the instances.
 
 The `inventory` microservice uses a similar [hotspot file=1]`microprofile-config.properties` configuration to define its required incoming stream.
 
@@ -208,11 +210,11 @@ Go to the http://localhost:9085/inventory/systems[^] URL to access the inventory
 
 You can revisit the http://localhost:9085/inventory/systems[^] URL after a while, and you will notice the CPU `systemLoad` property for the systems changed.
 
-You can use a `POST` request on the `\http://localhost:9085/inventory/systems/property` URL to add the value of a particular system property to the set of existing properties.
+You can use a `POST` request on the `\http://localhost:9085/inventory/systems` URL to add the value of a particular system property to the set of existing properties.
 
 For example :
 
-The `POST` request with `os.name` in the request body on `\http://localhost:9085/inventory/systems/property` URL will add the `os.name` system property for your system.
+The `POST` request with `os.name` in the request body on `\http://localhost:9085/inventory/systems` URL will add the `os.name` system property for your system.
 
 Make a `POST` request to the service by using `curl`:
 
@@ -222,12 +224,12 @@ include::{common-includes}/os-tabs.adoc[]
 --
 [role=command]
 ```
-curl -X POST -d "os.name" http://localhost:9085/inventory/systems/property --header "Content-Type:text/plain"
+curl -X POST -d "os.name" http://localhost:9085/inventory/systems --header "Content-Type:text/plain"
 ```
 --
 
 If the `curl` command is unavailable, then use https://www.getpostman.com/[Postman^]. Postman enables you
-to make requests using a graphical interface. To make a request with Postman, enter `\http://localhost:9085/inventory/systems/property`
+to make requests using a graphical interface. To make a request with Postman, enter `\http://localhost:9085/inventory/systems`
 into the URL bar and change the request from `GET` to `POST`. Go to the `Body` tab and enter the `os.name` value under raw category. Click the blue `Send` button to make the request.
 
 You will see the following output:

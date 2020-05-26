@@ -88,12 +88,12 @@ public class InventoryResource {
     
     @POST
     // tag::postPath[]
-    @Path("/systems/property")
+    @Path("/systems")
     // end::postPath[]
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.TEXT_PLAIN)
     // tag::getSystemProperty[]
-    public Response getSystemProperty(String propertyName) {
+    public Response addSystemProperty(String propertyName) {
         logger.info("getSystemProperty: " + propertyName);
         // tag::flowableEmitter[]
         propertyNameEmitter.onNext(propertyName);
