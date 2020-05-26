@@ -107,7 +107,7 @@ include::finish/inventory/src/main/resources/META-INF/microprofile-config.proper
 
 The `inventory` microservice receives the message from the `system` microservice over the [hotspot=systemLoad file=0]`@Incoming("systemLoad")` and [hotspot=propertyMessage file=0]`@Incoming("propertyMessage")` channel. The configuration for this channel is defined in the [hotspot=systemLoad hotspot=propertyMessage file=1]`microprofile-config.properties` file. The `inventory` microservice is also a RESTful service that is served at the [hotspot=inventoryEndPoint file=0]`/inventory` endpoint.
 
-When accessed, there is a RESTful endpoint to the `inventory` microservice that triggers message creation. The `inventory` microservice creates a system property request when a property name is sent in a POST request to the [hotspot=postPath file=0]`/systems` endpoint. The [hotspot=getSystemProperty file=0]`addSystemProperty()` method receives a system property name like `os.name` from the POST request and adds it to the [hotspot=flowableEmitter file=0]`propertyNameEmitter`  [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`. The [hotspot=flowableCreate file=0]`Flowable.create()` method from rxJava is used to create a Publisher and an associated emitter. The property name sent to the emitter will be sent to the Publisher. The Publisher is returned from the [hotspot=OutgoingPropertyName file=0]`@Outgoing("propertyName")` channel, which is configured in the [hotspot file=1]`microprofile-config.properties` [hotspot=setProperty file=1]`propertyName` stream and MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
+When accessed, there is a RESTful endpoint to the `inventory` microservice that triggers message creation. The `inventory` microservice creates a system property request when a property name is sent in a POST request to the [hotspot=postPath file=0]`/systems/property` endpoint. The [hotspot=getSystemProperty file=0]`addSystemProperty()` method receives a system property name like `os.name` from the POST request and adds it to the [hotspot=flowableEmitter file=0]`propertyNameEmitter`  [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`. The [hotspot=flowableCreate file=0]`Flowable.create()` method from rxJava is used to create a Publisher and an associated emitter. The property name sent to the emitter will be sent to the Publisher. The Publisher is returned from the [hotspot=OutgoingPropertyName file=0]`@Outgoing("propertyName")` channel, which is configured in the [hotspot file=1]`microprofile-config.properties` [hotspot=setProperty file=1]`propertyName` stream and MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
 
 == Configuring the MicroProfile Reactive Messaging connectors for Kafka
 
@@ -210,11 +210,11 @@ Go to the http://localhost:9085/inventory/systems[^] URL to access the inventory
 
 You can revisit the http://localhost:9085/inventory/systems[^] URL after a while, and you will notice the CPU `systemLoad` property for the systems changed.
 
-You can use a `POST` request on the `\http://localhost:9085/inventory/systems` URL to add the value of a particular system property to the set of existing properties.
+You can use a `POST` request on the `\http://localhost:9085/inventory/systems/property` URL to add the value of a particular system property to the set of existing properties.
 
 For example :
 
-The `POST` request with `os.name` in the request body on `\http://localhost:9085/inventory/systems` URL will add the `os.name` system property for your system.
+The `POST` request with `os.name` in the request body on `\http://localhost:9085/inventory/systems/property` URL will add the `os.name` system property for your system.
 
 Make a `POST` request to the service by using `curl`:
 
@@ -224,7 +224,7 @@ include::{common-includes}/os-tabs.adoc[]
 --
 [role=command]
 ```
-curl -X POST -d "os.name" http://localhost:9085/inventory/systems --header "Content-Type:text/plain"
+curl -X POST -d "os.name" http://localhost:9085/inventory/systems/property --header "Content-Type:text/plain"
 ```
 --
 
