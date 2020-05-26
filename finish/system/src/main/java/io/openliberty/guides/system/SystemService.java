@@ -77,7 +77,6 @@ public class SystemService {
     // tag::sendPropertyDetails[]
     public Reservation systemReserve( Reservation newReservation ) {
         long currentTime = System.currentTimeMillis();
-        System.out.println(new Date(currentTime));
         newReservation.hostname = getHostname();
         if (scheduledTime >= currentTime) {
             newReservation.reservedTime = scheduledTime;
