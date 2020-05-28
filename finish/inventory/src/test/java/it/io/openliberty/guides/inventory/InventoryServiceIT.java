@@ -88,7 +88,7 @@ public class InventoryServiceIT {
 
     @Test
     public void testGetProperty() {
-        Response response = inventoryResource.getSystemProperty("os.name");
+        Response response = inventoryResource.updateSystemProperty("os.name");
         Assertions.assertEquals(200, response.getStatus(),
                 "Response should be 200");
         int recordsProcessed = 0;

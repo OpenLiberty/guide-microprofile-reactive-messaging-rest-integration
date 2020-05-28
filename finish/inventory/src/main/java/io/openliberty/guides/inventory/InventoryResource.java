@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -86,14 +86,14 @@ public class InventoryResource {
                 .build();
     }
     
-    @POST
+    @PUT
     // tag::postPath[]
-    @Path("/systems/property")
+    @Path("/data")
     // end::postPath[]
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.TEXT_PLAIN)
     // tag::getSystemProperty[]
-    public Response addSystemProperty(String propertyName) {
+    public Response updateSystemProperty(String propertyName) {
         logger.info("getSystemProperty: " + propertyName);
         // tag::flowableEmitter[]
         propertyNameEmitter.onNext(propertyName);
