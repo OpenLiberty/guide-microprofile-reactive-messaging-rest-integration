@@ -106,8 +106,9 @@ which calculates and returns the average system load. The [hotspot=publishSystem
 [hotspot=sendSystemLoad file=0]`sendSystemLoad()` method indicates that the method publishes its calculation as a message
 on a topic in the Kafka messaging system.
 
-The messages are transported between the service and the Kafka messaging system through the channels called
-[hotspot=systemLoad file=1]`systemLoad` and [hotspot=propertyResponse file=1]`propertyResponse`.
+The messages are transported between the service and the Kafka messaging system through the Outgoing channels called
+[hotspot=systemLoad file=1]`systemLoad` and [hotspot=propertyResponse file=1]`propertyResponse`, and the Incoming channel
+[hotspot=propertyRequest file=1]`propertyRequest`.
 
 == Creating the inventory microservice
 
@@ -201,11 +202,13 @@ required incoming stream.
 `inventory/src/main/resources/META-INF/microprofile-config.properties`
 ----
 
-The `inventory` microservice uses an incoming connector to receive messages through the [hotspot=systemLoad file=1]`systemLoad`
+The `inventory` microservice uses an Incoming connector to receive messages through the [hotspot=systemLoad file=1]`systemLoad`
 and [hotspot=propertyMessage file=1]`propertyMessage` channel. The messages were published by the `system` microservice to
 the [hotspot=topic1 file=1]`systemLoadTopic` and [hotspot=topic3 file=1]`addSystemPropertyTopic` in the Kafka message broker.
 The `SystemLoadDeserializer` and `PropertyMessageDeserializer` class implements the logic for turning JSON into a `SystemLoad`
 and `PropertyMessage` object and is configured as the [hotspot=deserializerVal1 hotspot=deserializerVal3 file=1]`value.deserializer`.
+The `inventory` microservice also publishes messages through the Outgoing connector,
+[hotspot=requestSystemProperty file=1]`requestSystemProperty`.
 
 == Building and running the application
 
