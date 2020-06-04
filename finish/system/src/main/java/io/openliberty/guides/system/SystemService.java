@@ -57,18 +57,18 @@ public class SystemService {
         // tag::flowableInterval[]
         return Flowable.interval(15, TimeUnit.SECONDS)
                 .map((interval -> new SystemLoad(getHostname(),
-                        new Double(osMean.getSystemLoadAverage()))));
+                        osMean.getSystemLoadAverage())));
         // end::flowableInterval[]
     }
     // end::sendSystemLoad[]
     
-    // tag::getProperty[]
+    // tag::propertyRequest[]
     @Incoming("propertyRequest")
-    // end::getProperty[]
-    // tag::setProperty[]
+    // end::propertyRequest[]
+    // tag::propertyResponse[]
     @Outgoing("propertyResponse")
-    // end::setProperty[]
-    // tag::sendPropertyDetails[]
+    // end::propertyResponse[]
+    // tag::sendProperty[]
     public PropertyMessage sendProperty(String propertyName) {
         logger.info("sendProperty: " + propertyName);
         String propertyValue = System.getProperty(propertyName);
@@ -80,6 +80,6 @@ public class SystemService {
                     propertyName, 
                     System.getProperty(propertyName, "unknown"));
     }
-    // end::sendPropertyDetails[]
+    // end::sendProperty[]
 
 }

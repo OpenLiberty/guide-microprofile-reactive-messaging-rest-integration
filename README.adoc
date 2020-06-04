@@ -95,10 +95,10 @@ microservice and publishes it to the Kafka messaging system.
 `system/src/main/java/io/openliberty/guides/system/SystemService.java`
 ----
 
-The `system` microservice contains a method named [hotspot=sendPropertyDetails file=0]`sendProperty()`. It receives a
-system property name from the `inventory` microservice over the [hotspot=getProperty file=0]`@Incoming("propertyRequest")`
+The `system` microservice contains a method named [hotspot=sendProperty file=0]`sendProperty()`. It receives a
+system property name from the `inventory` microservice over the [hotspot=propertyRequest file=0]`@Incoming("propertyRequest")`
 channel, calculates the requested property on the fly and publishes it back to Kafka over the
-[hotspot=setProperty file=0]`@Outgoing("propertyResponse")` channel. The [hotspot=sendPropertyDetails file=0]`sendProperty()`
+[hotspot=propertyResponse file=0]`@Outgoing("propertyResponse")` channel. The [hotspot=sendProperty file=0]`sendProperty()`
 method acts as a processor in this scenario.
 
 The `SystemService` class contains a `Publisher` method that is called [hotspot=sendSystemLoad file=0]`sendSystemLoad()`,
@@ -107,7 +107,7 @@ which calculates and returns the average system load. The [hotspot=publishSystem
 on a topic in the Kafka messaging system.
 
 The messages are transported between the service and the Kafka messaging system through the channels called
-[hotspot=systemLoad file=1]`systemLoad` and [hotspot=setProperty file=1]`propertyResponse`.
+[hotspot=systemLoad file=1]`systemLoad` and [hotspot=propertyResponse file=1]`propertyResponse`.
 
 == Creating the inventory microservice
 
@@ -189,7 +189,8 @@ microservice can consume the messages. The `SystemLoadSerializer` and `PropertyM
 logic for turning a `SystemLoad` and `PropertyMessage` object into JSON and is configured as the
 [hotspot=serializerVal1 hotspot=serializerVal3 file=0]`value.serializer`.
 
-NOTE : If you want the message to be sent to all the `System` microservices then configure the unique `group.id` for all of the instances.
+NOTE : If you want the message to be sent to all the `System` microservices then configure the unique
+[hotspot=group4 file=0]`group.id` for all of the instances.
 
 The `inventory` microservice uses a similar [hotspot file=1]`microprofile-config.properties` configuration to define its
 required incoming stream.
@@ -336,6 +337,6 @@ include::{common-includes}/os-tabs.adoc[]
 
 == Great work! You're done!
 
-You just developed a reactive Java application using MicroProfile Reactive Messaging, Open Liberty, and Kakfa.
+You just developed a reactive Java application using MicroProfile Reactive Messaging, Open Liberty, and Kafka.
 
 include::{common-includes}/attribution.adoc[subs="attributes"]
