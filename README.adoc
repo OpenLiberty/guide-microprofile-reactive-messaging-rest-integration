@@ -149,7 +149,7 @@ from the PUT request and adds it to the [hotspot=flowableEmitter file=0]`propert
 rxJava is used to create a Publisher and an associated emitter. The property name sent to the emitter will be sent to the
 Publisher. The Publisher is returned from the [hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")`
 channel, which is configured in the [hotspot file=1]`microprofile-config.properties`
-[hotspot=setProperty file=1]`requestSystemProperty` stream and MicroProfile Reactive Messaging takes care of assigning the
+[hotspot=requestSystemProperty file=1]`requestSystemProperty` stream and MicroProfile Reactive Messaging takes care of assigning the
 Publisher to the channel.
 
 == Configuring the MicroProfile Reactive Messaging connectors for Kafka
@@ -184,7 +184,7 @@ incoming and outgoing streams.
 ----
 
 The `system` microservice uses an outgoing connector to send messages through the [hotspot=systemLoad file=0]`systemLoad`
-and [hotspot=setProperty file=0]`propertyResponse` channel, to the [hotspot=topic1 file=0]`systemLoadTopic` and
+and [hotspot=propertyResponse file=0]`propertyResponse` channel, to the [hotspot=topic1 file=0]`systemLoadTopic` and
 [hotspot=topic3 file=0]`addSystemPropertyTopic` topic, respectively, in the Kafka message broker so that the `inventory`
 microservice can consume the messages. The `SystemLoadSerializer` and `PropertyMessageSerializer` class implements the
 logic for turning a `SystemLoad` and `PropertyMessage` object into JSON and is configured as the
