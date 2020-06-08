@@ -137,7 +137,7 @@ that it received from potentially multiple instances of the `system` service.
 
 The `inventory` microservice receives the message from the `system` microservice over the
 [hotspot=systemLoad file=0]`@Incoming("systemLoad")` and [hotspot=propertyMessage file=0]`@Incoming("addSystemProperty")`
-channel. The configuration for this channel is defined in the
+channel. The configurations for these channels are defined in the
 [hotspot=systemLoad hotspot=propertyMessage file=1]`microprofile-config.properties` file. The `inventory` microservice
 is also a RESTful service that is served at the [hotspot=inventoryEndPoint file=0]`/inventory` endpoint.
 
