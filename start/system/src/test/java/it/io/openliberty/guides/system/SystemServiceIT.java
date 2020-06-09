@@ -29,8 +29,8 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.jupiter.api.Test;
 import org.microshed.testing.SharedContainerConfig;
 import org.microshed.testing.jupiter.MicroShedTest;
-import org.microshed.testing.kafka.KafkaConsumerConfig;
-import org.microshed.testing.kafka.KafkaProducerConfig;
+import org.microshed.testing.kafka.KafkaConsumerClient;
+import org.microshed.testing.kafka.KafkaProducerClient;
 
 import io.openliberty.guides.models.PropertyMessage;
 import io.openliberty.guides.models.PropertyMessage.PropertyMessageDeserializer;
@@ -41,18 +41,18 @@ import io.openliberty.guides.models.SystemLoad.SystemLoadDeserializer;
 @SharedContainerConfig(AppContainerConfig.class)
 public class SystemServiceIT {
 
-    @KafkaConsumerConfig(valueDeserializer = SystemLoadDeserializer.class,
+    @KafkaConsumerClient(valueDeserializer = SystemLoadDeserializer.class,
             groupId = "system-load-status",
             topics = "systemLoadTopic",
             properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + "=earliest")
     public static KafkaConsumer<String, SystemLoad> consumer;
 
-    @KafkaConsumerConfig(valueDeserializer = PropertyMessageDeserializer.class, 
+    @KafkaConsumerClient(valueDeserializer = PropertyMessageDeserializer.class,
             groupId = "property-name", topics = "addSystemPropertyTopic", 
             properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + "=earliest")
     public static KafkaConsumer<String, PropertyMessage> propertyConsumer;
 
-    @KafkaProducerConfig(valueSerializer = StringSerializer.class)
+    @KafkaProducerClient(valueSerializer = StringSerializer.class)
     public static KafkaProducer<String, String> propertyProducer;
 
     @Test
