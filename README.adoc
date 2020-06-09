@@ -95,10 +95,10 @@ microservice and publishes it to the Kafka messaging system.
 `system/src/main/java/io/openliberty/guides/system/SystemService.java`
 ----
 
-The `system` microservice contains a method named [hotspot=sendPropertyDetails file=0]`sendProperty()`. It receives a
-system property name from the `inventory` microservice over the [hotspot=getProperty file=0]`@Incoming("propertyRequest")`
+The `system` microservice contains a method named [hotspot=sendProperty file=0]`sendProperty()`. It receives a
+system property name from the `inventory` microservice over the [hotspot=propertyRequest file=0]`@Incoming("propertyRequest")`
 channel, calculates the requested property on the fly and publishes it back to Kafka over the
-[hotspot=setProperty file=0]`@Outgoing("propertyResponse")` channel. The [hotspot=sendPropertyDetails file=0]`sendProperty()`
+[hotspot=propertyResponse file=0]`@Outgoing("propertyResponse")` channel. The [hotspot=sendProperty file=0]`sendProperty()`
 method acts as a processor in this scenario.
 
 The `SystemService` class contains a `Publisher` method that is called [hotspot=sendSystemLoad file=0]`sendSystemLoad()`,
@@ -106,8 +106,9 @@ which calculates and returns the average system load. The [hotspot=publishSystem
 [hotspot=sendSystemLoad file=0]`sendSystemLoad()` method indicates that the method publishes its calculation as a message
 on a topic in the Kafka messaging system.
 
-The messages are transported between the service and the Kafka messaging system through the channels called
-[hotspot=systemLoad file=1]`systemLoad` and [hotspot=setProperty file=1]`propertyResponse`.
+The messages are transported between the service and the Kafka messaging system through the Outgoing channels called
+[hotspot=systemLoad file=1]`systemLoad` and [hotspot=propertyResponse file=1]`propertyResponse`, and the Incoming channel
+[hotspot=propertyRequest file=1]`propertyRequest`.
 
 == Creating the inventory microservice
 
@@ -136,19 +137,19 @@ that it received from potentially multiple instances of the `system` service.
 
 The `inventory` microservice receives the message from the `system` microservice over the
 [hotspot=systemLoad file=0]`@Incoming("systemLoad")` and [hotspot=propertyMessage file=0]`@Incoming("addSystemProperty")`
-channel. The configuration for this channel is defined in the
+channel. The configurations for these channels are defined in the
 [hotspot=systemLoad hotspot=propertyMessage file=1]`microprofile-config.properties` file. The `inventory` microservice
 is also a RESTful service that is served at the [hotspot=inventoryEndPoint file=0]`/inventory` endpoint.
 
 When accessed, there is a RESTful endpoint to the `inventory` microservice that triggers message creation. The `inventory`
-microservice creates a system property request when a property name is sent in a PUT request to the [hotspot=postPath file=0]`/data`
-endpoint. The [hotspot=getSystemProperty file=0]`updateSystemProperty()` method receives a system property name like `os.name`
+microservice creates a system property request when a property name is sent in a PUT request to the [hotspot=putPath file=0]`/data`
+endpoint. The [hotspot=updateSystemProperty file=0]`updateSystemProperty()` method receives a system property name like `os.name`
 from the PUT request and adds it to the [hotspot=flowableEmitter file=0]`propertyNameEmitter`
 [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`. The [hotspot=flowableCreate file=0]`Flowable.create()` method from
 rxJava is used to create a Publisher and an associated emitter. The property name sent to the emitter will be sent to the
 Publisher. The Publisher is returned from the [hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")`
 channel, which is configured in the [hotspot file=1]`microprofile-config.properties`
-[hotspot=setProperty file=1]`requestSystemProperty` stream and MicroProfile Reactive Messaging takes care of assigning the
+[hotspot=requestSystemProperty file=1]`requestSystemProperty` stream and MicroProfile Reactive Messaging takes care of assigning the
 Publisher to the channel.
 
 == Configuring the MicroProfile Reactive Messaging connectors for Kafka
@@ -183,13 +184,14 @@ incoming and outgoing streams.
 ----
 
 The `system` microservice uses an outgoing connector to send messages through the [hotspot=systemLoad file=0]`systemLoad`
-and [hotspot=setProperty file=0]`propertyResponse` channel, to the [hotspot=topic1 file=0]`systemLoadTopic` and
+and [hotspot=propertyResponse file=0]`propertyResponse` channel, to the [hotspot=topic1 file=0]`systemLoadTopic` and
 [hotspot=topic3 file=0]`addSystemPropertyTopic` topic, respectively, in the Kafka message broker so that the `inventory`
 microservice can consume the messages. The `SystemLoadSerializer` and `PropertyMessageSerializer` class implements the
 logic for turning a `SystemLoad` and `PropertyMessage` object into JSON and is configured as the
 [hotspot=serializerVal1 hotspot=serializerVal3 file=0]`value.serializer`.
 
-NOTE : If you want the message to be sent to all the `System` microservices then configure the unique `group.id` for all of the instances.
+NOTE : If you want the message to be sent to all the `System` microservices then configure the unique
+[hotspot=group4 file=0]`group.id` for all of the instances.
 
 The `inventory` microservice uses a similar [hotspot file=1]`microprofile-config.properties` configuration to define its
 required incoming stream.
@@ -200,11 +202,13 @@ required incoming stream.
 `inventory/src/main/resources/META-INF/microprofile-config.properties`
 ----
 
-The `inventory` microservice uses an incoming connector to receive messages through the [hotspot=systemLoad file=1]`systemLoad`
+The `inventory` microservice uses an Incoming connector to receive messages through the [hotspot=systemLoad file=1]`systemLoad`
 and [hotspot=propertyMessage file=1]`propertyMessage` channel. The messages were published by the `system` microservice to
 the [hotspot=topic1 file=1]`systemLoadTopic` and [hotspot=topic3 file=1]`addSystemPropertyTopic` in the Kafka message broker.
 The `SystemLoadDeserializer` and `PropertyMessageDeserializer` class implements the logic for turning JSON into a `SystemLoad`
 and `PropertyMessage` object and is configured as the [hotspot=deserializerVal1 hotspot=deserializerVal3 file=1]`value.deserializer`.
+The `inventory` microservice also publishes messages through the Outgoing connector,
+[hotspot=requestSystemProperty file=1]`requestSystemProperty`.
 
 == Building and running the application
 
@@ -336,6 +340,6 @@ include::{common-includes}/os-tabs.adoc[]
 
 == Great work! You're done!
 
-You just developed a reactive Java application using MicroProfile Reactive Messaging, Open Liberty, and Kakfa.
+You just developed a reactive Java application using MicroProfile Reactive Messaging, Open Liberty, and Kafka.
 
 include::{common-includes}/attribution.adoc[subs="attributes"]

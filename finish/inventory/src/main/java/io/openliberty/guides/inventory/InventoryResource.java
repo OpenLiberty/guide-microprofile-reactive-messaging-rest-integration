@@ -87,12 +87,12 @@ public class InventoryResource {
     }
     
     @PUT
-    // tag::postPath[]
+    // tag::putPath[]
     @Path("/data")
-    // end::postPath[]
+    // end::putPath[]
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.TEXT_PLAIN)
-    // tag::getSystemProperty[]
+    // tag::updateSystemProperty[]
     public Response updateSystemProperty(String propertyName) {
         logger.info("updateSystemProperty: " + propertyName);
         // tag::flowableEmitter[]
@@ -103,7 +103,7 @@ public class InventoryResource {
                    .entity("Request successful for the " + propertyName + " property\n")
                    .build();
     }
-    // end::getSystemProperty[]
+    // end::updateSystemProperty[]
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
