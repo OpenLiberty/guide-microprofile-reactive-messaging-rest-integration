@@ -87,9 +87,9 @@ public class InventoryResource {
     }
     
     @PUT
-    // tag::postPath[]
+    // tag::putPath[]
     @Path("/data")
-    // end::postPath[]
+    // end::putPath[]
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.TEXT_PLAIN)
     // tag::updateSystemProperty[]

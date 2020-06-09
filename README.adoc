@@ -142,7 +142,7 @@ channel. The configurations for these channels are defined in the
 is also a RESTful service that is served at the [hotspot=inventoryEndPoint file=0]`/inventory` endpoint.
 
 When accessed, there is a RESTful endpoint to the `inventory` microservice that triggers message creation. The `inventory`
-microservice creates a system property request when a property name is sent in a PUT request to the [hotspot=postPath file=0]`/data`
+microservice creates a system property request when a property name is sent in a PUT request to the [hotspot=putPath file=0]`/data`
 endpoint. The [hotspot=updateSystemProperty file=0]`updateSystemProperty()` method receives a system property name like `os.name`
 from the PUT request and adds it to the [hotspot=flowableEmitter file=0]`propertyNameEmitter`
 [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`. The [hotspot=flowableCreate file=0]`Flowable.create()` method from
