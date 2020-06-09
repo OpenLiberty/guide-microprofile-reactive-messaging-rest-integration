@@ -94,7 +94,7 @@ public class InventoryResource {
     @Consumes(MediaType.TEXT_PLAIN)
     // tag::getSystemProperty[]
     public Response updateSystemProperty(String propertyName) {
-        logger.info("getSystemProperty: " + propertyName);
+        logger.info("updateSystemProperty: " + propertyName);
         // tag::flowableEmitter[]
         propertyNameEmitter.onNext(propertyName);
         // end::flowableEmitter[]
