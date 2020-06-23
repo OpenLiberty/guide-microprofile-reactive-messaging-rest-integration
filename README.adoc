@@ -1,10 +1,10 @@
-//  Copyright (c) 2020 IBM Corporation and others.
+// Copyright (c) 2020 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
 //
 // Contributors:
-//     IBM Corporation
+//   IBM Corporation
 //
 :projectid: microprofile-reactive-messaging-rest
 :page-layout: guide-multipane
@@ -146,7 +146,7 @@ microservice creates a system property request when a property name is sent in a
 endpoint. The [hotspot=updateSystemProperty file=0]`updateSystemProperty()` method receives a system property name like `os.name`
 from the PUT request and adds it to the [hotspot=flowableEmitter file=0]`propertyNameEmitter`
 [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`. The [hotspot=flowableCreate file=0]`Flowable.create()` method from
-rxJava is used to create a Publisher and an associated emitter. The property name sent to the emitter will be sent to the
+RxJava is used to create a Publisher and an associated emitter. The property name sent to the emitter will be sent to the
 Publisher. The Publisher is returned from the [hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")`
 channel, which is configured in the [hotspot file=1]`microprofile-config.properties`
 [hotspot=requestSystemProperty file=1]`requestSystemProperty` stream and MicroProfile Reactive Messaging takes care of assigning the
@@ -258,10 +258,10 @@ include::{common-includes}/os-tabs.adoc[]
 
 == Testing the application
 
-After the application is up and running, you can access the application by making a GET request to the `/systems` endpoint
-of the `inventory` service. Wait for a minute or two for the services to become available.
+Wait for a minute or two for the services to become available. After the services are up and running, you can access the
+application by making a GET request to the `/systems` endpoint of the `inventory` service.
 
-Go to the http://localhost:9085/inventory/systems[^] URL to access the inventory microservice. You see the CPU `systemLoad`
+Visit the http://localhost:9085/inventory/systems[^] URL to access the inventory microservice. You see the CPU `systemLoad`
 property for all the systems:
 
 [source, role='no_copy']
@@ -275,13 +275,13 @@ property for all the systems:
 You can revisit the http://localhost:9085/inventory/systems[^] URL after a while, and you will notice the CPU `systemLoad`
 property for the systems changed.
 
-You can use a `PUT` request on the `\http://localhost:9085/inventory/data` URL to add the value of a particular system
+You can make a `PUT` request on the `\http://localhost:9085/inventory/data` URL to add the value of a particular system
 property to the set of existing properties.
 
 For example :
 
-The `PUT` request with `os.name` in the request body on `\http://localhost:9085/inventory/data` URL will add the `os.name`
-system property for your system.
+The `PUT` request with the `os.name` system property in the request body on the `\http://localhost:9085/inventory/data`
+URL will add the `os.name` system property for your system.
 
 Make a `PUT` request to the service by using `curl`:
 
