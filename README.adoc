@@ -45,6 +45,11 @@ that use an external message broker to manage communications in the
 https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide. Before
 you go any further, it is highly recommended to go through the basic guide.
 
+In order to build an asynchronous application, RxJava is used to bridge the gap between the standard imperative
+and the reactive asynchronous programming. RxJava introduces the concepts of an observable and an observer, which decouples
+the request that a Java bean will make from the response that it receives. These concepts in addition with Microprofile
+Reactive Messaging create a fully reactive application.
+
 The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
 microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
 subscribes to that information so that it can keep an updated list of all the systems and their current system loads. The
