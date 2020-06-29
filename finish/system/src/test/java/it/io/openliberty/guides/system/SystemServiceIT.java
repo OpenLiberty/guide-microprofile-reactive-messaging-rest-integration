@@ -48,7 +48,8 @@ public class SystemServiceIT {
     public static KafkaConsumer<String, SystemLoad> consumer;
 
     @KafkaConsumerClient(valueDeserializer = PropertyMessageDeserializer.class,
-            groupId = "property-name", topics = "addSystemPropertyTopic", 
+            groupId = "property-name",
+            topics = "addSystemPropertyTopic",
             properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + "=earliest")
     public static KafkaConsumer<String, PropertyMessage> propertyConsumer;
 
@@ -60,6 +61,7 @@ public class SystemServiceIT {
         ConsumerRecords<String, SystemLoad> records =
                 consumer.poll(Duration.ofMillis(30 * 1000));
         System.out.println("Polled " + records.count() + " records from Kafka:");
+        assertTrue(records.count() > 0, "No records processed");
 
         for (ConsumerRecord<String, SystemLoad> record : records) {
             SystemLoad sl = record.value();
@@ -74,18 +76,18 @@ public class SystemServiceIT {
     public void testPropertyMessage() throws IOException, InterruptedException {
         propertyProducer.send(new ProducerRecord<String, String>("requestSystemPropertyTopic", "os.name"));
 
-        int recordsProcessed = 0;
-        ConsumerRecords<String, PropertyMessage> records = propertyConsumer.poll(Duration.ofMillis(3000));
+        ConsumerRecords<String, PropertyMessage> records =
+                propertyConsumer.poll(Duration.ofMillis(30 * 1000));
         System.out.println("Polled " + records.count() + " records from Kafka:");
+        assertTrue(records.count() > 0, "No records processed");
+
         for (ConsumerRecord<String, PropertyMessage> record : records) {
             PropertyMessage pm = record.value();
             System.out.println(pm);
             assertNotNull(pm.hostname);
             assertEquals("os.name", pm.key);
             assertNotNull(pm.value);
-            recordsProcessed++;
         }
         consumer.commitAsync();
-        assertTrue(recordsProcessed > 0, "No records processed");
     }
 }
