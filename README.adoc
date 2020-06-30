@@ -228,7 +228,7 @@ the [hotspot=topic1 file=1]`systemLoadTopic` and [hotspot=topic3 file=1]`addSyst
 The [hotspot=SystemLoadDeserializer file=2]`SystemLoadDeserializer` and
 [hotspot=PropertyMessageDeserializer file=3]`PropertyMessageDeserializer` classes implements the logic for turning JSON into a `SystemLoad`
 and `PropertyMessage` object and is configured as the [hotspot=deserializerVal1 hotspot=deserializerVal3 file=1]`value.deserializer`.
-The `inventory` microservice also publishes messages through the Outgoing connector,
+The `inventory` microservice also publishes messages through the Outgoing channel,
 [hotspot=requestSystemProperty file=1]`requestSystemProperty`.
 
 == Building and running the application
