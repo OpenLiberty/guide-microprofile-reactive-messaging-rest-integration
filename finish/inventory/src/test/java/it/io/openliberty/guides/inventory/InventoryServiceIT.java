@@ -57,7 +57,8 @@ public class InventoryServiceIT {
     public static KafkaProducer<String, SystemLoad> producer;
 
     @KafkaConsumerClient(valueDeserializer = StringDeserializer.class,
-            groupId = "property-name", topics = "requestSystemPropertyTopic", 
+            groupId = "property-name",
+            topics = "requestSystemPropertyTopic",
             properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + "=earliest")
     public static KafkaConsumer<String, String> propertyConsumer;
 
@@ -91,16 +92,17 @@ public class InventoryServiceIT {
         Response response = inventoryResource.updateSystemProperty("os.name");
         Assertions.assertEquals(200, response.getStatus(),
                 "Response should be 200");
-        int recordsProcessed = 0;
-        ConsumerRecords<String, String> records = propertyConsumer.poll(Duration.ofMillis(3000));
+
+        ConsumerRecords<String, String> records =
+                propertyConsumer.poll(Duration.ofMillis(3000));
         System.out.println("Polled " + records.count() + " records from Kafka:");
+        assertTrue(records.count() > 0, "No records polled");
+
         for (ConsumerRecord<String, String> record : records) {
             String p = record.value();
             System.out.println(p);
             assertEquals("os.name", p);
-            recordsProcessed++;
         }
         propertyConsumer.commitAsync();
-        assertTrue(recordsProcessed > 0, "No records processed");
     }
 }
