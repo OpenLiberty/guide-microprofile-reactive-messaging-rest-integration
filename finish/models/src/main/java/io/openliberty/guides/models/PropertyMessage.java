@@ -56,14 +56,17 @@ public class PropertyMessage {
     public String toString() {
         return "PropertyMessage: " + jsonb.toJson(this);
     }
-    
+
+    // tag::PropertyMessageSerializer[]
     public static class PropertyMessageSerializer implements Serializer<Object> {
         @Override
         public byte[] serialize(String topic, Object data) {
           return jsonb.toJson(data).getBytes();
         }
     }
-      
+    // end::PropertyMessageSerializer[]
+
+    // tag::PropertyMessageDeserializer[]
     public static class PropertyMessageDeserializer implements Deserializer<PropertyMessage> {
         @Override
         public PropertyMessage deserialize(String topic, byte[] data) {
@@ -72,4 +75,5 @@ public class PropertyMessage {
             return jsonb.fromJson(new String(data), PropertyMessage.class);
         }
     }
+    // end::PropertyMessageDeserializer[]
 }

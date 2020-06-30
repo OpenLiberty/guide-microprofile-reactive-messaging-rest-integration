@@ -173,6 +173,20 @@ inventory/microprofile-config.properties
 include::finish/inventory/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
+//file 2
+SystemLoad.java
+[source, Java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/models/src/main/java/io/openliberty/guides/models/SystemLoad.java[]
+----
+
+//file 3
+PropertyMessage.java
+[source, Java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/models/src/main/java/io/openliberty/guides/models/PropertyMessage.java[]
+----
+
 The `system` and `inventory` services exchange messages with the external messaging system through a channel. The
 MicroProfile Reactive Messaging Connector API makes it easy to connect each service to the channel. You just need to add
 configuration keys in a properties file for each of the services. These configuration keys define properties such as the
@@ -191,7 +205,8 @@ incoming and outgoing streams.
 The `system` microservice uses an outgoing connector to send messages through the [hotspot=systemLoad file=0]`systemLoad`
 and [hotspot=propertyResponse file=0]`propertyResponse` channel, to the [hotspot=topic1 file=0]`systemLoadTopic` and
 [hotspot=topic3 file=0]`addSystemPropertyTopic` topic, respectively, in the Kafka message broker so that the `inventory`
-microservice can consume the messages. The `SystemLoadSerializer` and `PropertyMessageSerializer` class implements the
+microservice can consume the messages. The [hotspot=SystemLoadSerializer file=2]`SystemLoadSerializer` and
+[hotspot=PropertyMessageSerializer file=3]`PropertyMessageSerializer` classes implements the
 logic for turning a `SystemLoad` and `PropertyMessage` object into JSON and is configured as the
 [hotspot=serializerVal1 hotspot=serializerVal3 file=0]`value.serializer`.
 
@@ -210,7 +225,8 @@ required incoming stream.
 The `inventory` microservice uses an Incoming connector to receive messages through the [hotspot=systemLoad file=1]`systemLoad`
 and [hotspot=propertyMessage file=1]`propertyMessage` channel. The messages were published by the `system` microservice to
 the [hotspot=topic1 file=1]`systemLoadTopic` and [hotspot=topic3 file=1]`addSystemPropertyTopic` in the Kafka message broker.
-The `SystemLoadDeserializer` and `PropertyMessageDeserializer` class implements the logic for turning JSON into a `SystemLoad`
+The [hotspot=SystemLoadDeserializer file=2]`SystemLoadDeserializer` and
+[hotspot=PropertyMessageDeserializer file=3]`PropertyMessageDeserializer` classes implements the logic for turning JSON into a `SystemLoad`
 and `PropertyMessage` object and is configured as the [hotspot=deserializerVal1 hotspot=deserializerVal3 file=1]`value.deserializer`.
 The `inventory` microservice also publishes messages through the Outgoing connector,
 [hotspot=requestSystemProperty file=1]`requestSystemProperty`.
