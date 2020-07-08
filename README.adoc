@@ -12,17 +12,17 @@
 :page-releasedate: 2020-04-22
 :page-guide-category: microprofile
 :page-essential: false
-:page-description: Learn how to trigger messages in reactive Java microservices via RESTful endpoints
+:page-description: Learn how to send and receive messages in reactive Java microservices using a RESTful endpoint
 :guide-author: Open Liberty
 :page-tags: ['MicroProfile', 'Jakarta EE']
 :page-related-guides: ['reactive-service-testing']
 :page-permalink: /guides/{projectid}
 :imagesdir: /img/guide/{projectid}
-:page-seo-title: Producing messages by RESTful endpoint in reactive Java microservice
-:page-seo-description: A reactive programming tutorial with examples on how to trigger message creation via RESTful endpoint and send and receive messages between asynchronous Java microservices using Eclipse MicroProfile Reactive Messaging and Apache Kafka.
+:page-seo-title: Sending and receiving messages by using a RESTful endpoint in reactive Java microservices
+:page-seo-description: A reactive programming tutorial with examples on how to send and receive messages using a RESTful endpoint using MicroProfile Reactive Messaging and Apache Kafka.
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/dev
 :source-highlighter: prettify
-= Using Reactive Messaging with RESTful services
+= Sending and receiving events in RESTful microservices
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].   
