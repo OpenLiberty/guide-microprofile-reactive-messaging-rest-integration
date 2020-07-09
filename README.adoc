@@ -88,22 +88,20 @@ inventory/microprofile-config.properties
 include::finish/inventory/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
+Navigate to the `start` directory to begin.
+
 The `inventory` microservice records in its inventory the average system load information and the requested system property,
-that it received from potentially multiple instances of the `system` service. Currently, it is consuming messages from the
-continuous stream of messages produced by the `system` service. Update the `inventory` service to add an endpoint that will
-send messages on request.
+that it received from potentially multiple instances of the `system` service.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
-#Update the `InventoryResource` class.#
-`InventoryResource.java`
+#Create the `InventoryResource` class.#
+`inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
-[role="edit_command_text"]
-Add the [hotspot=updateSystemProperty file=0]`updateSystemProperty` method that creates a requestable endpoint for reactive message production.
 
-The `inventory` microservice creates a system property request when a property name is sent in a PUT request body to the
-[hotspot=putPath file=0]`/data` endpoint. The [hotspot=updateSystemProperty file=0]`updateSystemProperty()` method receives
-a system property name like `os.name` from the PUT request body and adds it to the [hotspot=flowableEmitter file=0]`propertyNameEmitter`
+The [hotspot=updateSystemProperty file=0]`updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data`
+endpoint that accepts `PUT` requests with a system property name in the request body. When the `inventory` service receives
+a request, it adds the system property name from the request body to the [hotspot=flowableEmitter file=0]`propertyNameEmitter`
 [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`. The [hotspot=flowableCreate file=0]`Flowable.create()` method from
 RxJava is used to create a Publisher and an associated emitter. The property name sent to the emitter will be sent to the
 Publisher. The Publisher is returned from the [hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")`
@@ -126,8 +124,6 @@ system/microprofile-config.properties
 ----
 include::finish/system/src/main/resources/META-INF/microprofile-config.properties[]
 ----
-
-Navigate to the `start` directory to begin.
 
 The `system` microservice is the producer of the messages that are published to the Kafka messaging system as a stream of
 events. Every 15 seconds, the `system` microservice publishes events that contain its calculation of the average system
