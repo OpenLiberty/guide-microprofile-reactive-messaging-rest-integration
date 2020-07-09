@@ -85,14 +85,14 @@ public class InventoryResource {
                 .entity("hostname does not exist.")
                 .build();
     }
-    
+
+    // tag::updateSystemProperty[]
     @PUT
     // tag::putPath[]
     @Path("/data")
     // end::putPath[]
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.TEXT_PLAIN)
-    // tag::updateSystemProperty[]
     public Response updateSystemProperty(String propertyName) {
         logger.info("updateSystemProperty: " + propertyName);
         // tag::flowableEmitter[]
