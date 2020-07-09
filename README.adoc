@@ -15,7 +15,7 @@
 :page-description: Learn how to send and receive messages in reactive Java microservices using a RESTful endpoint
 :guide-author: Open Liberty
 :page-tags: ['MicroProfile', 'Jakarta EE']
-:page-related-guides: ['reactive-service-testing']
+:page-related-guides: ['reactive-service-testing', 'microprofile-reactive-messaging']
 :page-permalink: /guides/{projectid}
 :imagesdir: /img/guide/{projectid}
 :page-seo-title: Sending and receiving messages by using a RESTful endpoint in reactive Java microservices
@@ -200,7 +200,7 @@ property for all the systems:
 You can revisit the http://localhost:9085/inventory/systems[^] URL after a while, and you will notice the CPU `systemLoad`
 property for the systems changed.
 
-You can make a `PUT` request on the `\http://localhost:9085/inventory/data` URL to add the value of a particular system
+Make a `PUT` request on the `\http://localhost:9085/inventory/data` URL to add the value of a particular system
 property to the set of existing properties.
 
 For example :
