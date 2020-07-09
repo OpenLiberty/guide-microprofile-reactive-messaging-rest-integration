@@ -33,9 +33,9 @@ Learn how to trigger messages in reactive Java microservices via RESTful endpoin
 
 You will learn how to use a RESTful endpoint to trigger reactive microservices to produce and send messages to other microservices
 using MicroProfile Reactive Messaging. The current implementation of MicroProfile Reactive Messaging operates on continuous
-streams of events. For instance, Producer produces events periodically, and Consumer consumes those events. This guide
-helps you write microservices so that when a user hits the RESTful endpoint, producer events are generated.  Most importantly,
-you'll learn how to bridge the gap between reactive applications and RESTful ones by using RxJava. You'll also learn how we
+streams of events. For instance, Producer produces events periodically, and Consumer consumes those events. You will
+write microservices so that when a user hits the RESTful endpoint, producer events are generated.
+You will learn how to bridge the gap between reactive applications and RESTful ones by using RxJava. You will also learn how we
 can achieve code execution on demand in reactive applications.
 
 The reactive application in this guide sends and receives messages between services using an external message broker,
