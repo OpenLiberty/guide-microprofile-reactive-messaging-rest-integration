@@ -40,8 +40,7 @@ can achieve code execution on demand in reactive applications.
 
 The reactive application in this guide sends and receives messages between services using an external message broker,
 https://kafka.apache.org/[Apache Kafka^]. Using an external message broker enables asynchronous communications between
-services so that requests are non-blocking and decoupled from responses.  Before
-you go any further, it is highly recommended to go through the basic guide.
+services so that requests are non-blocking and decoupled from responses.
 
 The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
 microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
