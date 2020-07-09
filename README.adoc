@@ -118,13 +118,6 @@ SystemService.java
 include::finish/system/src/main/java/io/openliberty/guides/system/SystemService.java[]
 ----
 
-//file 1
-system/microprofile-config.properties
-[source, Text, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/system/src/main/resources/META-INF/microprofile-config.properties[]
-----
-
 The `system` microservice is the producer of the messages that are published to the Kafka messaging system as a stream of
 events. Every 15 seconds, the `system` microservice publishes events that contain its calculation of the average system
 load (its CPU usage) for the last minute. It also processes the specific system property request from the `inventory`
@@ -136,94 +129,11 @@ microservice and publishes it to the Kafka messaging system.
 `system/src/main/java/io/openliberty/guides/system/SystemService.java`
 ----
 
-The `system` microservice contains a method named [hotspot=sendProperty file=0]`sendProperty()`. It receives a
+The `system` microservice contains a method named [hotspot=sendProperty file=0]`sendProperty()` which receives a
 system property name from the `inventory` microservice over the [hotspot=propertyRequest file=0]`@Incoming("propertyRequest")`
 channel, calculates the requested property on the fly and publishes it back to Kafka over the
 [hotspot=propertyResponse file=0]`@Outgoing("propertyResponse")` channel. The [hotspot=sendProperty file=0]`sendProperty()`
 method acts as a processor in this scenario.
-
-The `SystemService` class contains a `Publisher` method that is called [hotspot=sendSystemLoad file=0]`sendSystemLoad()`,
-which calculates and returns the average system load. The [hotspot=publishSystemLoad file=0]`@Outgoing` annotation on the
-[hotspot=sendSystemLoad file=0]`sendSystemLoad()` method indicates that the method publishes its calculation as a message
-on a topic in the Kafka messaging system.
-
-The messages are transported between the service and the Kafka messaging system through the Outgoing channels called
-[hotspot=systemLoad file=1]`systemLoad` and [hotspot=propertyResponse file=1]`propertyResponse`, and the Incoming channel
-[hotspot=propertyRequest file=1]`propertyRequest`.
-
-== Configuring the MicroProfile Reactive Messaging connectors for Kafka
-
-//file 0
-system/microprofile-config.properties
-[source, text, linenums, role='code_column']
-----
-include::finish/system/src/main/resources/META-INF/microprofile-config.properties[]
-----
-
-//file 1
-inventory/microprofile-config.properties
-[source, text, linenums, role='code_column']
-----
-include::finish/inventory/src/main/resources/META-INF/microprofile-config.properties[]
-----
-
-//file 2
-SystemLoad.java
-[source, Java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/models/src/main/java/io/openliberty/guides/models/SystemLoad.java[]
-----
-
-//file 3
-PropertyMessage.java
-[source, Java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/models/src/main/java/io/openliberty/guides/models/PropertyMessage.java[]
-----
-
-The `system` and `inventory` services exchange messages with the external messaging system through a channel. The
-MicroProfile Reactive Messaging Connector API makes it easy to connect each service to the channel. You just need to add
-configuration keys in a properties file for each of the services. These configuration keys define properties such as the
-name of the channel and the topic in the Kafka messaging system. Open Liberty includes the `liberty-kafka` connector for
-sending and receiving messages from Apache Kafka.
-
-The system and inventory microservices each have a MicroProfile Config property file to define the properties of their
-incoming and outgoing streams.
-
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Create the system/microprofile-config.properties file.#
-`system/src/main/resources/META-INF/microprofile-config.properties`
-----
-
-The `system` microservice uses an outgoing connector to send messages through the [hotspot=systemLoad file=0]`systemLoad`
-and [hotspot=propertyResponse file=0]`propertyResponse` channel, to the [hotspot=topic1 file=0]`systemLoadTopic` and
-[hotspot=topic3 file=0]`addSystemPropertyTopic` topic, respectively, in the Kafka message broker so that the `inventory`
-microservice can consume the messages. The [hotspot=SystemLoadSerializer file=2]`SystemLoadSerializer` and
-[hotspot=PropertyMessageSerializer file=3]`PropertyMessageSerializer` classes implements the
-logic for turning a `SystemLoad` and `PropertyMessage` object into JSON and is configured as the
-[hotspot=serializerVal1 hotspot=serializerVal3 file=0]`value.serializer`.
-
-NOTE : If you want the message to be sent to all the `System` microservices then configure the unique
-[hotspot=group4 file=0]`group.id` for all of the instances.
-
-The `inventory` microservice uses a similar [hotspot file=1]`microprofile-config.properties` configuration to define its
-required incoming stream.
-
-[role="code_command hotspot file=1", subs="quotes"]
-----
-#Create the inventory/microprofile-config.properties file.#
-`inventory/src/main/resources/META-INF/microprofile-config.properties`
-----
-
-The `inventory` microservice uses an Incoming connector to receive messages through the [hotspot=systemLoad file=1]`systemLoad`
-and [hotspot=propertyMessage file=1]`propertyMessage` channel. The messages were published by the `system` microservice to
-the [hotspot=topic1 file=1]`systemLoadTopic` and [hotspot=topic3 file=1]`addSystemPropertyTopic` in the Kafka message broker.
-The [hotspot=SystemLoadDeserializer file=2]`SystemLoadDeserializer` and
-[hotspot=PropertyMessageDeserializer file=3]`PropertyMessageDeserializer` classes implements the logic for turning JSON into a `SystemLoad`
-and `PropertyMessage` object and is configured as the [hotspot=deserializerVal1 hotspot=deserializerVal3 file=1]`value.deserializer`.
-The `inventory` microservice also publishes messages through the Outgoing channel,
-[hotspot=requestSystemProperty file=1]`requestSystemProperty`.
 
 == Building and running the application
 
@@ -273,7 +183,7 @@ include::{common-includes}/os-tabs.adoc[]
 
 == Testing the application
 
-Wait for a minute or two for the services to become available. After the services are up and running, you can access the
+Wait for the services to become available. After the services are up and running, you can access the
 application by making a GET request to the `/systems` endpoint of the `inventory` service.
 
 Visit the http://localhost:9085/inventory/systems[^] URL to access the inventory microservice. You see the CPU `systemLoad`
