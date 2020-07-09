@@ -35,18 +35,13 @@ You will learn how to use a RESTful endpoint to trigger reactive microservices t
 using MicroProfile Reactive Messaging. The current implementation of MicroProfile Reactive Messaging operates on continuous
 streams of events. For instance, Producer produces events periodically, and Consumer consumes those events. This guide
 helps you write microservices so that when a user hits the RESTful endpoint, producer events are generated.  Most importantly,
-you'll learn how to bridge the gap between reactive applications and RESTful ones. You'll also learn how we can achieve code
-execution on demand in reactive applications.
+you'll learn how to bridge the gap between reactive applications and RESTful ones by using RxJava. You'll also learn how we
+can achieve code execution on demand in reactive applications.
 
 The reactive application in this guide sends and receives messages between services using an external message broker,
 https://kafka.apache.org/[Apache Kafka^]. Using an external message broker enables asynchronous communications between
 services so that requests are non-blocking and decoupled from responses.  Before
 you go any further, it is highly recommended to go through the basic guide.
-
-In order to build an asynchronous application, RxJava is used to bridge the gap between the standard imperative
-and the reactive asynchronous programming. RxJava introduces the concepts of an observable and an observer, which decouples
-the request that a Java bean will make from the response that it receives. These concepts in addition with Microprofile
-Reactive Messaging create a fully reactive application.
 
 The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
 microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
