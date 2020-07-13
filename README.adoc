@@ -43,7 +43,8 @@ microservice calculates and publishes events that contain its current average sy
 subscribes to that information so that it can keep an updated list of all the systems and their current system loads.
 The current inventory of systems can be accessed via the `/systems` REST endpoint. You will update the `inventory`
 microservice to also subscribe to a `PUT` request response that queries a specific system property on the `system`
-microservice. You will configure new channels to handle the messages sent and received by the new endpoint.
+microservice. You will also update the `system` microservice to handle receiving and sending messages produced by the
+new endpoint. You will configure new channels to handle the messages sent and received by the new endpoint.
 You can learn more about how the reactive Java services used in this guide works by checking out the
 https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
 Please refer to the figure below for a diagram of the application used in this guide.
@@ -57,12 +58,11 @@ You need to have Docker installed. For installation instructions, refer to the o
 https://docs.docker.com/get-docker/[Docker documentation^]. You will build and run the microservices in Docker containers.
 An installation of Apache Kafka is provided in another Docker container.
 
-
 [role='command']
 include::{common-includes}/gitclone.adoc[]
 
 
-== Creating the inventory microservice
+== Replacing the inventory microservice
 
 //file 0
 InventoryResource.java
@@ -75,7 +75,7 @@ Navigate to the `start` directory to begin.
 
 The included `inventory` microservice records and stores the average system load information from all of the connected
 system microservices, it does not contain a hittable REST endpoint to control the sending or receiving of reactive messages.
-Add the RESTful endpoint to the `inventory` service by creating the `InventoryResource` class.
+Add the RESTful endpoint to the `inventory` service by replacing the `InventoryResource` class.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -98,7 +98,7 @@ The property name sent to the emitter will be sent to the Publisher. The Publish
 [hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")` channel, which you will configure later in the
 guide. MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
 
-== Creating the system microservice
+== Replacing the system microservice
 
 //file 0
 SystemService.java
