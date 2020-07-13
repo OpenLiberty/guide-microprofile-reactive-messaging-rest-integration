@@ -158,9 +158,9 @@ previous sections.
 ----
 
 The newly created RESTful endpoint requires new channels to be created to move the requested messages between the `system`
-and `inventory` microservices. Replacing the `inventory` microservice [hotspot file=1]`microprofile-config.properties`
+and `inventory` microservices. Replacing the `inventory` microservice [hotspot file=0]`microprofile-config.properties`
 file adds the two channels,
-[hotspot=requestSystemProperty file=1]`requestSystemProperty` and [hotspot=addSystemProperty file=1]`addSystemProperty`
+[hotspot=requestSystemProperty file=0]`requestSystemProperty` and [hotspot=addSystemProperty file=0]`addSystemProperty`
 to handle sending the system property request, and receiving the system property response respectively.
 
 [role="code_command hotspot file=1", subs="quotes"]
@@ -169,12 +169,12 @@ to handle sending the system property request, and receiving the system property
 `system/src/main/resources/META-INF/microprofile-config.properties`
 ----
 
-Replace the `system` microservice [hotspot file=0]`microprofile-config.properties` file to add the two new
-[hotspot=propertyRequest file=0]`propertyRequest` and [hotspot=propertyResponse file=0]`propertyResponse`
+Replace the `system` microservice [hotspot file=1]`microprofile-config.properties` file to add the two new
+[hotspot=propertyRequest file=1]`propertyRequest` and [hotspot=propertyResponse file=1]`propertyResponse`
 channels to handle receiving the property request, and sending the property response respectively.
 
 NOTE : If you want the message to be sent to all the `System` microservices then configure the unique
-[hotspot=group4 file=0]`group.id` for all of the instances.
+[hotspot=group4 file=1]`group.id` for all of the instances.
 
 == Building and running the application
 
