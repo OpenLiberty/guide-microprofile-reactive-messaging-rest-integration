@@ -95,6 +95,11 @@ microservices to add the selected property information back to the `inventory` s
 `inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
+In order to build an asynchronous application, RxJava is used to bridge the gap between the standard imperative
+and the reactive asynchronous programming. RxJava introduces the concepts of an observable and an observer, which decouples
+the request that a Java bean will make from the response that it receives. These concepts in addition with MicroProfile
+Reactive Messaging create a fully reactive application.
+
 The [hotspot=updateSystemProperty file=0]`updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data`
 endpoint that accepts `PUT` requests with a system property name in the request body. When the `inventory` service receives
 a request, it adds the system property name from the request body to the [hotspot=flowableEmitter file=0]`propertyNameEmitter`
@@ -147,20 +152,6 @@ inventory/microprofile-config.properties
 include::finish/inventory/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-//file 2
-SystemLoad.java
-[source, Java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/models/src/main/java/io/openliberty/guides/models/SystemLoad.java[]
-----
-
-//file 3
-PropertyMessage.java
-[source, Java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/models/src/main/java/io/openliberty/guides/models/PropertyMessage.java[]
-----
-
 The `system` and `inventory` services exchange messages with the external messaging system through a channel. The
 MicroProfile Reactive Messaging Connector API makes it easy to connect each service to the channel. You just need to add
 configuration keys in a properties file for each of the services. These configuration keys define properties such as the
@@ -170,11 +161,17 @@ sending and receiving messages from Apache Kafka.
 The system and inventory microservices each have a MicroProfile Config property file to define the properties of their
 incoming and outgoing streams.
 
-[role="code_command hotspot file=0", subs="quotes"]
+[role="code_command hotspot file=1", subs="quotes"]
 ----
-#Create the system/microprofile-config.properties file.#
-`system/src/main/resources/META-INF/microprofile-config.properties`
+#Create the inventory/microprofile-config.properties file.#
+`inventory/src/main/resources/META-INF/microprofile-config.properties`
 ----
+
+The newly created RESTful endpoint requires a new channel to be created to move the requested messages between the `system`
+and `inventory` microservices. Create the `inventory` microservice [hotspot file=1]`microprofile-config.properties`
+configuration, which is already configured with the newly added channels,
+[hotspot=requestSystemProperty file=1]`requestSystemProperty` and [hotspot=addSystemProperty file=1]`addSystemProperty`
+to handle sending the system property request, and receiving the system property response respectively.
 
 The `system` microservice uses an outgoing connector to send messages through the [hotspot=systemLoad file=0]`systemLoad`
 and [hotspot=propertyResponse file=0]`propertyResponse` channel, to the [hotspot=topic1 file=0]`systemLoadTopic` and
@@ -184,26 +181,18 @@ microservice can consume the messages. The [hotspot=SystemLoadSerializer file=2]
 logic for turning a `SystemLoad` and `PropertyMessage` object into JSON and is configured as the
 [hotspot=serializerVal1 hotspot=serializerVal3 file=0]`value.serializer`.
 
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the system/microprofile-config.properties file.#
+`system/src/main/resources/META-INF/microprofile-config.properties`
+----
+
+The `system` microservice [hotspot file=0]`microprofile-config.properties` file is similarly configured with the two new
+[hotspot=propertyResponse file=0]`propertyResponse` and [hotspot=propertyRequest file=0]`propertyRequest`
+channels.
+
 NOTE : If you want the message to be sent to all the `System` microservices then configure the unique
 [hotspot=group4 file=0]`group.id` for all of the instances.
-
-The `inventory` microservice uses a similar [hotspot file=1]`microprofile-config.properties` configuration to define its
-required incoming stream.
-
-[role="code_command hotspot file=1", subs="quotes"]
-----
-#Create the inventory/microprofile-config.properties file.#
-`inventory/src/main/resources/META-INF/microprofile-config.properties`
-----
-
-The `inventory` microservice uses an Incoming connector to receive messages through the [hotspot=systemLoad file=1]`systemLoad`
-and [hotspot=propertyMessage file=1]`propertyMessage` channel. The messages were published by the `system` microservice to
-the [hotspot=topic1 file=1]`systemLoadTopic` and [hotspot=topic3 file=1]`addSystemPropertyTopic` in the Kafka message broker.
-The [hotspot=SystemLoadDeserializer file=2]`SystemLoadDeserializer` and
-[hotspot=PropertyMessageDeserializer file=3]`PropertyMessageDeserializer` classes implements the logic for turning JSON into a `SystemLoad`
-and `PropertyMessage` object and is configured as the [hotspot=deserializerVal1 hotspot=deserializerVal3 file=1]`value.deserializer`.
-The `inventory` microservice also publishes messages through the Outgoing channel,
-[hotspot=requestSystemProperty file=1]`requestSystemProperty`.
 
 == Building and running the application
 
