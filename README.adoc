@@ -62,7 +62,7 @@ An installation of Apache Kafka is provided in another Docker container.
 include::{common-includes}/gitclone.adoc[]
 
 
-== Replacing the inventory microservice
+== Creating the REST endpoint to create messages
 
 //file 0
 InventoryResource.java
@@ -98,7 +98,7 @@ The property name sent to the emitter will be sent to the Publisher. The Publish
 [hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")` channel, which you will configure later in the
 guide. MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
 
-== Replacing the system microservice
+== Creating the property message processor
 
 //file 0
 SystemService.java
@@ -141,15 +141,10 @@ system/microprofile-config.properties
 include::finish/system/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-The `system` and `inventory` services exchange messages with the external messaging system through a channel. The
-MicroProfile Reactive Messaging Connector API makes it easy to connect each service to the channel. You just need to add
-configuration keys in a properties file for each of the services. These configuration keys define properties such as the
-name of the channel and the topic in the Kafka messaging system. Open Liberty includes the `liberty-kafka` connector for
-sending and receiving messages from Apache Kafka.
-
-The system and inventory microservices each have a MicroProfile Config property file to define the properties of their
-incoming and outgoing streams. They are missing the four required channels to complete the message loop created in the
-previous sections.
+The `system` and `inventory` microservices each have a MicroProfile Config property file to define the properties of their
+incoming and outgoing channels, such as the name of the channel, the topic in the Kafka messaging system, and the associated
+message serializer and deserializers. To complete the message loop created in the previous sections, four more channels
+need to be added and configured.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
