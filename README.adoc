@@ -62,7 +62,7 @@ An installation of Apache Kafka is provided in another Docker container.
 include::{common-includes}/gitclone.adoc[]
 
 
-== Creating the REST endpoint to produce messages
+== Adding the REST endpoint to produce messages
 
 //file 0
 InventoryResource.java
@@ -98,7 +98,7 @@ The property name sent to the emitter will be sent to the Publisher. The Publish
 [hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")` channel, which you will configure later in the
 guide. MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
 
-== Creating the property message processor
+== Adding the property message processor
 
 //file 0
 SystemService.java
