@@ -62,7 +62,7 @@ An installation of Apache Kafka is provided in another Docker container.
 include::{common-includes}/gitclone.adoc[]
 
 
-== Creating the REST endpoint to create messages
+== Creating the REST endpoint to produce messages
 
 //file 0
 InventoryResource.java
