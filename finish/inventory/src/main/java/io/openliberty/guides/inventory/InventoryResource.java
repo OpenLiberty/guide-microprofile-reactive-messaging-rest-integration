@@ -148,6 +148,7 @@ public class InventoryResource {
     // tag::OutgoingPropertyName[]
     @Outgoing("requestSystemProperty")
     // end::OutgoingPropertyName[]
+    // tag::sendPropertyName[]
     public Publisher<String> sendPropertyName() {
         // tag::flowableCreate[]
         Flowable<String> flowable = Flowable.<String>create(emitter -> 
@@ -155,4 +156,5 @@ public class InventoryResource {
         // end::flowableCreate[]
         return flowable;
     }
+    // end::sendPropertyName[]
 }
