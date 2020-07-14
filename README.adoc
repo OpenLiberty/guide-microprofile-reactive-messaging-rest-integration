@@ -83,8 +83,10 @@ Add the RESTful endpoint to the `inventory` service by replacing the `InventoryR
 `inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
-The changes include creating the [hotspot=updateSystemProperty file=0]`updateSystemProperty()` method which creates the
-[hotspot=putPath file=0]`/data` endpoint that accepts `PUT` requests with a system property name in the request body.
+The changes include creating the [hotspot=flowableEmitter file=0]`propertyNameEmitter` variable, and the
+[hotspot=updateSystemProperty file=0]`updateSystemProperty()` and [hotspot=sendProperty file=0]`sendPropertyName()` methods.
+The `updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data` endpoint that accepts `PUT` requests
+with a system property name in the request body.
 
 RxJava is used to bridge the current gap between the imperative RESTful endpoint method and the reactive asynchronous
 programming that exists by default. RxJava introduces the concepts of an observable and an observer, which decouples
