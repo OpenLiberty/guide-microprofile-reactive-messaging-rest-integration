@@ -143,7 +143,7 @@ include::finish/system/src/main/resources/META-INF/microprofile-config.propertie
 
 The `system` and `inventory` microservices each have a MicroProfile Config property file to define the properties of their
 incoming and outgoing channels, such as the name of the channel, the topic in the Kafka messaging system, and the associated
-message serializer and deserializers. To complete the message loop created in the previous sections, four more channels
+message serializers and deserializers. To complete the message loop created in the previous sections, four more channels
 need to be added and configured.
 
 [role="code_command hotspot file=0", subs="quotes"]
