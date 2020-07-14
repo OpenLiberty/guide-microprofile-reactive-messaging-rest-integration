@@ -144,11 +144,11 @@ public class InventoryResource {
             logger.info("Host " + hostId + " was added: " + pm);
         }
     }
-    
+
+    // tag::sendPropertyName[]
     // tag::OutgoingPropertyName[]
     @Outgoing("requestSystemProperty")
     // end::OutgoingPropertyName[]
-    // tag::sendPropertyName[]
     public Publisher<String> sendPropertyName() {
         // tag::flowableCreate[]
         Flowable<String> flowable = Flowable.<String>create(emitter -> 
