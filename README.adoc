@@ -12,39 +12,37 @@
 :page-releasedate: 2020-04-22
 :page-guide-category: microprofile
 :page-essential: false
-:page-description: Learn how to send and receive messages in RESTful microservices using MicroProfile Reactive Messaging.
+:page-description: Learn how to integrate RESTful services with a reactive system using MicroProfile Reactive Messaging.
 :guide-author: Open Liberty
 :page-tags: ['MicroProfile', 'Jakarta EE']
 :page-related-guides: ['reactive-service-testing', 'microprofile-reactive-messaging']
 :page-permalink: /guides/{projectid}
 :imagesdir: /img/guide/{projectid}
-:page-seo-title: Sending and receiving events in RESTful Java microservices
-:page-seo-description: A getting started tutorial with examples on how to send and receive messages in RESTful Java applications using Eclipse MicroProfile Reactive Messaging API to integrate with reactive systems or event streaming platforms like Apache Kafka.
+:page-seo-title: Integrating RESTful services with a reactive system
+:page-seo-description: A getting started tutorial with examples on how to integrate RESTful Java microservices with a reactive system or event streaming platform like Apache Kafka using Eclipse MicroProfile Reactive Messaging.
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/dev
 :source-highlighter: prettify
-= Sending and receiving events in RESTful microservices
+= Integrating RESTful services with a reactive system
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].   
 
-Learn how to send and receive messages in RESTful Java microservices using MicroProfile Reactive Messaging API to integrate with reactive systems.
+Learn how to integrate RESTful Java microservices with a reactive system using MicroProfile Reactive Messaging.
 
 == What you'll learn
 
-You will learn how to use a RESTful endpoint to trigger reactive microservices to produce and send messages to other microservices
-using MicroProfile Reactive Messaging. The current implementation of MicroProfile Reactive Messaging operates on continuous
-streams of events. For instance, Producer produces events periodically, and Consumer consumes those events. You will
-write microservices so that when a user hits the RESTful endpoint, producer events are generated.
-You will learn how to bridge the gap between reactive applications and RESTful ones by using RxJava. You will also learn how we
-can achieve code execution on demand in reactive applications.
+You will learn how to integrate RESTful Java microservices with a reactive system using MicroProfile Reactive
+Messaging. RESTful Java microservices do not use reactive concepts, so you will learn how to bridge the gap between the
+two using the RxJava library. You will write microservices so that when a user hits the RESTful endpoint, producer events
+are generated. You will also learn how we can achieve code execution on demand in reactive applications.
 
 The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
 microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
 subscribes to that information so that it can keep an updated list of all the systems and their current system loads.
 The current inventory of systems can be accessed via the `/systems` REST endpoint. You will update the `inventory`
 microservice to also subscribe to a `PUT` request response that queries a specific system property on the `system`
-microservice. You will also update the `system` microservice to handle receiving and sending messages produced by the
-new endpoint. You will configure new channels to handle the messages sent and received by the new endpoint.
+microservice. You will also update the `system` microservice to handle receiving and sending events produced by the
+new endpoint. You will configure new channels to handle the events sent and received by the new endpoint.
 You can learn more about how the reactive Java services used in this guide works by checking out the
 https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
 Please refer to the figure below for a diagram of the application used in this guide.
@@ -61,8 +59,7 @@ An installation of Apache Kafka is provided in another Docker container.
 [role='command']
 include::{common-includes}/gitclone.adoc[]
 
-
-== Adding the REST endpoint to produce messages
+== Adding a REST endpoint that produces events
 
 //file 0
 InventoryResource.java
@@ -84,23 +81,20 @@ Add the RESTful endpoint to the `inventory` service by replacing the `InventoryR
 ----
 
 The changes include creating the [hotspot=flowableEmitterDecl file=0]`propertyNameEmitter` variable, and the
-[hotspot=updateSystemProperty file=0]`updateSystemProperty()` and [hotspot=sendPropertyName file=0]`sendPropertyName()` methods.
-The `updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data` endpoint that accepts `PUT` requests
-with a system property name in the request body.
-
-RxJava is used to bridge the current gap between the imperative RESTful endpoint method and the reactive asynchronous
-programming that exists by default. RxJava introduces the concepts of an observable and an observer, which decouples
-the request that a Java bean will make from the response that it receives. These concepts in addition with MicroProfile
-Reactive Messaging creates a fully reactive application.
+[hotspot=updateSystemProperty file=0]`updateSystemProperty()` and [hotspot=sendPropertyName file=0]`sendPropertyName()`
+methods. The `propertyNameEmitter` is a RxJava Emitter which is used to send the property name request to the event stream,
+Apache Kafka in this case. The `updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data` endpoint that
+accepts `PUT` requests with a system property name in the request body. The [hotspot=sendPropertyName file=0]`sendPropertyName()`
+method contains the [hotspot=flowableCreate file=0]`Flowable.create()` RxJava method which is used to create a Publisher
+and an associated emitter.
 
 When the `inventory` service receives a request, it adds the system property name from the request body to the
-[hotspot=flowableEmitter file=0]`propertyNameEmitter` [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`.
-The [hotspot=flowableCreate file=0]`Flowable.create()` RxJava method is used to create a Publisher and an associated emitter.
+[hotspot=flowableEmitter file=0]`propertyNameEmitter` [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`. The
 The property name sent to the emitter will be sent to the Publisher. The Publisher is returned from the
 [hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")` channel, which you will configure later in the
 guide. MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
 
-== Adding the property message processor
+== Adding an event processor to a reactive service
 
 //file 0
 SystemService.java
