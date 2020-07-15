@@ -82,17 +82,25 @@ Add the RESTful endpoint to the `inventory` service by replacing the `InventoryR
 
 The changes include creating the [hotspot=flowableEmitterDecl file=0]`propertyNameEmitter` variable, and the
 [hotspot=updateSystemProperty file=0]`updateSystemProperty()` and [hotspot=sendPropertyName file=0]`sendPropertyName()`
-methods. The `propertyNameEmitter` is a RxJava Emitter which is used to send the property name request to the event stream,
-Apache Kafka in this case. The `updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data` endpoint that
-accepts [hotspot=annotatedPut file=0]`PUT` requests with a system property name in the request body. The
-[hotspot=sendPropertyName file=0]`sendPropertyName()` method contains the [hotspot=flowableCreate file=0]`Flowable.create()`
-RxJava method which is used to create a Publisher and an associated emitter.
+methods. The `updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data` endpoint that
+accepts [hotspot=annotatedPut file=0]`PUT` requests with a system property name in the request body.
+
+The `propertyNameEmitter` is a RxJava Emitter which is used to send the property name request to the event stream, Apache
+Kafka in this case. The [hotspot=sendPropertyName file=0]`sendPropertyName()` method contains the
+[hotspot=flowableCreate file=0]`Flowable.create()` RxJava method which is used to associate the created Emitter to a Publisher
+that will be responsible for publishing the events to the event stream. The Publisher in this example is then connected to the
+[hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")` channel which you will configure later in the
+guide. MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
+
+The [hotspot=flowableCreate file=0]`Flowable.create()` method also allows the configuration of a
+[hotspot=flowableCreate file=0]`BackpressureStrategy` which controls what the Publisher will do if the emitted events can
+not be consumed by the subscriber. in this example, the Publisher used the `BackpressureStrategy.BUFFER` strategy, which
+will let the Publisher buffer the event until the Subscriber can consume them.
 
 When the `inventory` service receives a request, it adds the system property name from the request body to the
 [hotspot=flowableEmitter file=0]`propertyNameEmitter` [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`.
-The property name sent to the emitter will be sent to the Publisher. The Publisher is returned from the
-[hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")` channel, which you will configure later in the
-guide. MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
+The property name sent to the emitter will be sent to the Publisher, which then sends the event to the event channel,
+utilizing the configured `BackpressureStrategy` when necessary.
 
 == Adding an event processor to a reactive service
 
