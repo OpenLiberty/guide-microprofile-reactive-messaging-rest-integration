@@ -89,7 +89,7 @@ accepts [hotspot=annotatedPut file=0]`PUT` requests with a system property name 
 RxJava method which is used to create a Publisher and an associated emitter.
 
 When the `inventory` service receives a request, it adds the system property name from the request body to the
-[hotspot=flowableEmitter file=0]`propertyNameEmitter` [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`. The
+[hotspot=flowableEmitter file=0]`propertyNameEmitter` [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`.
 The property name sent to the emitter will be sent to the Publisher. The Publisher is returned from the
 [hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")` channel, which you will configure later in the
 guide. MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
