@@ -87,7 +87,9 @@ public class InventoryResource {
     }
 
     // tag::updateSystemProperty[]
+    // tag::annotatedPut[]
     @PUT
+    // end::annotatedPut[]
     // tag::putPath[]
     @Path("/data")
     // end::putPath[]

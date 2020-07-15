@@ -84,9 +84,9 @@ The changes include creating the [hotspot=flowableEmitterDecl file=0]`propertyNa
 [hotspot=updateSystemProperty file=0]`updateSystemProperty()` and [hotspot=sendPropertyName file=0]`sendPropertyName()`
 methods. The `propertyNameEmitter` is a RxJava Emitter which is used to send the property name request to the event stream,
 Apache Kafka in this case. The `updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data` endpoint that
-accepts `PUT` requests with a system property name in the request body. The [hotspot=sendPropertyName file=0]`sendPropertyName()`
-method contains the [hotspot=flowableCreate file=0]`Flowable.create()` RxJava method which is used to create a Publisher
-and an associated emitter.
+accepts [hotspot=annotatedPut file=0]`PUT` requests with a system property name in the request body. The
+[hotspot=sendPropertyName file=0]`sendPropertyName()` method contains the [hotspot=flowableCreate file=0]`Flowable.create()`
+RxJava method which is used to create a Publisher and an associated emitter.
 
 When the `inventory` service receives a request, it adds the system property name from the request body to the
 [hotspot=flowableEmitter file=0]`propertyNameEmitter` [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`. The
