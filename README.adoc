@@ -307,7 +307,7 @@ include::{common-includes}/os-tabs.adoc[]
 ```
 --
 
-== Next steps
+== Running multiple system instances
 
 //file 0
 system/microprofile-config.properties
