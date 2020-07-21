@@ -21,9 +21,9 @@ docker logs system
 
 docker logs inventory
 
-systmeCPULoad="$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:9085/inventory/systems")"
+systemCPULoad="$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:9085/inventory/systems")"
 
-if [ "$systmeCPULoad" == "200" ]
+if [ "$systemCPULoad" == "200" ]
 then
   echo SystemInventory OK
   
@@ -43,7 +43,7 @@ then
   fi
 else
   echo System Inventory status:
-  echo "$systmeCPULoad"
+  echo "$systemCPULoad"
   echo ENDPOINT
   exit 1
 fi
