@@ -313,8 +313,8 @@ include::finish/system/src/main/resources/META-INF/microprofile-config.propertie
 ----
 
 This application has only one instance of the `system` service. The `inventory` service collects system properties of
-all `system` services in the application. As an exercise, start multiple `system` services to see how the `inventory`
-service handles it. When you start the `system` instances, you have to provide a unique [hotspot=group4 file=0]`group.id`
+all `system` services in the application. As an exercise, start multiple `system` services to see how the application
+handles it. When you start the `system` instances, you have to provide a unique [hotspot=group4 file=0]`group.id`
 through the `MP_MESSAGING_INCOMING_PROPERTYREQUEST_GROUP.ID` environment variable.
 
 == Great work! You're done!
