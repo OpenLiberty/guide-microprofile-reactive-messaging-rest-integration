@@ -71,15 +71,14 @@ public class SystemService {
     // tag::sendProperty[]
     public PropertyMessage sendProperty(String propertyName) {
         logger.info("sendProperty: " + propertyName);
-        String propertyValue = System.getProperty(propertyName);
-        if (propertyValue == null) {
-            logger.warning(propertyName + " is not System property.");
+        if (propertyName == null || propertyName.isEmpty()) {
+            logger.warning(propertyName == null ? "Null" : "An empty string"
+                    + " is not System property.");
             return null;
         }
-        return new PropertyMessage(getHostname(), 
-                    propertyName, 
-                    System.getProperty(propertyName, "unknown"));
+        return new PropertyMessage(getHostname(),
+                propertyName,
+                System.getProperty(propertyName, "unknown"));
     }
     // end::sendProperty[]
-
 }
