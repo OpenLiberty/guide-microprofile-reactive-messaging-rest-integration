@@ -72,8 +72,9 @@ include::finish/inventory/src/main/java/io/openliberty/guides/inventory/Inventor
 Navigate to the `start` directory to begin.
 
 The included `inventory` microservice records and stores the average system load information from all of the connected
-system microservices, it does not contain a hittable REST endpoint to control the sending or receiving of reactive messages.
-Add the RESTful endpoint to the `inventory` service by replacing the `InventoryResource` class.
+system microservices, it does not contain an accessible REST endpoint to control the sending or receiving of reactive messages.
+Add the `/data` RESTful endpoint to the `inventory` service by replacing the `InventoryResource` class with an updated version
+of the class.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -81,27 +82,26 @@ Add the RESTful endpoint to the `inventory` service by replacing the `InventoryR
 `inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
-The changes include creating the [hotspot=flowableEmitterDecl file=0]`propertyNameEmitter` variable, and the
-[hotspot=updateSystemProperty file=0]`updateSystemProperty()` and [hotspot=sendPropertyName file=0]`sendPropertyName()`
-methods. The `updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data` endpoint that
-accepts [hotspot=annotatedPut file=0]`PUT` requests with a system property name in the request body.
+The `updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data` endpoint which accepts
+[hotspot=annotatedPut file=0]`PUT` requests with a system property name in the request body. The `propertyNameEmitter`
+variable is an RxJava Emitter which sends the property name request to the event stream, Apache
+Kafka in this case.
 
-The `propertyNameEmitter` is a RxJava Emitter which is used to send the property name request to the event stream, Apache
-Kafka in this case. The [hotspot=sendPropertyName file=0]`sendPropertyName()` method contains the
-[hotspot=flowableCreate file=0]`Flowable.create()` RxJava method which is used to associate the created Emitter to a Publisher
-that will be responsible for publishing the events to the event stream. The Publisher in this example is then connected to the
+The [hotspot=sendPropertyName file=0]`sendPropertyName()` method contains the
+[hotspot=flowableCreate file=0]`Flowable.create()` RxJava method which associates the created emitter to a publisher
+that is responsible for publishing the events to the event stream. The publisher in this example is then connected to the
 [hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")` channel which you will configure later in the
-guide. MicroProfile Reactive Messaging takes care of assigning the Publisher to the channel.
+guide. MicroProfile Reactive Messaging takes care of assigning the publisher to the channel.
 
 The [hotspot=flowableCreate file=0]`Flowable.create()` method also allows the configuration of a
-[hotspot=flowableCreate file=0]`BackpressureStrategy` which controls what the Publisher will do if the emitted events can
-not be consumed by the subscriber. in this example, the Publisher used the `BackpressureStrategy.BUFFER` strategy, which
-will let the Publisher buffer the event until the Subscriber can consume them.
+[hotspot=flowableCreate file=0]`BackpressureStrategy` which controls what the publisher will do if the emitted events can
+not be consumed by the subscriber. In this example, the publisher used the `BackpressureStrategy.BUFFER` strategy, which
+lets the publisher buffer the event until the subscriber can consume them.
 
 When the `inventory` service receives a request, it adds the system property name from the request body to the
 [hotspot=flowableEmitter file=0]`propertyNameEmitter` [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`.
-The property name sent to the emitter will be sent to the Publisher, which then sends the event to the event channel,
-utilizing the configured `BackpressureStrategy` when necessary.
+The property name sent to the emitter will be sent to the publisher, which then sends the event to the event channel,
+using the configured `BackpressureStrategy` when necessary.
 
 == Adding an event processor to a reactive service
 
