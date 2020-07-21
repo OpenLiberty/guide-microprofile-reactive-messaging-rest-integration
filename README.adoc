@@ -123,9 +123,9 @@ system property request from the `inventory` microservice and publish it to the 
 `system/src/main/java/io/openliberty/guides/system/SystemService.java`
 ----
 
-The changes include creating a method named [hotspot=sendProperty file=0]`sendProperty()` which receives a
+A new method named [hotspot=sendProperty file=0]`sendProperty()` receives a
 system property name from the `inventory` microservice over the [hotspot=propertyRequest file=0]`@Incoming("propertyRequest")`
-channel, calculates the requested property on the fly and publishes it back to Kafka over the
+channel. The method calculates the requested property on the fly and publishes it back to Kafka over the
 [hotspot=propertyResponse file=0]`@Outgoing("propertyResponse")` channel. The [hotspot=sendProperty file=0]`sendProperty()`
 method acts as a processor in this scenario. Similar to the `inventory` microservice, the two channels will be configured
 next.
