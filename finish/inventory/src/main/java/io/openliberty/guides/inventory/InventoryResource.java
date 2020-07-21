@@ -85,14 +85,16 @@ public class InventoryResource {
                 .entity("hostname does not exist.")
                 .build();
     }
-    
+
+    // tag::updateSystemProperty[]
+    // tag::annotatedPut[]
     @PUT
+    // end::annotatedPut[]
     // tag::putPath[]
     @Path("/data")
     // end::putPath[]
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.TEXT_PLAIN)
-    // tag::updateSystemProperty[]
     public Response updateSystemProperty(String propertyName) {
         logger.info("updateSystemProperty: " + propertyName);
         // tag::flowableEmitter[]
@@ -144,7 +146,8 @@ public class InventoryResource {
             logger.info("Host " + hostId + " was added: " + pm);
         }
     }
-    
+
+    // tag::sendPropertyName[]
     // tag::OutgoingPropertyName[]
     @Outgoing("requestSystemProperty")
     // end::OutgoingPropertyName[]
@@ -155,4 +158,5 @@ public class InventoryResource {
         // end::flowableCreate[]
         return flowable;
     }
+    // end::sendPropertyName[]
 }
