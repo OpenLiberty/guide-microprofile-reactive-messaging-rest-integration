@@ -134,14 +134,14 @@ next.
 
 //file 0
 inventory/microprofile-config.properties
-[source, text, linenums, role='code_column']
+[source, properties, linenums, role='code_column']
 ----
 include::finish/inventory/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
 //file 1
 system/microprofile-config.properties
-[source, text, linenums, role='code_column']
+[source, properties, linenums, role='code_column']
 ----
 include::finish/system/src/main/resources/META-INF/microprofile-config.properties[]
 ----
@@ -311,7 +311,7 @@ include::{common-includes}/os-tabs.adoc[]
 
 //file 0
 system/microprofile-config.properties
-[source, text, linenums, role='code_column']
+[source, properties, linenums, role='code_column']
 ----
 include::finish/system/src/main/resources/META-INF/microprofile-config.properties[]
 ----
