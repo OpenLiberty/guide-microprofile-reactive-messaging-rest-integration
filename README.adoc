@@ -100,7 +100,7 @@ lets the publisher buffer the event until the subscriber can consume them.
 
 When the `inventory` service receives a request, it adds the system property name from the request body to the
 [hotspot=flowableEmitter file=0]`propertyNameEmitter` [hotspot=flowableEmitterDecl file=0]`FlowableEmitter`.
-The property name sent to the emitter will be sent to the publisher, which then sends the event to the event channel,
+The property name sent to the emitter is sent to the publisher, which sends the event to the event channel,
 using the configured `BackpressureStrategy` when necessary.
 
 == Adding an event processor to a reactive service
