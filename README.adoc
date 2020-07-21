@@ -239,16 +239,9 @@ You can revisit the http://localhost:9085/inventory/systems[^] URL after a while
 property for the systems changed.
 
 Make a `PUT` request on the `\http://localhost:9085/inventory/data` URL to add the value of a particular system
-property to the set of existing properties.
-
-For example :
-
-The `PUT` request with the `os.name` system property in the request body on the `\http://localhost:9085/inventory/data`
-URL adds the `os.name` system property for your system.
+property to the set of existing properties. For example, run the following `curl` command:
 
 include::{common-includes}/os-tabs.adoc[]
-
-Make a `PUT` request to the service by using `curl`:
 
 [.tab_content.mac_section.linux_section]
 --
@@ -263,6 +256,9 @@ curl -X PUT -d "os.name" http://localhost:9085/inventory/data --header "Content-
 If `curl` is unavailable on your computer, use another client such ashttps://www.getpostman.com/[Postman^]
 which allows you to make requests using a graphical interface.
 --
+
+In this example, the `PUT` request with the `os.name` system property in the request body on the `\http://localhost:9085/inventory/data`
+URL adds the `os.name` system property for your system.
 
 You see the following output:
 
