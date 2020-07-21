@@ -253,7 +253,7 @@ curl -X PUT -d "os.name" http://localhost:9085/inventory/data --header "Content-
 
 [.tab_content.windows_section]
 --
-If `curl` is unavailable on your computer, use another client such ashttps://www.getpostman.com/[Postman^]
+If `curl` is unavailable on your computer, use another client such as https://www.getpostman.com/[Postman^]
 which allows you to make requests using a graphical interface.
 --
 
