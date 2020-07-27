@@ -9,7 +9,7 @@
 :projectid: microprofile-reactive-messaging-rest
 :page-layout: guide-multipane
 :page-duration: 25 minutes
-:page-releasedate: 2020-04-22
+:page-releasedate: 2020-07-28
 :page-guide-category: microprofile
 :page-essential: false
 :page-description: Learn how to integrate RESTful services with a reactive system using MicroProfile Reactive Messaging.
@@ -321,6 +321,6 @@ through the `MP_MESSAGING_INCOMING_PROPERTYREQUEST_GROUP_ID` environment variabl
 
 == Great work! You're done!
 
-You just developed a reactive Java application using MicroProfile Reactive Messaging, Open Liberty, and Kafka.
+You have successfully integrated a RESTful microservice with a reactive system by using MicroProfile Reactive Messaging.
 
 include::{common-includes}/attribution.adoc[subs="attributes"]
