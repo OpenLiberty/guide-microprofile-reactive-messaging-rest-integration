@@ -6,7 +6,7 @@
 // Contributors:
 //   IBM Corporation
 //
-:projectid: microprofile-reactive-messaging-rest
+:projectid: microprofile-reactive-messaging-rest-integration
 :page-layout: guide-multipane
 :page-duration: 25 minutes
 :page-releasedate: 2020-07-28
