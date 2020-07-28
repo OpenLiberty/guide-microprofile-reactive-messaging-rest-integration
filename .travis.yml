@@ -39,4 +39,3 @@ branches:
   only:
   - master
   - qa
-  - dev
