@@ -321,6 +321,6 @@ through the `MP_MESSAGING_INCOMING_PROPERTYREQUEST_GROUP_ID` environment variabl
 
 == Great work! You're done!
 
-You have successfully integrated a RESTful microservice with a reactive system by using MicroProfile Reactive Messaging.
+You successfully integrated a RESTful microservice with a reactive system by using MicroProfile Reactive Messaging.
 
 include::{common-includes}/attribution.adoc[subs="attributes"]
