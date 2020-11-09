@@ -27,8 +27,8 @@ if [ "$systemCPULoad" == "200" ]
 then
   echo SystemInventory OK
   
-  inventoryStatus="$(docker exec -it inventory curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:9085/inventory/systems")"
-  systemStatus="$(docker exec -it system curl --write-out "%{http_code}" --silent --output /dev/null "http://system:9083/health/ready")"
+  inventoryStatus="$(docker exec inventory curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:9085/inventory/systems")"
+  systemStatus="$(docker exec system curl --write-out "%{http_code}" --silent --output /dev/null "http://system:9083/health/ready")"
 
   if [ "$inventoryStatus" == "200" ] && [ "$systemStatus" == "200" ]
   then
