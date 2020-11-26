@@ -43,13 +43,13 @@ public class SystemServiceIT {
 
     @KafkaConsumerClient(valueDeserializer = SystemLoadDeserializer.class,
             groupId = "system-load-status",
-            topics = "systemLoadTopic",
+            topics = "system.load",
             properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + "=earliest")
     public static KafkaConsumer<String, SystemLoad> consumer;
 
     @KafkaConsumerClient(valueDeserializer = PropertyMessageDeserializer.class,
             groupId = "property-name",
-            topics = "addSystemPropertyTopic",
+            topics = "add.system.property",
             properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + "=earliest")
     public static KafkaConsumer<String, PropertyMessage> propertyConsumer;
 
@@ -74,7 +74,7 @@ public class SystemServiceIT {
 
     @Test
     public void testPropertyMessage() throws IOException, InterruptedException {
-        propertyProducer.send(new ProducerRecord<String, String>("requestSystemPropertyTopic", "os.name"));
+        propertyProducer.send(new ProducerRecord<String, String>("request.system.property", "os.name"));
 
         ConsumerRecords<String, PropertyMessage> records =
                 propertyConsumer.poll(Duration.ofMillis(30 * 1000));
