@@ -1,7 +1,3 @@
-# This workflow will test the guide application.
-# For more information about building and testing Java,
-# see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
 name: Test application
 
 on:
@@ -27,28 +23,25 @@ jobs:
              echo "Need to run test"           
              echo "::set-output name=canSkip::false"
            fi
-  java8build:
+  build:
     runs-on: ubuntu-latest
-    needs: [needTest]
+    needs: [ needTest ]
     if: "!contains(needs.needTest.outputs.canSkip, 'true')"
+    strategy:
+      matrix:
+        jdk: [ 8 ]
     defaults:
       run:
         working-directory: finish
-
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
+    - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 1.8
+        java-version: ${{ matrix.jdk }}
     - run: unset _JAVA_OPTIONS
-      name: Installing jq
-    - run: |
-          sudo apt-get update -y
-          sudo apt-get install -y jq
     - name: Run tests
-      run: chmod +x ../scripts/travisTest.sh && sudo ../scripts/travisTest.sh
-      
+      run: sudo ../scripts/testApp.sh
     - name: Post tests
       if: always()
       run: sudo docker images
