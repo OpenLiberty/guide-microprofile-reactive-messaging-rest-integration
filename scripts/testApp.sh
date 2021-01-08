@@ -1,16 +1,13 @@
 #!/bin/bash
 set -euxo pipefail
 
-##############################################################################
-##
-##  Travis CI test script
-##
-##############################################################################
-
 ./scripts/packageApps.sh
 
 mvn -pl system verify
 mvn -pl inventory verify
+
+docker pull bitnami/zookeeper:3
+docker pull bitnami/kafka:2
 
 ./scripts/buildImages.sh
 ./scripts/startContainers.sh
