@@ -38,7 +38,7 @@
         <dependency>
             <groupId>org.eclipse.microprofile.reactive.messaging</groupId>
             <artifactId>microprofile-reactive-messaging-api</artifactId>
-            <version>4.0</version>
+            <version>1.0</version>
             <scope>provided</scope>
         </dependency>
         <!-- end::reactiveMessaging[] -->
