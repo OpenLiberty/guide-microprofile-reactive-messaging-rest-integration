@@ -225,10 +225,19 @@ include::{common-includes}/os-tabs.adoc[]
 
 After the application is up and running, you can access the application by making a GET request to the `/systems` endpoint
 of the `inventory` service.
-
+// static guide instructions:
+ifndef::cloud-hosted[]
 Visit the http://localhost:9085/inventory/systems[^] URL to access the inventory microservice. You see the CPU `systemLoad`
 property for all the systems:
-
+endif::[]
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+You can find the **inventory** microservice at **http://localhost:9085/inventory/systems** by running the following curl command:
+```
+curl http://localhost:9085/inventory/systems
+```
+{: codeblock}
+endif::[]
 [source, role='no_copy']
 ----
 {
@@ -237,9 +246,20 @@ property for all the systems:
 }
 ----
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 You can revisit the http://localhost:9085/inventory/systems[^] URL after a while, and you will notice the CPU `systemLoad`
 property for the systems changed.
-
+endif::[]
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+You can revisit the **inventory** service after a while, and you will notice the CPU `systemLoad`
+property for the systems changed. Run the following curl command to see the change:
+```
+curl http://localhost:9085/inventory/systems
+```
+{: codeblock}
+endif::[]
 Make a `PUT` request on the `\http://localhost:9085/inventory/data` URL to add the value of a particular system
 property to the set of existing properties. For example, run the following `curl` command:
 
@@ -270,10 +290,20 @@ Request successful for the os.name property
 ----
 
 The `system` service is available so the request to the service is successful and returns a `200` response code.
-
-You can revisit the http://localhost:9085/inventory/systems[^] URL and see the `os.name` system property value is now
+//static guide instructions:
+ifndef::cloud-hosted[]
+You can revisit the `\http://localhost:9085/inventory/systems` URL and see the `os.name` system property value is now
 included with the previous values:
+endif::[]
+// cloud-hosted instructions:
+ifdef::cloud-hosted[]
+You can revisit the **inventory** service by running the following curl command:
+```
+curl http://localhost:9085/inventory/systems
+```
 
+Notice that the `os.name` system property value is now included with the previous values:
+endif::[]
 [source, role='no_copy']
 ----
 {
