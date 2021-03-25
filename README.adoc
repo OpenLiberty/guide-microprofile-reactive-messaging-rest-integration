@@ -225,6 +225,7 @@ include::{common-includes}/os-tabs.adoc[]
 
 After the application is up and running, you can access the application by making a GET request to the `/systems` endpoint
 of the `inventory` service.
+
 // static guide instructions:
 ifndef::cloud-hosted[]
 Visit the http://localhost:9085/inventory/systems[^] URL to access the inventory microservice. You see the CPU `systemLoad`
@@ -260,6 +261,7 @@ curl http://localhost:9085/inventory/systems
 ```
 {: codeblock}
 endif::[]
+
 Make a `PUT` request on the `\http://localhost:9085/inventory/data` URL to add the value of a particular system
 property to the set of existing properties. For example, run the following `curl` command:
 
