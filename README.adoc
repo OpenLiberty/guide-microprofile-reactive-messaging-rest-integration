@@ -294,7 +294,7 @@ Request successful for the os.name property
 The `system` service is available so the request to the service is successful and returns a `200` response code.
 //static guide instructions:
 ifndef::cloud-hosted[]
-You can revisit the `\http://localhost:9085/inventory/systems` URL and see the `os.name` system property value is now
+You can revisit the http://localhost:9085/inventory/systems[^] URL and see the `os.name` system property value is now
 included with the previous values:
 endif::[]
 // cloud-hosted instructions:
