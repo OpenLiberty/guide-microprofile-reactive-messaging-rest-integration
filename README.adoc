@@ -231,14 +231,18 @@ ifndef::cloud-hosted[]
 Visit the http://localhost:9085/inventory/systems[^] URL to access the inventory microservice. You see the CPU `systemLoad`
 property for all the systems:
 endif::[]
+
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-You can find the **inventory** microservice at **http://localhost:9085/inventory/systems** by running the following curl command:
+Run the following curl command to access the  **inventory** microservice:
 ```
 curl http://localhost:9085/inventory/systems
 ```
 {: codeblock}
+
+You see the CPU **systemLoad** property for all the systems:
 endif::[]
+
 [source, role='no_copy']
 ----
 {
@@ -252,10 +256,11 @@ ifndef::cloud-hosted[]
 You can revisit the http://localhost:9085/inventory/systems[^] URL after a while, and you will notice the CPU `systemLoad`
 property for the systems changed.
 endif::[]
+
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-You can revisit the **inventory** service after a while, and you will notice the CPU `systemLoad`
-property for the systems changed. Run the following curl command to see the change:
+You can revisit the **inventory** service after a while by running the following curl command, and you will notice the CPU **systemLoad**
+property for the systems changed:
 ```
 curl http://localhost:9085/inventory/systems
 ```
@@ -292,19 +297,22 @@ Request successful for the os.name property
 ----
 
 The `system` service is available so the request to the service is successful and returns a `200` response code.
+
 //static guide instructions:
 ifndef::cloud-hosted[]
 You can revisit the http://localhost:9085/inventory/systems[^] URL and see the `os.name` system property value is now
 included with the previous values:
 endif::[]
+
 // cloud-hosted instructions:
 ifdef::cloud-hosted[]
 You can revisit the **inventory** service by running the following curl command:
 ```
 curl http://localhost:9085/inventory/systems
 ```
+{: codeblock}
 
-Notice that the `os.name` system property value is now included with the previous values:
+Notice that the **os.name** system property value is now included with the previous values:
 endif::[]
 [source, role='no_copy']
 ----
