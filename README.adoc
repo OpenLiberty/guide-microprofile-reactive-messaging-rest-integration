@@ -72,6 +72,14 @@ include::finish/inventory/src/main/java/io/openliberty/guides/inventory/Inventor
 
 Navigate to the `start` directory to begin.
 
+// cloud-hosted instructions
+ifdef::cloud-hosted[]
+```
+cd /home/project/guide-microprofile-reactive-messaging-rest-integration/start
+```
+{: codeblock}
+endif::[]
+
 The `inventory` microservice records and stores the average system load information from all of the connected
 system microservices. However, the `inventory` microservice does not contain an accessible REST endpoint to control the
 sending or receiving of reactive messages. Add the `/data` RESTful endpoint to the `inventory` service by replacing the
