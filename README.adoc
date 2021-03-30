@@ -78,6 +78,7 @@ ifdef::cloud-hosted[]
 cd /home/project/guide-microprofile-reactive-messaging-rest-integration/start
 ```
 {: codeblock}
+
 endif::[]
 
 The `inventory` microservice records and stores the average system load information from all of the connected
