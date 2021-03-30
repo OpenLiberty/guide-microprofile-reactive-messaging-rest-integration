@@ -70,10 +70,14 @@ InventoryResource.java
 include::finish/inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
 ----
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 Navigate to the `start` directory to begin.
+endif::[]
 
 // cloud-hosted instructions
 ifdef::cloud-hosted[]
+To begin, run the following command to navigate to the **start** directory:
 ```
 cd /home/project/guide-microprofile-reactive-messaging-rest-integration/start
 ```
@@ -323,6 +327,7 @@ curl http://localhost:9085/inventory/systems
 
 Notice that the **os.name** system property value is now included with the previous values:
 endif::[]
+
 [source, role='no_copy']
 ----
 {
