@@ -278,7 +278,7 @@ curl http://localhost:9085/inventory/systems
 ```
 {: codeblock}
 
-Notice the CPU **systemLoad** property for the systems is changed.
+Notice the value of the **systemLoad** property for the systems is changed.
 endif::[]
 
 Make a `PUT` request on the `\http://localhost:9085/inventory/data` URL to add the value of a particular system
