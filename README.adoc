@@ -266,18 +266,19 @@ endif::[]
 
 // static guide instructions:
 ifndef::cloud-hosted[]
-You can revisit the http://localhost:9085/inventory/systems[^] URL after a while, and you will notice the CPU `systemLoad`
-property for the systems changed.
+You can revisit the http://localhost:9085/inventory/systems[^] URL after a while and the value of the `systemLoad`
+property for the systems is changed.
 endif::[]
 
 // cloud-hosted guide instructions:
 ifdef::cloud-hosted[]
-You can revisit the **inventory** service after a while by running the following curl command, and you will notice the CPU **systemLoad**
-property for the systems changed:
+You can revisit the **inventory** service after a while by running the following curl command:
 ```
 curl http://localhost:9085/inventory/systems
 ```
 {: codeblock}
+
+Notice the CPU **systemLoad** property for the systems is changed.
 endif::[]
 
 Make a `PUT` request on the `\http://localhost:9085/inventory/data` URL to add the value of a particular system
