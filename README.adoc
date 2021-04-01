@@ -70,7 +70,20 @@ InventoryResource.java
 include::finish/inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
 ----
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 Navigate to the `start` directory to begin.
+endif::[]
+
+// cloud-hosted instructions
+ifdef::cloud-hosted[]
+To begin, run the following command to navigate to the **start** directory:
+```
+cd /home/project/guide-microprofile-reactive-messaging-rest-integration/start
+```
+{: codeblock}
+
+endif::[]
 
 The `inventory` microservice records and stores the average system load information from all of the connected
 system microservices. However, the `inventory` microservice does not contain an accessible REST endpoint to control the
@@ -226,8 +239,22 @@ include::{common-includes}/os-tabs.adoc[]
 After the application is up and running, you can access the application by making a GET request to the `/systems` endpoint
 of the `inventory` service.
 
+// static guide instructions:
+ifndef::cloud-hosted[]
 Visit the http://localhost:9085/inventory/systems[^] URL to access the inventory microservice. You see the CPU `systemLoad`
 property for all the systems:
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+Run the following curl command to access the  **inventory** microservice:
+```
+curl http://localhost:9085/inventory/systems
+```
+{: codeblock}
+
+You see the CPU **systemLoad** property for all the systems:
+endif::[]
 
 [source, role='no_copy']
 ----
@@ -237,8 +264,22 @@ property for all the systems:
 }
 ----
 
-You can revisit the http://localhost:9085/inventory/systems[^] URL after a while, and you will notice the CPU `systemLoad`
-property for the systems changed.
+// static guide instructions:
+ifndef::cloud-hosted[]
+You can revisit the http://localhost:9085/inventory/systems[^] URL after a while and the value of the `systemLoad`
+property for the systems is changed.
+endif::[]
+
+// cloud-hosted guide instructions:
+ifdef::cloud-hosted[]
+You can revisit the **inventory** service after a while by running the following curl command:
+```
+curl http://localhost:9085/inventory/systems
+```
+{: codeblock}
+
+Notice the value of the **systemLoad** property for the systems is changed.
+endif::[]
 
 Make a `PUT` request on the `\http://localhost:9085/inventory/data` URL to add the value of a particular system
 property to the set of existing properties. For example, run the following `curl` command:
@@ -271,8 +312,22 @@ Request successful for the os.name property
 
 The `system` service is available so the request to the service is successful and returns a `200` response code.
 
+//static guide instructions:
+ifndef::cloud-hosted[]
 You can revisit the http://localhost:9085/inventory/systems[^] URL and see the `os.name` system property value is now
 included with the previous values:
+endif::[]
+
+// cloud-hosted instructions:
+ifdef::cloud-hosted[]
+You can revisit the **inventory** service by running the following curl command:
+```
+curl http://localhost:9085/inventory/systems
+```
+{: codeblock}
+
+Notice that the **os.name** system property value is now included with the previous values:
+endif::[]
 
 [source, role='no_copy']
 ----
