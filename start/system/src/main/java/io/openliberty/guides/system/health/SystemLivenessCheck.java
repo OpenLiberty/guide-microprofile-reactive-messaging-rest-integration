@@ -29,6 +29,7 @@ public class SystemLivenessCheck implements HealthCheck {
     @Override
     public HealthCheckResponse call() {
         boolean up = isAlive();
-        return HealthCheckResponse.named(this.getClass().getSimpleName()).status(up).build();
+        return HealthCheckResponse.named(
+            this.getClass().getSimpleName()).status(up).build();
     }
 }
