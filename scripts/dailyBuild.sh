@@ -18,6 +18,6 @@ cat inventory/pom.xml system/pom.xml
 sed -i "s;FROM openliberty/open-liberty:full-java8-openj9-ubi;FROM $DOCKER_USERNAME/olguides:$BUILD;g" system/Dockerfile inventory/Dockerfile
 cat inventory/Dockerfile system/Dockerfile
 
-docker pull $DOCKER_USERNAME"/olguides:"$BUILD
+docker pull "$DOCKER_USERNAME""/olguides:""$BUILD"
 
 ../scripts/testApp.sh
