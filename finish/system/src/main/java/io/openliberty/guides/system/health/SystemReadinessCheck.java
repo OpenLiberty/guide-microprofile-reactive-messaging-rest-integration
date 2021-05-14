@@ -58,8 +58,9 @@ public class SystemReadinessCheck implements HealthCheck {
         KafkaFuture<Collection<TopicListing>> topicsFuture = topics.listings();
         try {
             Collection<TopicListing> topicList = topicsFuture.get();
-            for (TopicListing t : topicList)
+            for (TopicListing t : topicList){
                 logger.info("topic: " + t.name());
+            }
             return true;
         } catch (Exception e) {
             return false;
