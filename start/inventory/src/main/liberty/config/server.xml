@@ -5,8 +5,8 @@
     <feature>cdi-2.0</feature>
     <feature>concurrent-1.0</feature>
     <feature>jsonb-1.0</feature>
-    <feature>mpHealth-3.0</feature>
-    <feature>mpConfig-2.0</feature>
+    <feature>mpHealth-2.2</feature>
+    <feature>mpConfig-1.4</feature>
     <feature>mpReactiveMessaging-1.0</feature>
   </featureManager>
 
