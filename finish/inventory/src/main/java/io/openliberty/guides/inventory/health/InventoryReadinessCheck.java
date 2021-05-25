@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2020 IBM Corporation and others.
+ * Copyright (c) 2020, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,16 +32,17 @@ import org.eclipse.microprofile.health.Readiness;
 @ApplicationScoped
 public class InventoryReadinessCheck implements HealthCheck {
 
-    private static Logger logger = Logger.getLogger(InventoryReadinessCheck.class.getName());
-    
+    private static Logger logger = Logger.getLogger(
+                                     InventoryReadinessCheck.class.getName());
+
     @Inject
     @ConfigProperty(name = "mp.messaging.connector.liberty-kafka.bootstrap.servers")
     String kafkaServer;
-    
+
     @Inject
     @ConfigProperty(name = "mp.messaging.incoming.systemLoad.group.id")
     String groupId;
-    
+
     @Override
     public HealthCheckResponse call() {
         boolean up = isReady();
@@ -52,14 +53,14 @@ public class InventoryReadinessCheck implements HealthCheck {
         AdminClient adminClient = createAdminClient();
         return checkIfBarConsumerGroupRegistered(adminClient);
     }
-    
+
     private AdminClient createAdminClient() {
         Properties connectionProperties = new Properties();
         connectionProperties.put("bootstrap.servers", kafkaServer);
         AdminClient adminClient = AdminClient.create(connectionProperties);
         return adminClient;
     }
-    
+
     private boolean checkIfBarConsumerGroupRegistered(AdminClient adminClient) {
         ListConsumerGroupsResult groupsResult = adminClient.listConsumerGroups();
         KafkaFuture<Collection<ConsumerGroupListing>> consumerGroupsFuture = groupsResult.valid();
