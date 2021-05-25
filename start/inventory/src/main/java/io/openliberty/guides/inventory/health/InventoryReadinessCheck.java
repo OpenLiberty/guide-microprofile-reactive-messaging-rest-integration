@@ -62,17 +62,17 @@ public class InventoryReadinessCheck implements HealthCheck {
         return adminClient;
     }
 
-    private boolean checkIfBarConsumerGroupRegistered(AdminClient adminClient) {
+    private boolean checkIfBarConsumerGroupRegistered(final AdminClient adminClient) {
         ListConsumerGroupsResult groupsResult = adminClient.listConsumerGroups();
         KafkaFuture<Collection<ConsumerGroupListing>> consumerGroupsFuture =
         groupsResult.valid();
         try {
-            Collection<ConsumerGroupListing> consumerGroups = consumerGroupsFuture.get();
-            for (ConsumerGroupListing g : consumerGroups) {
-                logger.info("groupId: " + g.groupId());
-            }
-            return consumerGroups.stream().anyMatch(
-                group -> group.groupId().equals(groupId));
+          Collection<ConsumerGroupListing> consumerGroups = consumerGroupsFuture.get();
+          for (ConsumerGroupListing g : consumerGroups) {
+              logger.info("groupId: " + g.groupId());
+          }
+          return consumerGroups.stream().anyMatch(
+              group -> group.groupId().equals(groupId));
         } catch (Exception e) {
             return false;
         }
