@@ -65,7 +65,7 @@ public class InventoryReadinessCheck implements HealthCheck {
     private boolean checkIfBarConsumerGroupRegistered(final AdminClient adminClient) {
         ListConsumerGroupsResult groupsResult = adminClient.listConsumerGroups();
         KafkaFuture<Collection<ConsumerGroupListing>> consumerGroupsFuture =
-        groupsResult.valid();
+            groupsResult.valid();
         try {
           Collection<ConsumerGroupListing> consumerGroups = consumerGroupsFuture.get();
           for (ConsumerGroupListing g : consumerGroups) {
