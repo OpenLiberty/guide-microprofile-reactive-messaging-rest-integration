@@ -249,7 +249,7 @@ endif::[]
 ifdef::cloud-hosted[]
 Run the following curl command to access the  **inventory** microservice:
 ```
-curl http://localhost:9085/inventory/systems
+curl -s http://localhost:9085/inventory/systems | jq
 ```
 {: codeblock}
 
@@ -274,7 +274,7 @@ endif::[]
 ifdef::cloud-hosted[]
 You can revisit the **inventory** service after a while by running the following curl command:
 ```
-curl http://localhost:9085/inventory/systems
+curl -s http://localhost:9085/inventory/systems | jq
 ```
 {: codeblock}
 
@@ -322,7 +322,7 @@ endif::[]
 ifdef::cloud-hosted[]
 You can revisit the **inventory** service by running the following curl command:
 ```
-curl http://localhost:9085/inventory/systems
+curl -s http://localhost:9085/inventory/systems | jq
 ```
 {: codeblock}
 
