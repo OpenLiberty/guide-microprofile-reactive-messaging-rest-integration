@@ -241,7 +241,7 @@ of the `inventory` service.
 
 // static guide instructions:
 ifndef::cloud-hosted[]
-Visit the http://localhost:9085/healthy[^] URL to confirm that the `inventory` microservice is up and running.
+Visit the http://localhost:9085/health[^] URL to confirm that the `inventory` microservice is up and running.
 
 Visit the http://localhost:9085/inventory/systems[^] URL to access the `inventory` microservice. You see the CPU `systemLoad`
 property for all the systems:
@@ -254,7 +254,6 @@ Run the following curl command to confirm that the **inventory** microservice is
 curl -s http://localhost:9085/health | jq
 ```
 {: codeblock}
-
 
 Run the following curl command to access the  **inventory** microservice:
 ```
