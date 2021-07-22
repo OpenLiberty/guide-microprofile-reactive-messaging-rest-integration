@@ -236,8 +236,8 @@ include::{common-includes}/os-tabs.adoc[]
 
 == Testing the application
 
-After the application is up and running, you can access the application by making a GET request to the `/systems` endpoint
-of the `inventory` service.
+The application take some time to become available. After the application is up and running,
+you can access the application by making a GET request to the `/systems` endpoint of the `inventory` service.
 
 // static guide instructions:
 ifndef::cloud-hosted[]
