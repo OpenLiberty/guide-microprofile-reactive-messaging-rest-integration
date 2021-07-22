@@ -255,7 +255,7 @@ curl -s http://localhost:9085/health | jq
 ```
 {: codeblock}
 
-When both the liveness and readiness health check are up, run the following curl command to access the  **inventory** microservice:
+When both the liveness and readiness health checks are up, run the following curl command to access the  **inventory** microservice:
 ```
 curl -s http://localhost:9085/inventory/systems | jq
 ```
