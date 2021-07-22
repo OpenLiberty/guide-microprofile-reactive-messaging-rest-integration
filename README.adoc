@@ -237,13 +237,13 @@ include::{common-includes}/os-tabs.adoc[]
 == Testing the application
 
 The application might take some time to become available. After the application is up and running,
-you can access the application by making a GET request to the `/systems` endpoint of the `inventory` service.
+you can access it by making a GET request to the `/systems` endpoint of the `inventory` service.
 
 // static guide instructions:
 ifndef::cloud-hosted[]
 Visit the http://localhost:9085/health[^] URL to confirm that the `inventory` microservice is up and running.
 
-When both health liveness and readiness checks are up, go the http://localhost:9085/inventory/systems[^] URL to access the `inventory` microservice.
+When both the liveness and readiness health checks are up, go the http://localhost:9085/inventory/systems[^] URL to access the `inventory` microservice.
 You see the CPU `systemLoad` property for all the systems:
 endif::[]
 
@@ -255,7 +255,7 @@ curl -s http://localhost:9085/health | jq
 ```
 {: codeblock}
 
-When both health liveness and readiness check are up, run the following curl command to access the  **inventory** microservice:
+When both the liveness and readiness health check are up, run the following curl command to access the  **inventory** microservice:
 ```
 curl -s http://localhost:9085/inventory/systems | jq
 ```
