@@ -96,7 +96,7 @@ sending or receiving of reactive messages. Add the `/data` RESTful endpoint to t
 `inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
-The `updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data` endpoint that accepts
+The [hotspot=updateSystemProperty file=0]`updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data` endpoint that accepts
 [hotspot=annotatedPut file=0]`PUT` requests with a system property name in the request body. The `propertyNameEmitter`
 variable is an RxJava `Emitter` interface that sends the property name request to the event stream, which is Apache
 Kafka in this case.
