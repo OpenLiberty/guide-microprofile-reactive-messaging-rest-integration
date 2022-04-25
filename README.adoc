@@ -245,7 +245,7 @@ If `curl` is unavailable on your computer, use another client such as https://ww
 [.tab_content.mac_section.linux_section]
 --
 [role=command]
-```bash
+```
 curl -X PUT -d "os.name" http://localhost:9085/inventory/data --header "Content-Type:text/plain"
 ```
 --
@@ -269,7 +269,7 @@ endif::[]
 // cloud-hosted instructions:
 ifdef::cloud-hosted[]
 You can revisit the ***inventory*** service by running the following curl command:
-```bash
+```
 curl -s http://localhost:9085/inventory/systems | jq
 ```
 
@@ -294,7 +294,7 @@ include::{common-includes}/os-tabs.adoc[]
 [.tab_content.windows_section]
 --
 [role='command']
-```bash
+```
 .\scripts\stopContainers.bat
 ```
 --
@@ -302,7 +302,7 @@ include::{common-includes}/os-tabs.adoc[]
 [.tab_content.mac_section.linux_section]
 --
 [role='command']
-```bash
+```
 ./scripts/stopContainers.sh
 ```
 --
