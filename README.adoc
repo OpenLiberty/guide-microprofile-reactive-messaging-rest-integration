@@ -50,12 +50,6 @@ include::{common-includes}/gitclone.adoc[]
 
 == Adding a REST endpoint that produces events
 
-//file 0
-InventoryResource.java
-[source, Java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
-----
 
 // static guide instructions:
 ifndef::cloud-hosted[]
@@ -79,6 +73,13 @@ The `inventory` microservice records and stores the average system load informat
 `inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
 ----
 
+//file 0
+InventoryResource.java
+[source, Java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/inventory/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
+----
+
 The [hotspot=updateSystemProperty file=0]`updateSystemProperty()` method creates the [hotspot=putPath file=0]`/data` endpoint that accepts [hotspot=annotatedPut file=0]`PUT` requests with a system property name in the request body. The `propertyNameEmitter` variable is an RxJava `Emitter` interface that sends the property name request to the event stream, which is Apache Kafka in this case.
 
 The [hotspot=sendPropertyName file=0]`sendPropertyName()` method contains the [hotspot=flowableCreate file=0]`Flowable.create()` RxJava method, which associates the emitter to a publisher that is responsible for publishing events to the event stream. The publisher in this example is then connected to the [hotspot=OutgoingPropertyName file=0]`@Outgoing("requestSystemProperty")` channel, which you will configure later in the guide. MicroProfile Reactive Messaging takes care of assigning the publisher to the channel.
@@ -89,13 +90,6 @@ When the `inventory` service receives a request, it adds the system property nam
 
 == Adding an event processor to a reactive service
 
-//file 0
-SystemService.java
-[source, Java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/system/src/main/java/io/openliberty/guides/system/SystemService.java[]
-----
-
 The `system` microservice is the producer of the messages that are published to the Kafka messaging system as a stream of events. Every 15 seconds, the `system` microservice publishes events that contain its calculation of the average system load, which is its CPU usage, for the last minute. Replace the `SystemService` class to add message processing of the system property request from the `inventory` microservice and publish it to the Kafka messaging system.
 
 [role="code_command hotspot file=0", subs="quotes"]
@@ -104,23 +98,17 @@ The `system` microservice is the producer of the messages that are published to 
 `system/src/main/java/io/openliberty/guides/system/SystemService.java`
 ----
 
+//file 0
+SystemService.java
+[source, Java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/system/src/main/java/io/openliberty/guides/system/SystemService.java[]
+----
+
 A new method that is named [hotspot=sendProperty file=0]`sendProperty()` receives a system property name from the `inventory` microservice over the [hotspot=propertyRequest file=0]`@Incoming("propertyRequest")` channel. The method calculates the requested property in real time and publishes it back to Kafka over the [hotspot=propertyResponse file=0]`@Outgoing("propertyResponse")` channel. In this scenario, the [hotspot=sendProperty file=0]`sendProperty()` method acts as a processor. Next, you'll configure the channels that you need.
 
 == Configuring the MicroProfile Reactive Messaging connectors for Kafka
 
-//file 0
-inventory/microprofile-config.properties
-[source, properties, linenums, role='code_column']
-----
-include::finish/inventory/src/main/resources/META-INF/microprofile-config.properties[]
-----
-
-//file 1
-system/microprofile-config.properties
-[source, properties, linenums, role='code_column']
-----
-include::finish/system/src/main/resources/META-INF/microprofile-config.properties[]
-----
 
 The `system` and `inventory` microservices each have a MicroProfile Config property file in which the properties of their incoming and outgoing channels are defined. These properties include the names of channels, the topics in the Kafka messaging system, and the associated message serializers and deserializers. To complete the message loop created in the previous sections, four channels must be added and configured.
 
@@ -130,12 +118,26 @@ The `system` and `inventory` microservices each have a MicroProfile Config prope
 `inventory/src/main/resources/META-INF/microprofile-config.properties`
 ----
 
+//file 0
+inventory/microprofile-config.properties
+[source, properties, linenums, role='code_column']
+----
+include::finish/inventory/src/main/resources/META-INF/microprofile-config.properties[]
+----
+
 The newly created RESTful endpoint requires two new channels that move the requested messages between the `system` and `inventory` microservices. The `inventory` microservice [hotspot file=0]`microprofile-config.properties` file now has two new channels, [hotspot=requestSystemProperty file=0]`requestSystemProperty` and [hotspot=addSystemProperty file=0]`addSystemProperty`. The [hotspot=requestSystemProperty file=0]`requestSystemProperty` channel handles sending the system property request, and the [hotspot=addSystemProperty file=0]`addSystemProperty` channel handles receiving the system property response.
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
 #Replace the system/microprofile-config.properties file.#
 `system/src/main/resources/META-INF/microprofile-config.properties`
+----
+
+//file 1
+system/microprofile-config.properties
+[source, properties, linenums, role='code_column']
+----
+include::finish/system/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
 Replace the `system` microservice [hotspot file=1]`microprofile-config.properties` file to add the two new [hotspot=propertyRequest file=1]`propertyRequest` and [hotspot=propertyResponse file=1]`propertyResponse` channels. The [hotspot=propertyRequest file=1]`propertyRequest` channel handles receiving the property request, and the [hotspot=propertyResponse file=1]`propertyResponse` channel handles sending the property response.
