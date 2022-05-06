@@ -271,7 +271,7 @@ endif::[]
 // cloud-hosted instructions:
 ifdef::cloud-hosted[]
 You can revisit the ***inventory*** service by running the following curl command:
-```
+```bash
 curl -s http://localhost:9085/inventory/systems | jq
 ```
 
