@@ -3,8 +3,8 @@ set -euxo pipefail
 
 ./scripts/packageApps.sh
 
-mvn -pl system verify
-mvn -pl inventory verify
+mvn -ntp -pl system verify
+mvn -ntp -pl inventory verify
 
 docker pull bitnami/zookeeper:3
 docker pull bitnami/kafka:2
