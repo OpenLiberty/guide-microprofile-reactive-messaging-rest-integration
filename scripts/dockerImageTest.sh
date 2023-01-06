@@ -16,6 +16,6 @@ cat inventory/pom.xml system/pom.xml
 sed -i "s;FROM icr.io/appcafe/open-liberty:full-java11-openj9-ubi;FROM openliberty/daily:latest;g" system/Dockerfile inventory/Dockerfile
 cat inventory/Dockerfile system/Dockerfile
 
-docker pull "openliberty/daily:latest"
+docker pull -q "openliberty/daily:latest"
 
 ../scripts/testApp.sh
