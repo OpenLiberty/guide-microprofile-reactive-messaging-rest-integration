@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2022 IBM Corporation and others.
+// Copyright (c) 2020, 2023 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -156,7 +156,7 @@ mvn -pl models install
 mvn package
 ```
 
-include::{common-includes}/ol-icr-full-docker-pull.adoc[]
+
 
 Run the following commands to containerize the microservices:
 
