@@ -2,12 +2,11 @@
 /*******************************************************************************
  * Copyright (c) 2020 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * http://www.eclipse.org/legal/epl-2.0/
  *
- * Contributors:
- *     IBM Corporation - Initial implementation
+ * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 // end::copyright[]
 package io.openliberty.guides.system.health;
@@ -32,12 +31,13 @@ import org.eclipse.microprofile.health.Readiness;
 @ApplicationScoped
 public class SystemReadinessCheck implements HealthCheck {
 
-    private static Logger logger = Logger.getLogger(SystemReadinessCheck.class.getName());
-    
+    private static Logger logger = Logger.getLogger(
+        SystemReadinessCheck.class.getName());
+
     @Inject
     @ConfigProperty(name = "mp.messaging.connector.liberty-kafka.bootstrap.servers")
     String kafkaServer;
-    
+
     @Override
     public HealthCheckResponse call() {
         boolean up = isReady();
@@ -49,21 +49,22 @@ public class SystemReadinessCheck implements HealthCheck {
         AdminClient adminClient = createAdminClient();
         return checkIfBarConsumerGroupRegistered(adminClient);
     }
-    
+
     private AdminClient createAdminClient() {
         Properties connectionProperties = new Properties();
         connectionProperties.put("bootstrap.servers", kafkaServer);
         AdminClient adminClient = AdminClient.create(connectionProperties);
         return adminClient;
     }
-    
+
     private boolean checkIfBarConsumerGroupRegistered(AdminClient adminClient) {
         ListTopicsResult topics = adminClient.listTopics();
         KafkaFuture<Collection<TopicListing>> topicsFuture = topics.listings();
         try {
             Collection<TopicListing> topicList = topicsFuture.get();
-            for (TopicListing t : topicList)
+            for (TopicListing t : topicList) {
                 logger.info("topic: " + t.name());
+            }
             return true;
         } catch (Exception e) {
             return false;

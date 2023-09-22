@@ -30,10 +30,10 @@ import io.reactivex.rxjava3.core.Flowable;
 
 @ApplicationScoped
 public class SystemService {
-    
+
     private static Logger logger = Logger.getLogger(SystemService.class.getName());
 
-    private static final OperatingSystemMXBean OS_MEAN = 
+    private static final OperatingSystemMXBean OS_MEAN =
             ManagementFactory.getOperatingSystemMXBean();
     private static String hostname = null;
 
@@ -60,7 +60,7 @@ public class SystemService {
         // end::flowableInterval[]
     }
     // end::sendSystemLoad[]
-    
+
     // tag::propertyRequest[]
     @Incoming("propertyRequest")
     // end::propertyRequest[]
