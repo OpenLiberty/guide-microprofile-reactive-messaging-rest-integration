@@ -1,13 +1,13 @@
 <server description="System Service">
 
   <featureManager>
-    <feature>cdi-2.0</feature>
-    <feature>concurrent-1.0</feature>
-    <feature>jsonb-1.0</feature>
-    <feature>mpHealth-2.2</feature>
-    <feature>mpConfig-1.4</feature>
+    <feature>cdi-4.0</feature>
+    <feature>concurrent-3.0</feature>
+    <feature>jsonb-3.0</feature>
+    <feature>mpHealth-4.0</feature>
+    <feature>mpConfig-3.0</feature>
     <!-- tag::featureMP[] -->
-    <feature>mpReactiveMessaging-1.0</feature>
+    <feature>mpReactiveMessaging-3.0</feature>
     <!-- end::featureMP[] -->
   </featureManager>
 

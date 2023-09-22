@@ -16,8 +16,8 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.ConsumerGroupListing;
@@ -47,7 +47,7 @@ public class InventoryReadinessCheck implements HealthCheck {
     public HealthCheckResponse call() {
         boolean up = isReady();
         return HealthCheckResponse.named(
-            this.getClass().getSimpleName()).state(up).build();
+            this.getClass().getSimpleName()).status(up).build();
     }
 
     private boolean isReady() {

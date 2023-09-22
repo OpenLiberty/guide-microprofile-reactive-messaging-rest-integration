@@ -6,7 +6,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.reactivestreams.Publisher;
 import io.openliberty.guides.models.SystemLoad;
@@ -16,7 +16,7 @@ import io.reactivex.rxjava3.core.Flowable;
 public class SystemService {
     private static Logger logger = Logger.getLogger(SystemService.class.getName());
 
-    private static final OperatingSystemMXBean osMean = 
+    private static final OperatingSystemMXBean OS_MEAN = 
             ManagementFactory.getOperatingSystemMXBean();
     private static String hostname = null;
 
@@ -35,6 +35,6 @@ public class SystemService {
     public Publisher<SystemLoad> sendSystemLoad() {
         return Flowable.interval(15, TimeUnit.SECONDS)
                 .map((interval -> new SystemLoad(getHostname(),
-                        osMean.getSystemLoadAverage())));
+                    OS_MEAN.getSystemLoadAverage())));
     }
 }

@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class InventoryManager {

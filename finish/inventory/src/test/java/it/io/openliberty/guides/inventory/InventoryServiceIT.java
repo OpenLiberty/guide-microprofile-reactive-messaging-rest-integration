@@ -20,8 +20,8 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

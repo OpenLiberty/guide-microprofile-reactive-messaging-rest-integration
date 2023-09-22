@@ -16,8 +16,8 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.ListTopicsResult;
@@ -41,7 +41,8 @@ public class SystemReadinessCheck implements HealthCheck {
     @Override
     public HealthCheckResponse call() {
         boolean up = isReady();
-        return HealthCheckResponse.named(this.getClass().getSimpleName()).state(up).build();
+        return HealthCheckResponse.named(
+            this.getClass().getSimpleName()).status(up).build();
     }
 
     private boolean isReady() {
