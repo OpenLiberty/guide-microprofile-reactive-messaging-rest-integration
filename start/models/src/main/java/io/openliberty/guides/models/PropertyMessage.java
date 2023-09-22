@@ -38,8 +38,12 @@ public class PropertyMessage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PropertyMessage)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PropertyMessage)) {
+            return false;
+        }
         PropertyMessage m = (PropertyMessage) o;
         return Objects.equals(hostname, m.hostname)
                 && Objects.equals(key, m.key)
@@ -63,10 +67,11 @@ public class PropertyMessage {
         }
     }
 
-    public static class PropertyMessageDeserializer implements Deserializer<PropertyMessage> {
+    public static class PropertyMessageDeserializer implements
+    Deserializer<PropertyMessage> {
         @Override
         public PropertyMessage deserialize(String topic, byte[] data) {
-            if (data == null){
+            if (data == null) {
                 return null;
             }
             return JSONB.fromJson(new String(data), PropertyMessage.class);

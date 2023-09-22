@@ -54,7 +54,7 @@ public class PropertyMessage {
     public int hashCode() {
         return Objects.hash(hostname, key, value);
     }
-    
+
     @Override
     public String toString() {
         return "PropertyMessage: " + JSONB.toJson(this);
@@ -70,7 +70,7 @@ public class PropertyMessage {
     // end::PropertyMessageSerializer[]
 
     // tag::PropertyMessageDeserializer[]
-    public static class PropertyMessageDeserializer implements 
+    public static class PropertyMessageDeserializer implements
     Deserializer<PropertyMessage> {
         @Override
         public PropertyMessage deserialize(String topic, byte[] data) {

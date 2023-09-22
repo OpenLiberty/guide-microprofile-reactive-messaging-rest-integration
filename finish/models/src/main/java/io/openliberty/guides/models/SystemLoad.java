@@ -36,10 +36,10 @@ public class SystemLoad {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){
+        if (this == o) {
             return true;
-        } 
-        if (!(o instanceof SystemLoad)){
+        }
+        if (!(o instanceof SystemLoad)) {
             return false;
         }
         SystemLoad sl = (SystemLoad) o;
@@ -51,7 +51,7 @@ public class SystemLoad {
     public int hashCode() {
         return Objects.hash(hostname, loadAverage);
     }
-    
+
     @Override
     public String toString() {
         return "CpuLoadAverage: " + JSONB.toJson(this);
