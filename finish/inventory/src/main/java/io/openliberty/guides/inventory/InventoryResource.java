@@ -53,7 +53,7 @@ public class InventoryResource {
 
     @Inject
     private InventoryManager manager;
-    
+
     @GET
     @Path("/systems")
     @Produces(MediaType.APPLICATION_JSON)
@@ -130,7 +130,7 @@ public class InventoryResource {
         }
     }
     // end::updateStatus[]
-    
+
     // tag::propertyMessage[]
     @Incoming("addSystemProperty")
     // end::propertyMessage[]
@@ -152,7 +152,7 @@ public class InventoryResource {
     // end::OutgoingPropertyName[]
     public Publisher<String> sendPropertyName() {
         // tag::flowableCreate[]
-        Flowable<String> flowable = Flowable.<String>create(emitter -> 
+        Flowable<String> flowable = Flowable.<String>create(emitter ->
             this.propertyNameEmitter = emitter, BackpressureStrategy.BUFFER);
         // end::flowableCreate[]
         return flowable;

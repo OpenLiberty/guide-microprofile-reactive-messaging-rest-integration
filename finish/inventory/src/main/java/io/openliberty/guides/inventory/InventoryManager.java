@@ -46,7 +46,7 @@ public class InventoryManager {
     public void updateCpuStatus(String hostname, Double systemLoad) {
         Optional<Properties> p = getSystem(hostname);
         if (p.isPresent()) {
-            if (p.get().getProperty(hostname) == null && hostname != null){
+            if (p.get().getProperty(hostname) == null && hostname != null) {
                 p.get().put("systemLoad", systemLoad);
             }
         }
