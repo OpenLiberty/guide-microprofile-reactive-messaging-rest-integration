@@ -22,12 +22,6 @@ import org.apache.kafka.common.serialization.Serializer;
 public class SystemLoad {
 
     private static final Jsonb JSONB = JsonbBuilder.create();
-if (this == o) {
-            return true;
-        }
-        if (!(o instanceof SystemLoad)) {
-            return false;
-        }
     public String hostname;
     public Double loadAverage;
 
@@ -75,7 +69,7 @@ if (this == o) {
     public static class SystemLoadDeserializer implements Deserializer<SystemLoad> {
         @Override
         public SystemLoad deserialize(String topic, byte[] data) {
-            if (data == null){
+            if (data == null) {
                 return null;
             }
             return JSONB.fromJson(new String(data), SystemLoad.class);
