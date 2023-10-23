@@ -129,7 +129,7 @@ public class SystemServiceIT {
         propertyConsumerProps.put(
             ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
                 "earliest");
-        propertyConsumer = 
+        propertyConsumer =
             new KafkaConsumer<String, PropertyMessage>(propertyConsumerProps);
         propertyConsumer.subscribe(Collections.singletonList("add.system.property"));
 
