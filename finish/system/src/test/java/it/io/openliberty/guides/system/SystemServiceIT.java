@@ -167,7 +167,8 @@ public class SystemServiceIT {
     public void testCpuStatus() {
         ConsumerRecords<String, SystemLoad> records =
                 consumer.poll(Duration.ofMillis(30 * 1000));
-        System.out.println("Polled the consumer " + records.count() + " records from Kafka:");
+        System.out.println(
+            "Polled the consumer " + records.count() + " records from Kafka:");
         assertTrue(records.count() > 0, "No consumer records processed");
 
         for (ConsumerRecord<String, SystemLoad> record : records) {
@@ -186,7 +187,8 @@ public class SystemServiceIT {
 
         ConsumerRecords<String, PropertyMessage> records =
                 propertyConsumer.poll(Duration.ofMillis(30 * 1000));
-        System.out.println("Polled the propertyConsumer " + records.count() + " records from Kafka:");
+        System.out.println(
+            "Polled the propertyConsumer " + records.count() + " records from Kafka:");
         assertTrue(records.count() > 0, "No propertyConsumer records processed");
 
         for (ConsumerRecord<String, PropertyMessage> record : records) {
