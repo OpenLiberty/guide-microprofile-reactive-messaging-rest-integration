@@ -93,7 +93,6 @@ public class SystemServiceIT {
 
     @BeforeEach
     public void setUp() {
-
         Properties consumerProps = new Properties();
         consumerProps.put(
             ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -110,6 +109,7 @@ public class SystemServiceIT {
         consumerProps.put(
             ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
                 "earliest");
+
         consumer = new KafkaConsumer<String, SystemLoad>(consumerProps);
         consumer.subscribe(Collections.singletonList("system.load"));
 
@@ -129,6 +129,7 @@ public class SystemServiceIT {
         propertyConsumerProps.put(
             ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
                 "earliest");
+
         propertyConsumer =
             new KafkaConsumer<String, PropertyMessage>(propertyConsumerProps);
         propertyConsumer.subscribe(Collections.singletonList("add.system.property"));
@@ -143,8 +144,10 @@ public class SystemServiceIT {
         producerProps.put(
             ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 StringSerializer.class.getName());
+
         propertyProducer = new KafkaProducer<String, String>(producerProps);
     }
+
 
     @AfterAll
     public static void stopContainers() {
@@ -164,8 +167,8 @@ public class SystemServiceIT {
     public void testCpuStatus() {
         ConsumerRecords<String, SystemLoad> records =
                 consumer.poll(Duration.ofMillis(30 * 1000));
-        System.out.println("Polled " + records.count() + " records from Kafka:");
-        assertTrue(records.count() > 0, "No records processed");
+        System.out.println("Polled the consumer " + records.count() + " records from Kafka:");
+        assertTrue(records.count() > 0, "No consumer records processed");
 
         for (ConsumerRecord<String, SystemLoad> record : records) {
             SystemLoad sl = record.value();
@@ -179,14 +182,12 @@ public class SystemServiceIT {
     @Test
     public void testPropertyMessage() throws IOException, InterruptedException {
         propertyProducer.send(
-            new ProducerRecord<String, String>(
-                "request.system.property", "os.name"));
+            new ProducerRecord<String, String>("request.system.property", "os.name"));
 
         ConsumerRecords<String, PropertyMessage> records =
-                propertyConsumer.poll(
-                    Duration.ofMillis(30 * 1000));
-        System.out.println("Polled " + records.count() + " records from Kafka:");
-        assertTrue(records.count() > 0, "No records processed");
+                propertyConsumer.poll(Duration.ofMillis(30 * 1000));
+        System.out.println("Polled the propertyConsumer " + records.count() + " records from Kafka:");
+        assertTrue(records.count() > 0, "No propertyConsumer records processed");
 
         for (ConsumerRecord<String, PropertyMessage> record : records) {
             PropertyMessage pm = record.value();

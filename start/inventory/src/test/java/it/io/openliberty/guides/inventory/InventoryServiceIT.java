@@ -123,6 +123,7 @@ public class InventoryServiceIT {
         producerProps.put(
             ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 SystemLoadSerializer.class.getName());
+
         producer = new KafkaProducer<String, SystemLoad>(producerProps);
 
         Properties consumerProps = new Properties();
@@ -141,6 +142,7 @@ public class InventoryServiceIT {
         consumerProps.put(
             ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
                 "earliest");
+
         propertyConsumer = new KafkaConsumer<String, String>(consumerProps);
         propertyConsumer.subscribe(
                 Collections.singletonList("request.system.property"));
@@ -164,7 +166,7 @@ public class InventoryServiceIT {
         SystemLoad sl = new SystemLoad("localhost", 1.1);
         producer.send(new ProducerRecord<String, SystemLoad>("system.load", sl));
         Thread.sleep(5000);
-        Response response = client.getSystem("localhost");
+        Response response = client.getSystems();
         List<Properties> systems =
                 response.readEntity(new GenericType<List<Properties>>() { });
         Assertions.assertEquals(200, response.getStatus(),
@@ -178,6 +180,7 @@ public class InventoryServiceIT {
                     "CPU load doesn't match!");
         }
     }
+
     @Test
     public void testGetProperty() {
         Response response = client.updateSystemProperty("os.name");
