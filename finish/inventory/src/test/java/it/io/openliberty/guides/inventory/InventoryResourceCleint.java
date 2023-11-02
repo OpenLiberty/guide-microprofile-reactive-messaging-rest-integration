@@ -16,6 +16,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -33,5 +34,10 @@ public interface InventoryResourceCleint {
     @Consumes(MediaType.TEXT_PLAIN)
     Response updateSystemProperty(
         String propertyName);
+
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    Response resetSystems();
+
 }
 
