@@ -136,7 +136,7 @@ public class SystemServiceIT {
         consumer.subscribe(Collections.singletonList("system.load"));
 
         Properties propertyConsumerProps = new Properties();
-        if (isServiceRunning("localhost", 9083)) { 
+        if (isServiceRunning("localhost", 9083)) {
             propertyConsumerProps.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 "localhost:9094");
@@ -163,7 +163,7 @@ public class SystemServiceIT {
         propertyConsumer.subscribe(Collections.singletonList("add.system.property"));
 
         Properties producerProps = new Properties();
-        if (isServiceRunning("localhost", 9083)) { 
+        if (isServiceRunning("localhost", 9083)) {
             producerProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 "localhost:9094");

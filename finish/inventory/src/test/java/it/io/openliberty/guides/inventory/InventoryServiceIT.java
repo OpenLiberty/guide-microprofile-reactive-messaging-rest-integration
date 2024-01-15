@@ -128,7 +128,7 @@ public class InventoryServiceIT {
                 + inventoryContainer.getHost()
                 + ":" + inventoryContainer.getFirstMappedPort();
         }
-        
+
         System.out.println("Creating REST client with: " + urlPath);
         client = createRestClient(urlPath);
     }
@@ -167,7 +167,7 @@ public class InventoryServiceIT {
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
                     kafkaContainer.getBootstrapServers());
         }
-       
+
         consumerProps.put(
             ConsumerConfig.GROUP_ID_CONFIG,
                 "property-name");
