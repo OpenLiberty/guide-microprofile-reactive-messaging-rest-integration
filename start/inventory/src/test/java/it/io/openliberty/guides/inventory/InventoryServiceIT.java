@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.util.Properties;
+import java.net.Socket;
 
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
