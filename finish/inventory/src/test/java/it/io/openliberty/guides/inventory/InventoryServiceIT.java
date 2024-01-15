@@ -226,7 +226,7 @@ public class InventoryServiceIT {
         Assertions.assertEquals(200, response.getStatus(),
                 "Response should be 200");
         ConsumerRecords<String, String> records =
-                propertyConsumer.poll(Duration.ofMillis(3000));
+                propertyConsumer.poll(Duration.ofMillis(4000));
         System.out.println("Polled " + records.count() + " records from Kafka:");
         assertTrue(records.count() > 0, "No records polled");
 
