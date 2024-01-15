@@ -110,6 +110,14 @@
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>3.10</version>
+                <configuration>
+                    <!-- devc config -->
+                    <containerRunOpts>
+                                    -e WLP_LOGGING_CONSOLE_LOGLEVEL=info 
+                                    -p 9085:9085
+                                    --network=reactive-app
+                    </containerRunOpts>
+                </configuration>
             </plugin>
 
             <!-- Plugin to run unit tests -->

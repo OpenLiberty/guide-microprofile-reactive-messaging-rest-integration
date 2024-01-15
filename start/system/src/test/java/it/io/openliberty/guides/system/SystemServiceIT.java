@@ -83,20 +83,41 @@ public class SystemServiceIT {
             .withLogConsumer(new Slf4jLogConsumer(logger))
             .dependsOn(kafkaContainer);
 
+    private static boolean isServiceRunning(String host, int port) {
+        try {
+            Socket socket = new Socket(host, port);
+            socket.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @BeforeAll
     public static void startContainers() {
-        kafkaContainer.start();
-        systemContainer.withEnv(
+        if (isServiceRunning("localhost", 9083)) {
+            System.out.println("Testing with mvn liberty:devc");
+        } else {
+            kafkaContainer.start();
+            systemContainer.withEnv(
             "mp.messaging.connector.liberty-kafka.bootstrap.servers", "kafka:19092");
-        systemContainer.start();
+            systemContainer.start();
+            System.out.println("Testing with mvn verify");
+        }
     }
 
     @BeforeEach
     public void setUp() {
         Properties consumerProps = new Properties();
-        consumerProps.put(
+        if (isServiceRunning("localhost", 9083)) {
+            consumerProps.put(
+            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                "localhost:9094");
+        } else {
+            consumerProps.put(
             ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 kafkaContainer.getBootstrapServers());
+        }
         consumerProps.put(
             ConsumerConfig.GROUP_ID_CONFIG,
                 "system-load-status");
@@ -114,9 +135,15 @@ public class SystemServiceIT {
         consumer.subscribe(Collections.singletonList("system.load"));
 
         Properties propertyConsumerProps = new Properties();
-        propertyConsumerProps.put(
-            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                kafkaContainer.getBootstrapServers());
+        if (isServiceRunning("localhost", 9083)) { 
+            propertyConsumerProps.put(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                "localhost:9094");
+        } else {
+            propertyConsumerProps.put(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                    kafkaContainer.getBootstrapServers());
+        }
         propertyConsumerProps.put(
             ConsumerConfig.GROUP_ID_CONFIG,
                 "property-name");
@@ -135,9 +162,15 @@ public class SystemServiceIT {
         propertyConsumer.subscribe(Collections.singletonList("add.system.property"));
 
         Properties producerProps = new Properties();
-        producerProps.put(
-            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                kafkaContainer.getBootstrapServers());
+        if (isServiceRunning("localhost", 9083)) { 
+            producerProps.put(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                "localhost:9094");
+        } else {
+            producerProps.put(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                    kafkaContainer.getBootstrapServers());
+        }
         producerProps.put(
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
                 StringSerializer.class.getName());

@@ -100,23 +100,52 @@ public class InventoryServiceIT {
         return target.proxy(InventoryResourceCleint.class);
     }
 
+    private static boolean isServiceRunning(String host, int port) {
+        try {
+            Socket socket = new Socket(host, port);
+            socket.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @BeforeAll
     public static void startContainers() {
-        kafkaContainer.start();
-        inventoryContainer.withEnv(
+
+        String urlPath;
+        if (isServiceRunning("localhost", 9085)) {
+            System.out.println("Testing with mvn liberty:devc");
+            urlPath = "http://localhost:9085";
+        } else {
+            System.out.println("Testing with mvn verify");
+            kafkaContainer.start();
+            inventoryContainer.withEnv(
             "mp.messaging.connector.liberty-kafka.bootstrap.servers", "kafka:19092");
-        inventoryContainer.start();
-        client = createRestClient("http://"
-            + inventoryContainer.getHost()
-            + ":" + inventoryContainer.getFirstMappedPort());
+            inventoryContainer.start();
+            urlPath = "http://"
+                + inventoryContainer.getHost()
+                + ":" + inventoryContainer.getFirstMappedPort();
+        }
+        
+        System.out.println("Creating REST client with: " + urlPath);
+        client = createRestClient(urlPath);
     }
 
     @BeforeEach
     public void setUp() {
         Properties producerProps = new Properties();
-        producerProps.put(
-            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                kafkaContainer.getBootstrapServers());
+
+        if (isServiceRunning("localhost", 9085)) {
+            producerProps.put(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                "localhost:9094");
+        } else {
+            producerProps.put(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                    kafkaContainer.getBootstrapServers());
+        }
+
         producerProps.put(
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
                 StringSerializer.class.getName());
@@ -127,9 +156,17 @@ public class InventoryServiceIT {
         producer = new KafkaProducer<String, SystemLoad>(producerProps);
 
         Properties consumerProps = new Properties();
-        consumerProps.put(
-            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                kafkaContainer.getBootstrapServers());
+
+        if (isServiceRunning("localhost", 9085)) {
+            consumerProps.put(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                "localhost:9094");
+        } else {
+            consumerProps.put(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                    kafkaContainer.getBootstrapServers());
+        }
+       
         consumerProps.put(
             ConsumerConfig.GROUP_ID_CONFIG,
                 "property-name");
