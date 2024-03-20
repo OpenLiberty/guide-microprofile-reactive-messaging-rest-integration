@@ -5,7 +5,7 @@
     <feature>concurrent-3.0</feature>
     <feature>jsonb-3.0</feature>
     <feature>mpHealth-4.0</feature>
-    <feature>mpConfig-3.0</feature>
+    <feature>mpConfig-3.1</feature>
     <!-- tag::featureMP[] -->
     <feature>mpReactiveMessaging-3.0</feature>
     <!-- end::featureMP[] -->
