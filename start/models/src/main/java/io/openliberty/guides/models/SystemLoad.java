@@ -43,7 +43,7 @@ public class SystemLoad {
         }
         SystemLoad sl = (SystemLoad) o;
         return Objects.equals(hostname, sl.hostname)
-                && Objects.equals(loadAverage, sl.loadAverage);
+               && Objects.equals(loadAverage, sl.loadAverage);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class SystemLoad {
     public static class SystemLoadSerializer implements Serializer<Object> {
         @Override
         public byte[] serialize(String topic, Object data) {
-          return JSONB.toJson(data).getBytes();
+            return JSONB.toJson(data).getBytes();
         }
     }
     //end::jsonbSerializer[]

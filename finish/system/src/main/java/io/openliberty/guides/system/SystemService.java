@@ -56,7 +56,7 @@ public class SystemService {
         // tag::flowableInterval[]
         return Flowable.interval(15, TimeUnit.SECONDS)
                        .map((interval -> new SystemLoad(getHostname(),
-                           OS_MEAN.getSystemLoadAverage())));
+                             OS_MEAN.getSystemLoadAverage())));
         // end::flowableInterval[]
     }
     // end::sendSystemLoad[]
