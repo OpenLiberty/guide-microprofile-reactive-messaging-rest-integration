@@ -11,57 +11,51 @@
 // end::copyright[]
 package it.io.openliberty.guides.inventory;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.math.BigDecimal;
+import java.net.Socket;
+import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
-import java.time.Duration;
-import java.math.BigDecimal;
-import java.nio.file.Paths;
 import java.util.Properties;
-import java.net.Socket;
 
-import jakarta.ws.rs.core.GenericType;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.UriBuilder;
-import jakarta.ws.rs.client.ClientBuilder;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.junit.jupiter.api.Test;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Assertions;
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.testcontainers.containers.Network;
-import org.testcontainers.utility.DockerImageName;
-
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-
-import org.testcontainers.containers.KafkaContainer;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.images.builder.ImageFromDockerfile;
-import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
-
-import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.images.builder.ImageFromDockerfile;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import io.openliberty.guides.models.SystemLoad;
 import io.openliberty.guides.models.SystemLoad.SystemLoadSerializer;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
 
 @Testcontainers
 public class InventoryServiceIT {
@@ -76,12 +70,12 @@ public class InventoryServiceIT {
 
     public static KafkaConsumer<String, String> propertyConsumer;
 
-    private static ImageFromDockerfile inventoryImage
-        = new ImageFromDockerfile("inventory:1.0-SNAPSHOT")
+    private static ImageFromDockerfile inventoryImage =
+        new ImageFromDockerfile("inventory:1.0-SNAPSHOT")
             .withDockerfile(Paths.get("./Dockerfile"));
 
-    private static KafkaContainer kafkaContainer = new KafkaContainer(
-        DockerImageName.parse("confluentinc/cp-kafka:latest"))
+    private static KafkaContainer kafkaContainer =
+        new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"))
             .withListener(() -> "kafka:19092")
             .withNetwork(network);
 
@@ -122,7 +116,8 @@ public class InventoryServiceIT {
             System.out.println("Testing with mvn verify");
             kafkaContainer.start();
             inventoryContainer.withEnv(
-            "mp.messaging.connector.liberty-kafka.bootstrap.servers", "kafka:19092");
+                "mp.messaging.connector.liberty-kafka.bootstrap.servers",
+                "kafka:19092");
             inventoryContainer.start();
             urlPath = "http://"
                 + inventoryContainer.getHost()
@@ -144,15 +139,15 @@ public class InventoryServiceIT {
         } else {
             producerProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                    kafkaContainer.getBootstrapServers());
+                kafkaContainer.getBootstrapServers());
         }
 
         producerProps.put(
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class.getName());
+            StringSerializer.class.getName());
         producerProps.put(
             ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                SystemLoadSerializer.class.getName());
+            SystemLoadSerializer.class.getName());
 
         producer = new KafkaProducer<String, SystemLoad>(producerProps);
 
@@ -165,25 +160,25 @@ public class InventoryServiceIT {
         } else {
             consumerProps.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                    kafkaContainer.getBootstrapServers());
+                kafkaContainer.getBootstrapServers());
         }
 
         consumerProps.put(
             ConsumerConfig.GROUP_ID_CONFIG,
-                "property-name");
+            "property-name");
         consumerProps.put(
             ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-                StringDeserializer.class.getName());
+            StringDeserializer.class.getName());
         consumerProps.put(
             ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                StringDeserializer.class.getName());
+            StringDeserializer.class.getName());
         consumerProps.put(
             ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
-                "earliest");
+            "earliest");
 
         propertyConsumer = new KafkaConsumer<String, String>(consumerProps);
         propertyConsumer.subscribe(
-                Collections.singletonList("request.system.property"));
+            Collections.singletonList("request.system.property"));
     }
 
     @AfterAll
@@ -207,26 +202,25 @@ public class InventoryServiceIT {
         Thread.sleep(5000);
         Response response = client.getSystems();
         List<Properties> systems =
-                response.readEntity(new GenericType<List<Properties>>() { });
-        Assertions.assertEquals(200, response.getStatus(),
+            response.readEntity(new GenericType<List<Properties>>() { });
+        assertEquals(200, response.getStatus(),
                 "Response should be 200");
-        Assertions.assertEquals(systems.size(), 1);
+        assertEquals(systems.size(), 1);
         for (Properties system : systems) {
-            Assertions.assertEquals(sl.hostname, system.get("hostname"),
-                    "Hostname doesn't match!");
+            assertEquals(sl.hostname, system.get("hostname"),
+                "Hostname doesn't match!");
             BigDecimal systemLoad = (BigDecimal) system.get("systemLoad");
-            Assertions.assertEquals(sl.loadAverage, systemLoad.doubleValue(),
-                    "CPU load doesn't match!");
+            assertEquals(sl.loadAverage, systemLoad.doubleValue(),
+                "CPU load doesn't match!");
         }
     }
 
     @Test
     public void testGetProperty() {
         Response response = client.updateSystemProperty("os.name");
-        Assertions.assertEquals(200, response.getStatus(),
-                "Response should be 200");
+        assertEquals(200, response.getStatus(), "Response should be 200");
         ConsumerRecords<String, String> records =
-                propertyConsumer.poll(Duration.ofMillis(4000));
+            propertyConsumer.poll(Duration.ofMillis(4000));
         System.out.println("Polled " + records.count() + " records from Kafka:");
         assertTrue(records.count() > 0, "No records polled");
 

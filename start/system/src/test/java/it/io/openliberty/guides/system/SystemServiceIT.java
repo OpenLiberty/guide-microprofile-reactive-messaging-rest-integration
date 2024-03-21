@@ -66,12 +66,12 @@ public class SystemServiceIT {
 
     public static KafkaProducer<String, String> propertyProducer;
 
-    private static ImageFromDockerfile systemImage
-        = new ImageFromDockerfile("system:1.0-SNAPSHOT")
-              .withDockerfile(Paths.get("./Dockerfile"));
+    private static ImageFromDockerfile systemImage =
+        new ImageFromDockerfile("system:1.0-SNAPSHOT")
+            .withDockerfile(Paths.get("./Dockerfile"));
 
-    private static KafkaContainer kafkaContainer = new KafkaContainer(
-        DockerImageName.parse("confluentinc/cp-kafka:latest"))
+    private static KafkaContainer kafkaContainer =
+        new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"))
             .withListener(() -> "kafka:19092")
             .withNetwork(network);
 
@@ -99,11 +99,12 @@ public class SystemServiceIT {
         if (isServiceRunning("localhost", 9083)) {
             System.out.println("Testing with mvn liberty:devc");
         } else {
+            System.out.println("Testing with mvn verify");
             kafkaContainer.start();
             systemContainer.withEnv(
-            "mp.messaging.connector.liberty-kafka.bootstrap.servers", "kafka:19092");
+                "mp.messaging.connector.liberty-kafka.bootstrap.servers",
+                "kafka:19092");
             systemContainer.start();
-            System.out.println("Testing with mvn verify");
         }
     }
 
@@ -112,25 +113,25 @@ public class SystemServiceIT {
         Properties consumerProps = new Properties();
         if (isServiceRunning("localhost", 9083)) {
             consumerProps.put(
-            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 "localhost:9094");
         } else {
             consumerProps.put(
-            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 kafkaContainer.getBootstrapServers());
         }
         consumerProps.put(
             ConsumerConfig.GROUP_ID_CONFIG,
-                "system-load-status");
+            "system-load-status");
         consumerProps.put(
             ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-                StringDeserializer.class.getName());
+            StringDeserializer.class.getName());
         consumerProps.put(
             ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                SystemLoadDeserializer.class.getName());
+            SystemLoadDeserializer.class.getName());
         consumerProps.put(
             ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
-                "earliest");
+            "earliest");
 
         consumer = new KafkaConsumer<String, SystemLoad>(consumerProps);
         consumer.subscribe(Collections.singletonList("system.load"));
@@ -143,20 +144,20 @@ public class SystemServiceIT {
         } else {
             propertyConsumerProps.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                    kafkaContainer.getBootstrapServers());
+                kafkaContainer.getBootstrapServers());
         }
         propertyConsumerProps.put(
             ConsumerConfig.GROUP_ID_CONFIG,
-                "property-name");
+            "property-name");
         propertyConsumerProps.put(
             ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-                StringDeserializer.class.getName());
+            StringDeserializer.class.getName());
         propertyConsumerProps.put(
             ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                PropertyMessageDeserializer.class.getName());
+            PropertyMessageDeserializer.class.getName());
         propertyConsumerProps.put(
             ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
-                "earliest");
+            "earliest");
 
         propertyConsumer =
             new KafkaConsumer<String, PropertyMessage>(propertyConsumerProps);
@@ -170,14 +171,14 @@ public class SystemServiceIT {
         } else {
             producerProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                    kafkaContainer.getBootstrapServers());
+                kafkaContainer.getBootstrapServers());
         }
         producerProps.put(
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class.getName());
+            StringSerializer.class.getName());
         producerProps.put(
             ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class.getName());
+            StringSerializer.class.getName());
 
         propertyProducer = new KafkaProducer<String, String>(producerProps);
     }
@@ -200,7 +201,7 @@ public class SystemServiceIT {
     @Test
     public void testCpuStatus() {
         ConsumerRecords<String, SystemLoad> records =
-                consumer.poll(Duration.ofMillis(30 * 1000));
+            consumer.poll(Duration.ofMillis(30 * 1000));
         System.out.println(
             "Polled the consumer " + records.count() + " records from Kafka:");
         assertTrue(records.count() > 0, "No consumer records processed");
@@ -220,7 +221,7 @@ public class SystemServiceIT {
             new ProducerRecord<String, String>("request.system.property", "os.name"));
 
         ConsumerRecords<String, PropertyMessage> records =
-                propertyConsumer.poll(Duration.ofMillis(30 * 1000));
+            propertyConsumer.poll(Duration.ofMillis(30 * 1000));
         System.out.println(
             "Polled the propertyConsumer " + records.count() + " records from Kafka:");
         assertTrue(records.count() > 0, "No propertyConsumer records processed");

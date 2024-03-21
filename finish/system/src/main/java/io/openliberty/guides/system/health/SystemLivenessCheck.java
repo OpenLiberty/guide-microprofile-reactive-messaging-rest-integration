@@ -29,6 +29,6 @@ public class SystemLivenessCheck implements HealthCheck {
     public HealthCheckResponse call() {
         boolean up = isAlive();
         return HealthCheckResponse.named(
-            this.getClass().getSimpleName()).status(up).build();
+                   this.getClass().getSimpleName()).status(up).build();
     }
 }

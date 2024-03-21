@@ -55,8 +55,8 @@ public class SystemService {
     public Publisher<SystemLoad> sendSystemLoad() {
         // tag::flowableInterval[]
         return Flowable.interval(15, TimeUnit.SECONDS)
-                .map((interval -> new SystemLoad(getHostname(),
-                        OS_MEAN.getSystemLoadAverage())));
+                       .map((interval -> new SystemLoad(getHostname(),
+                           OS_MEAN.getSystemLoadAverage())));
         // end::flowableInterval[]
     }
     // end::sendSystemLoad[]
@@ -72,12 +72,12 @@ public class SystemService {
         logger.info("sendProperty: " + propertyName);
         if (propertyName == null || propertyName.isEmpty()) {
             logger.warning(propertyName == null ? "Null" : "An empty string"
-                    + " is not System property.");
+                + " is not System property.");
             return null;
         }
         return new PropertyMessage(getHostname(),
-                propertyName,
-                System.getProperty(propertyName, "unknown"));
+                       propertyName,
+                       System.getProperty(propertyName, "unknown"));
     }
     // end::sendProperty[]
 }

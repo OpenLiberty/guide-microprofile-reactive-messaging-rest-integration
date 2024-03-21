@@ -59,13 +59,12 @@ public class InventoryResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSystems() {
         List<Properties> systems = manager.getSystems()
-                .values()
-                .stream()
-                .collect(Collectors.toList());
-        return Response
-                .status(Response.Status.OK)
-                .entity(systems)
-                .build();
+                                          .values()
+                                          .stream()
+                                          .collect(Collectors.toList());
+        return Response.status(Response.Status.OK)
+                       .entity(systems)
+                       .build();
     }
 
     @GET
@@ -74,15 +73,13 @@ public class InventoryResource {
     public Response getSystem(@PathParam("hostname") String hostname) {
         Optional<Properties> system = manager.getSystem(hostname);
         if (system.isPresent()) {
-            return Response
-                    .status(Response.Status.OK)
-                    .entity(system)
-                    .build();
+            return Response.status(Response.Status.OK)
+                           .entity(system)
+                           .build();
         }
-        return Response
-                .status(Response.Status.NOT_FOUND)
-                .entity("hostname does not exist.")
-                .build();
+        return Response.status(Response.Status.NOT_FOUND)
+                       .entity("hostname does not exist.")
+                       .build();
     }
 
     // tag::updateSystemProperty[]
@@ -100,9 +97,9 @@ public class InventoryResource {
         propertyNameEmitter.onNext(propertyName);
         // end::flowableEmitter[]
         return Response
-                   .status(Response.Status.OK)
-                   .entity("Request successful for the " + propertyName + " property\n")
-                   .build();
+                 .status(Response.Status.OK)
+                 .entity("Request successful for the " + propertyName + " property\n")
+                 .build();
     }
     // end::updateSystemProperty[]
 
@@ -110,9 +107,8 @@ public class InventoryResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response resetSystems() {
         manager.resetSystems();
-        return Response
-                .status(Response.Status.OK)
-                .build();
+        return Response.status(Response.Status.OK)
+                       .build();
     }
 
     // tag::updateStatus[]
