@@ -5,24 +5,22 @@ set NETWORK=reactive-app
 docker network create %NETWORK%
 
 docker run -d ^
-  -e ALLOW_ANONYMOUS_LOGIN=yes ^
-  --network=%NETWORK% ^
-  --name=zookeeper ^
-  --rm ^
-  bitnami/zookeeper:3 
-
-start /b docker run -d ^
-  -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181 ^
-  -e ALLOW_PLAINTEXT_LISTENER=yes ^
-  -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092 ^
-  --hostname=kafka ^
-  --network=%NETWORK% ^
-  --name=kafka ^
-  --rm ^
-  bitnami/kafka:2 
+    -e ALLOW_PLAINTEXT_LISTENER=yes ^
+    -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092 ^
+    -e KAFKA_CFG_NODE_ID=0 ^
+    -e KAFKA_CFG_PROCESS_ROLES=controller,broker ^
+    -e KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093 ^
+    -e KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093 ^
+    -e KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER ^
+    --hostname=kafka ^
+    --network=%NETWORK% ^
+    --name=kafka ^
+    --rm ^
+    bitnami/kafka:latest
 
 start /b docker run -d ^
   -e MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS=%KAFKA_SERVER% ^
+  -e WLP_LOGGING_CONSOLE_LOGLEVEL=info ^
   -p 9083:9083 ^
   --network=%NETWORK% ^
   --name=system ^
@@ -31,6 +29,7 @@ start /b docker run -d ^
 
 start /b docker run -d ^
   -e MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS=%KAFKA_SERVER% ^
+  -e WLP_LOGGING_CONSOLE_LOGLEVEL=info ^
   -p 9085:9085 ^
   --network=%NETWORK% ^
   --name=inventory ^

@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2023 IBM Corporation and others.
+// Copyright (c) 2020, 2024 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -10,11 +10,12 @@
 :page-layout: guide-multipane
 :page-duration: 25 minutes
 :page-releasedate: 2020-07-28
+:page-majorupdateddate: 2024-04-30
 :page-guide-category: microprofile
 :page-essential: false
 :page-description: Learn how to integrate RESTful services with a reactive system using MicroProfile Reactive Messaging.
 :guide-author: Open Liberty
-:page-tags: ['MicroProfile', 'Jakarta EE']
+:page-tags: ['microprofile', 'jakarta-ee']
 :page-related-guides: ['reactive-service-testing', 'microprofile-reactive-messaging']
 :page-permalink: /guides/{projectid}
 :imagesdir: /img/guide/{projectid}
@@ -166,7 +167,7 @@ docker build -t system:1.0-SNAPSHOT system/.
 docker build -t inventory:1.0-SNAPSHOT inventory/.
 ```
 
-Next, use the provided script to start the application in Docker containers. The script creates a network for the containers to communicate with each other. It also creates containers for Kafka, Zookeeper, and the microservices in the project. For simplicity, the script starts one instance of the `system` service.
+Next, use the provided script to start the application in Docker containers. The script creates a network for the containers to communicate with each other. It also creates containers for Kafka and the microservices in the project. For simplicity, the script starts one instance of the `system` service.
 
 include::{common-includes}/os-tabs.adoc[]
 

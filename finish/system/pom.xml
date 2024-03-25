@@ -10,13 +10,13 @@
     <packaging>war</packaging>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Liberty configuration -->
-        <liberty.var.default.http.port>9083</liberty.var.default.http.port>
-        <liberty.var.default.https.port>9446</liberty.var.default.https.port>
+        <liberty.var.http.port>9083</liberty.var.http.port>
+        <liberty.var.https.port>9446</liberty.var.https.port>
     </properties>
 
     <dependencies>
@@ -24,13 +24,13 @@
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>8.0.0</version>
+            <version>10.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.microprofile</groupId>
             <artifactId>microprofile</artifactId>
-            <version>3.3</version>
+            <version>6.1</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
@@ -38,10 +38,10 @@
         <dependency>
             <groupId>org.eclipse.microprofile.reactive.messaging</groupId>
             <artifactId>microprofile-reactive-messaging-api</artifactId>
-            <version>1.0</version>
+            <version>3.0</version>
             <scope>provided</scope>
         </dependency>
-        <!-- end::reactiveMessaging[] -->
+        <!-- end::reactiveMessaging[] -->   
         <!-- Required dependencies -->
         <dependency>
             <groupId>io.openliberty.guides</groupId>
@@ -52,33 +52,43 @@
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
-            <version>2.8.1</version>
+            <version>3.7.0</version>
         </dependency>
         <!-- end::kafka[] -->
         <!-- tag::rxjava[] -->
         <dependency>
             <groupId>io.reactivex.rxjava3</groupId>
             <artifactId>rxjava</artifactId>
-            <version>3.1.2</version>
+            <version>3.1.8</version>
         </dependency>
         <!-- end::rxjava[] -->
-        <!-- For tests -->
         <dependency>
-            <groupId>org.microshed</groupId>
-            <artifactId>microshed-testing-liberty</artifactId>
-            <version>0.9.1</version>
-            <scope>test</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.12</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.12</version>
+        </dependency>
+        <!-- For tests -->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>kafka</artifactId>
-            <version>1.16.2</version>
+            <version>1.19.7</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.8.1</version>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>1.19.7</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -89,7 +99,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
+                <version>3.4.0</version>
                 <configuration>
                     <packagingExcludes>pom.xml</packagingExcludes>
                 </configuration>
@@ -99,21 +109,29 @@
             <plugin>
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
-                <version>3.8.2</version>
+                <version>3.10.2</version>
+                <configuration>
+                    <!-- devc config -->
+                    <containerRunOpts>
+                        -e WLP_LOGGING_CONSOLE_LOGLEVEL=info 
+                        -p 9083:9083
+                        --network=reactive-app
+                    </containerRunOpts>
+                </configuration>
             </plugin>
 
             <!-- Plugin to run unit tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.2.5</version>
             </plugin>
 
             <!-- Plugin to run integration tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.2.5</version>
                 <executions>
                     <execution>
                         <id>integration-test</id>
