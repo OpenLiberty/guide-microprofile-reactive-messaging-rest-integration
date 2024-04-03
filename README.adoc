@@ -10,7 +10,7 @@
 :page-layout: guide-multipane
 :page-duration: 25 minutes
 :page-releasedate: 2020-07-28
-:page-majorupdateddate: 2024-04-30
+:page-majorupdateddate: 2024-04-04
 :page-guide-category: microprofile
 :page-essential: false
 :page-description: Learn how to integrate RESTful services with a reactive system using MicroProfile Reactive Messaging.
