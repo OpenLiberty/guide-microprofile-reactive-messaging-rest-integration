@@ -6,8 +6,7 @@ set -euxo pipefail
 mvn -ntp -pl system verify
 mvn -ntp -pl inventory verify
 
-docker pull -q bitnami/zookeeper:3
-docker pull -q bitnami/kafka:2
+docker pull -q "bitnami/kafka:latest"
 
 ./scripts/buildImages.sh
 ./scripts/startContainers.sh
