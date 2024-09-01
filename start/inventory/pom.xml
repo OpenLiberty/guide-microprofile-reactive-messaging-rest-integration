@@ -28,7 +28,7 @@
         <dependency>
             <groupId>jakarta.enterprise.concurrent</groupId>
             <artifactId>jakarta.enterprise.concurrent-api</artifactId>
-            <version>3.0.3</version>
+            <version>3.1.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
