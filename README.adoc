@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2024 IBM Corporation and others.
+// Copyright (c) 2020, 2025 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -179,7 +179,15 @@ include::{common-includes}/os-tabs.adoc[]
 ```
 --
 
-[.tab_content.mac_section.linux_section]
+[.tab_content.mac_section]
+--
+[role='command']
+```
+./scripts/startContainers.sh
+```
+--
+
+[.tab_content.linux_section]
 --
 [role='command']
 ```
@@ -245,7 +253,15 @@ include::{common-includes}/os-tabs.adoc[]
 If `curl` is unavailable on your computer, use another client such as https://www.getpostman.com/[Postman^], which allows requests to be made with a graphical interface.
 --
 
-[.tab_content.mac_section.linux_section]
+[.tab_content.mac_section]
+--
+[role=command]
+```
+curl -X PUT -d "os.name" http://localhost:9085/inventory/data --header "Content-Type:text/plain"
+```
+--
+
+[.tab_content.linux_section]
 --
 [role=command]
 ```
@@ -302,7 +318,15 @@ include::{common-includes}/os-tabs.adoc[]
 ```
 --
 
-[.tab_content.mac_section.linux_section]
+[.tab_content.mac_section]
+--
+[role='command']
+```
+./scripts/stopContainers.sh
+```
+--
+
+[.tab_content.linux_section]
 --
 [role='command']
 ```
