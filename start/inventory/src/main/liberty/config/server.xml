@@ -1,13 +1,15 @@
 <server description="Inventory Service">
 
   <featureManager>
-    <feature>restfulWS-3.1</feature>
-    <feature>cdi-4.0</feature>
-    <feature>concurrent-3.0</feature>
-    <feature>jsonb-3.0</feature>
-    <feature>mpHealth-4.0</feature>
-    <feature>mpConfig-3.1</feature>
-    <feature>mpReactiveMessaging-3.0</feature>
+    <platform>jakartaee-10.0</platform>
+    <platform>microprofile-7.0</platform>
+    <feature>restfulWS</feature>
+    <feature>cdi</feature>
+    <feature>concurrent</feature>
+    <feature>jsonb</feature>
+    <feature>mpHealth</feature>
+    <feature>mpConfig</feature>
+    <feature>mpReactiveMessaging</feature>
   </featureManager>
 
   <variable name="http.port" defaultValue="9085"/>
