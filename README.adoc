@@ -151,11 +151,34 @@ Start your Docker environment. Dockerfiles are provided for you to use.
 
 To build the application, run the Maven `install` and `package` goals from the command line in the `start` directory:
 
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
 [role='command']
 ```
-mvn -pl models install
-mvn package
+mvnw.cmd -pl models install
+mvnw.cmd package
 ```
+--
+
+[.tab_content.mac_section]
+--
+[role='command']
+```
+./mvnw -pl models install
+./mvnw package
+```
+--
+
+[.tab_content.linux_section]
+--
+[role='command']
+```
+./mvnw -pl models install
+./mvnw package
+```
+--
 
 
 
