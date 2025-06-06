@@ -1,10 +1,11 @@
 #!/bin/bash
 set -euxo pipefail
+./mvnw -version
 
 ./scripts/packageApps.sh
 
-mvn -ntp -pl system verify
-mvn -ntp -pl inventory verify
+./mvnw -ntp -pl system verify
+./mvnw -ntp -pl inventory verify
 
 docker pull -q "bitnami/kafka:latest"
 
