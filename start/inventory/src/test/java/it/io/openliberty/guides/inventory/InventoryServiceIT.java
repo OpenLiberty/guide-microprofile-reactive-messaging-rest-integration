@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2020, 2024 IBM Corporation and others.
+ * Copyright (c) 2020, 2025 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -46,12 +46,12 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 
-import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.images.builder.ImageFromDockerfile;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -79,19 +79,19 @@ public class InventoryServiceIT {
         new ImageFromDockerfile("inventory:1.0-SNAPSHOT")
             .withDockerfile(Paths.get("./Dockerfile"));
 
-    private static KafkaContainer kafkaContainer =
-        new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"))
-            .withListener(() -> "kafka:19092")
+    private static ConfluentKafkaContainer confluentKafkaContainer =
+        new ConfluentKafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"))
+            .withListener("kafka:19092")
             .withNetwork(network);
 
     private static GenericContainer<?> inventoryContainer =
-        new GenericContainer(inventoryImage)
+        new GenericContainer<>(inventoryImage)
             .withNetwork(network)
             .withExposedPorts(9085)
             .waitingFor(Wait.forHttp("/health/ready").forPort(9085))
             .withStartupTimeout(Duration.ofMinutes(2))
             .withLogConsumer(new Slf4jLogConsumer(logger))
-            .dependsOn(kafkaContainer);
+            .dependsOn(confluentKafkaContainer);
 
     private static InventoryResourceCleint createRestClient(String urlPath) {
         ClientBuilder builder = ResteasyClientBuilder.newBuilder();
@@ -119,7 +119,7 @@ public class InventoryServiceIT {
             urlPath = "http://localhost:9085";
         } else {
             System.out.println("Testing with mvn verify");
-            kafkaContainer.start();
+            confluentKafkaContainer.start();
             inventoryContainer.withEnv(
                 "mp.messaging.connector.liberty-kafka.bootstrap.servers",
                 "kafka:19092");
@@ -144,7 +144,7 @@ public class InventoryServiceIT {
         } else {
             producerProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                kafkaContainer.getBootstrapServers());
+                confluentKafkaContainer.getBootstrapServers());
         }
 
         producerProps.put(
@@ -165,7 +165,7 @@ public class InventoryServiceIT {
         } else {
             consumerProps.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                kafkaContainer.getBootstrapServers());
+                confluentKafkaContainer.getBootstrapServers());
         }
 
         consumerProps.put(
@@ -190,7 +190,7 @@ public class InventoryServiceIT {
     public static void stopContainers() {
         client.resetSystems();
         inventoryContainer.stop();
-        kafkaContainer.stop();
+        confluentKafkaContainer.stop();
         network.close();
     }
 
