@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2020, 2024 IBM Corporation and others.
+ * Copyright (c) 2020, 2025 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -30,13 +30,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.builder.ImageFromDockerfile;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
-import org.testcontainers.utility.DockerImageName;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -70,13 +69,13 @@ public class SystemServiceIT {
         new ImageFromDockerfile("system:1.0-SNAPSHOT")
             .withDockerfile(Paths.get("./Dockerfile"));
 
-    private static KafkaContainer kafkaContainer =
-        new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"))
-            .withListener(() -> "kafka:19092")
+    private static ConfluentKafkaContainer kafkaContainer =
+        new ConfluentKafkaContainer("confluentinc/cp-kafka:latest")
+            .withListener("kafka:19092")
             .withNetwork(network);
 
     private static GenericContainer<?> systemContainer =
-        new GenericContainer(systemImage)
+        new GenericContainer<>(systemImage)
             .withNetwork(network)
             .withExposedPorts(9083)
             .waitingFor(Wait.forHttp("/health/ready").forPort(9083))
