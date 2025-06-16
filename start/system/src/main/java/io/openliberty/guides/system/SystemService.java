@@ -16,6 +16,7 @@ import java.lang.management.OperatingSystemMXBean;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.reactivestreams.Publisher;
@@ -24,6 +25,8 @@ import io.reactivex.rxjava3.core.Flowable;
 
 @ApplicationScoped
 public class SystemService {
+    private static Logger logger = Logger.getLogger(SystemService.class.getName());
+
     private static final OperatingSystemMXBean OS_MEAN =
             ManagementFactory.getOperatingSystemMXBean();
     private static String hostname = null;
