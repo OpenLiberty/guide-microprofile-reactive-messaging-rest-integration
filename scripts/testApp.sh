@@ -7,7 +7,7 @@ set -euxo pipefail
 ./mvnw -ntp -pl system verify
 ./mvnw -ntp -pl inventory verify
 
-docker pull -q "bitnami/kafka:latest"
+docker pull -q "bitnamilegacy/kafka:latest"
 
 ./scripts/buildImages.sh
 ./scripts/startContainers.sh

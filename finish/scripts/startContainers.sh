@@ -17,7 +17,7 @@ docker run -d \
   --network=$NETWORK \
   --name=kafka \
   --rm \
-  bitnami/kafka:latest
+  bitnamilegacy/kafka:latest
   
 sleep 15
 
