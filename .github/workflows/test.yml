@@ -58,5 +58,5 @@ jobs:
       if: always()
       run: |
         sudo docker images
-        echo bitnamilegacy/kafka:latest version:
-        sudo docker inspect --format "{{ index .Config.Labels \"org.opencontainers.image.version\"}}" bitnamilegacy/kafka:latest
+        echo apache/kafka:latest version:
+        sudo docker inspect --format "{{ index .Config.Labels \"org.opencontainers.image.version\"}}" apache/kafka:latest
