@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo Pull kafka images
-docker pull -q bitnamilegacy/kafka:latest
+docker pull -q apache/kafka:latest
 
 echo Building images
 docker build -t system:1.0-SNAPSHOT system/. &
