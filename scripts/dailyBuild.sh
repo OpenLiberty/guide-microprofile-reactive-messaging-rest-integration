@@ -16,7 +16,7 @@ sed -i "\#</containerRunOpts>#a<install><runtimeUrl>https://public.dhe.ibm.com/i
 cat inventory/pom.xml system/pom.xml
 
 if [[ "$DOCKER_USERNAME" != "" ]]; then
-    sed -i "s;FROM icr.io/appcafe/open-liberty:kernel-slim-java11-openj9-ubi;FROM $DOCKER_USERNAME/olguides:$BUILD;g" system/Dockerfile inventory/Dockerfile
+    sed -i "s;FROM icr.io/appcafe/open-liberty:kernel-slim-java17-openj9-ubi;FROM $DOCKER_USERNAME/olguides:$BUILD;g" system/Dockerfile inventory/Dockerfile
     sed -i "s;RUN features.sh;#RUN features.sh;g" inventory/Dockerfile system/Dockerfile
     cat inventory/Dockerfile system/Dockerfile
 fi
