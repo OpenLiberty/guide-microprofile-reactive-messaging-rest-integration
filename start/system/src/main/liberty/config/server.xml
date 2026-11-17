@@ -1,7 +1,7 @@
 <server description="System Service">
 
   <featureManager>
-    <platform>jakartaee-10.0</platform>
+    <platform>jakartaee-11.0</platform>
     <platform>microprofile-7.1</platform>
     <feature>cdi</feature>
     <feature>concurrent</feature>
